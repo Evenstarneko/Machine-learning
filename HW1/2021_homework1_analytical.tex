@@ -354,6 +354,15 @@ P(cough \cap fever) &= P(cough | fever) \cdot P(fever) \notag \\
 
 \item Given assumptions described above, how many parameters do we need to specify the joint distribution $p(fever, cough, pneumonia)$?  \\
 \begin{answertext}{6cm}{}
+We need to specify 5 parameters.\\
+As  $p(fever, cough, pneumonia) = p(fever, cough|pneumonia) \cdot p(pneumonia)$,  \\
+first we need 1 parameter to specify $p(pneumonia)$, and $p(no \ pneumonia)$ is just $1 - p(pneumonia)$. \\
+Then, we know fever and cough is conditional independent given pneumonia,so we have: \\
+$p(fever, cough|pneumonia) = p(fever|pneumonia) \cdot p(cough|pneumonia)$\\
+$p(fever, cough|no \ pneumonia) = p(fever|no \ pneumonia) \cdot p(cough|no \ pneumonia)$\\
+and here we need additional 4 parameters to specify them.\\
+All the no fever/no cough ones can be calculated using 1 - one of the 4 parameters above. \\
+So, we need a total of n = 5 parameters.
 \end{answertext} 
 \end{enumerate}
 
