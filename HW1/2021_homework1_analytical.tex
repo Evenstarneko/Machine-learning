@@ -286,7 +286,7 @@ L_{[D]}(\omega) &= \prod_{i=1}^n p(y_i \mid x_i; \vec{\omega}) \\
 &= \prod_{i=1}^n p(\omega^Tx_i + \epsilon_i \mid x_i; \vec{\omega}) \\
 &= \prod_{i=1}^n p(\epsilon_i \mid x_i; \vec{\omega}) \\
 &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}}\exp{\Big(-\frac{(y_i-\omega^Tx_i)^2}{2}\Big)} \\
-logL_{[D]}(\omega) &=\sum_{i=1}^n log \frac{1}{\sqrt{2\pi}} + \sum_{i=1}^n -\frac{(y_i-\omega^Tx_i)^2}{2} \\
+logL_{[D]}(\omega) &=\sum_{i=1}^n log \frac{1}{\sqrt{2\pi}} + \sum_{i=1}^n -\frac{(y_i-\omega^Tx_i)^2}{2} 
 \end{align}
 Maximizing $logL_{[D]}(\omega)$ is equivalent to minimizing: \\
 $$\sum_{i=1}^n  (y_i-\omega^Tx_i)^2$$\\
@@ -297,7 +297,6 @@ $$P(\epsilon_i) =  \frac{1}{2}\exp{\Big(-|\epsilon_i|\Big)}$$
 Compute the conditional log-likelihood of $\textbf{y}$ given $\textbf{x}$ and $\omega$.
 Give the simplest function of $y_i$ and $\omega$ such that minimizing this function is equivalent to maximizing the conditional log-likelihood \\
 \begin{answertext}{9cm}{}
-\begin{align}
 
 
 
