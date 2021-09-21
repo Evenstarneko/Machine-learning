@@ -315,8 +315,9 @@ $$\sum_{i=1}^{n} (\left|y_{i}-\omega^{T}x_{i}\right|) $$ \\
 \item Which loss is easier to minimize?  Which loss is more robust to outliers?  Explain in detail.\\
 \begin{answertext}{9cm}{}
 
+The square loss is easier to minimize: it is easier to differentiate than absolute loss, and is twice differentiable. \\
+The absolute loss is more robust to outliers: unlike the square loss large errors does not get squared, thus magnified. \\
 
-  
 \end{answertext} 
 
 \end{enumerate}
@@ -374,10 +375,12 @@ So, we need a total of n = 5 parameters.
 \begin{enumerate}
 \item Define what a conjugate prior is.\\
 \begin{answertext}{3cm}{}  
+Conjugate priors are priors that have the same form as their updated posteriors.
 \end{answertext} 
 
 \item Why are conjugate priors useful? \\
 \begin{answertext}{3cm}{}
+They reduce Bayesian updating to modifying the parameters of the prior distribution rather than computing integrals.
 \end{answertext} 
 
 \item Show that the Gamma distribution is a conjugate prior of the exponential distribution. That is, show that if $x \sim \text{Exp}(\lambda)$ and $\lambda \sim \text{Gamma}(\alpha, \beta)$, then $p(\lambda | x) \sim \text{Gamma}(\alpha^*, \beta^*)$ for some $\alpha^*$, $\beta^*$. \\
