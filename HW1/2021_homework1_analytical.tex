@@ -280,7 +280,7 @@ where $\epsilon_i$ is a random variable representing the noise and is independen
 \item Assume $\epsilon_i$ comes from a standard Gaussian distribution, i.e.
 $$P(\epsilon_i) =  \frac{1}{\sqrt{2\pi}}\exp{\Big(\frac{-\epsilon_i^2}{2}\Big)}$$
 Compute the conditional log-likelihood of $\textbf{y}$ given $\textbf{x}$ and $\omega$.  Give the simplest function of $y_i$ and $\omega$ such that minimizing this function is equivalent to maximizing the conditional log-likelihood. \\
-\begin{answertext}{11cm}{}
+\begin{answertext}{10cm}{}
 \begin{align}
 L_{[D]}(\omega) &= \prod_{i=1}^n p(y_i \mid x_i; \vec{\omega}) \notag\\
 &= \prod_{i=1}^n p(\omega^Tx_i + \epsilon_i \mid x_i; \vec{\omega})  \notag\\
@@ -319,13 +319,24 @@ A large group of people were surveyed on their recent health. Of these, 0.20 had
 Let us create a probabilistic model where the presence/absence of each of these two symptoms, cough and fever, are conditionally independent given the presence/absence of pneumonia. Using this data for the empirical probabilities of our model, answer the following questions.
 \begin{enumerate}
 \item Find the probability that someone has both a cough and a fever. \\
-\begin{answertext}{6cm}{}
-
-
-  
+\begin{answertext}{3cm}{}
+\begin{align}
+P(cough \cap fever) &= P(cough | fever) \cdot P(fever) \notag \\
+&= 0.40 \cdot 0.20 \notag \\
+&= 0.08 \notag
+\end{align}
 \end{answertext} 
 \item Find the probability that someone has pneumonia given that they have a fever but no cough. \\
-\begin{answertext}{6cm}{}
+\begin{answertext}{11cm}{}
+\begin{align}
+&P(pneumonia | fever \cap no \ cough) \\
+=& \frac{P(pneumonia \cap fever \cap no \ cough)}{P(fever \cap no \ cough)} \\
+=& \frac{P(fever \cap no \ cough | pneumonia) \cdot P(pneumonia)}{P(no \ cough | fever) \cdot P(fever)} \\
+=& \frac{P(no \ cough | fever, pneumonia) \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \\
+=& \frac{P(no \ cough | fever) \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \\
+=& \frac{[1-P(cough | fever)] \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \\
+=& 0.08 
+\end{align}
 \end{answertext} 
 
 \newpage
