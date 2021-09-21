@@ -337,15 +337,16 @@ P(cough \cap fever) &= P(cough | fever) \cdot P(fever) \notag \\
 \end{align}
 \end{answertext} 
 \item Find the probability that someone has pneumonia given that they have a fever but no cough. \\
-\begin{answertext}{11cm}{}
+\begin{answertext}{9cm}{}
 \begin{align}
-&P(pneumonia | fever \cap no \ cough) \\
-=& \frac{P(pneumonia \cap fever \cap no \ cough)}{P(fever \cap no \ cough)} \\
-=& \frac{P(fever \cap no \ cough | pneumonia) \cdot P(pneumonia)}{P(no \ cough | fever) \cdot P(fever)} \\
-=& \frac{P(no \ cough | fever, pneumonia) \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \\
-=& \frac{P(no \ cough | fever) \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \\
-=& \frac{[1-P(cough | fever)] \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \\
-=& 0.08 
+&P(pneumonia | fever \cap no \ cough) \notag\\
+=& \frac{P(pneumonia \cap fever \cap no \ cough)}{P(fever \cap no \ cough)} \notag\\
+=& \frac{P(fever \cap no \ cough | pneumonia) \cdot P(pneumonia)}{P(no \ cough | fever) \cdot P(fever)} \notag\\
+=& \frac{P(no \ cough | fever, pneumonia) \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \notag\\
+=& \frac{P(no \ cough | pneumonia) \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \notag\\
+=& \frac{[1-P(cough | pneumonia)] \cdot P(fever | pneumonia) \cdot P(pneumonia)}{[1-P(cough | fever)] \cdot P(fever)} \notag\\
+=& \frac{(1-0.70) \cdot 0.50 \cdot 0.05}{(1-0.40) \cdot 0.20} \notag\\
+=& 0.0625 \notag
 \end{align}
 \end{answertext} 
 
