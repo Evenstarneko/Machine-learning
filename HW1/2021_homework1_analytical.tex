@@ -395,10 +395,28 @@ They reduce Bayesian updating to modifying the parameters of the prior distribut
 \item Assume a joint distribution $p(x_1, \ldots, x_k)$ over binary random variables $X_1, \ldots, X_k$.
 What's the size of the joint probability table?\\
 \begin{answertext}{3cm}{}
+
+The size of joint probability table is $2^{k}$.
+
 \end{answertext}
 
 \item Assume $(X_1 {\perp\!\!\!\perp} X_3, \ldots, X_k \mid X_2)$, $(X_k {\perp\!\!\!\perp} X_1, \ldots, X_{k-2} \mid X_{k-1})$, and $(X_i {\perp\!\!\!\perp} X_1, \ldots, X_{i-2}, X_{i+2}, \ldots, X_k \mid X_{i-1}, X_{i+1})$ for each $i = 2, \ldots, k-1$.  What's the smallest number of parameters we would need to specify to create a Gibbs sampler for $p(x_1, \ldots, x_k)$?\\
-\begin{answertext}{6cm}{}
+\begin{answertext}{8cm}{}
+
+From the assumptions we know \\
+$ p(X_{1}|X_{-1})=p(X_{1}|X_{2}) \notag\\
+p(X_{2}|X_{-2})=p(X_{2}|X_{1},X_{3}) \notag\\
+p(X_{3}|X_{-3})=p(X_{3}|X_{2},X_{4}) \notag\\
+... \\
+p(X_{k-1}|P_{-(k-1)})=p(X_{k-1}|X_{k-2},X_{k}) \notag\\
+p(X_{k}|X_{-k})=p(X_{k}|X_{k-1}) \notag\\
+$
+\\
+For $p(X_{i}|X_{j})$, we need to specify two parameteters: $p(X_{i}=1|X_{j}=1)$ and \\ $p(X_{i}=1|X_{j}=0)$ \\
+For $p(X_{i}|X_{j},X_{k})$, we need to specify four parameters: $p(X_{i}=1|X_{j}=1,X_{k}=1)$, $p(X_{i}=1|X_{j}=1,X_{k}=0)$, $p(X_{i}=1|X_{j}=0,X_{k}=1)$, and $p(X_{i}=1|X_{j}=0,X_{k}=0)$ \\
+\\
+Thus, a total of $4(k-2)+4=4k-4$ parameters should be specified.
+
 \end{answertext}
 
 \item Assume conditional independences as in the previous question.  Use the chain rule of probability and the graphoid axioms to write down the likelihood for the model such that only a polynomial number of parameters (in $k$) are used.\\
