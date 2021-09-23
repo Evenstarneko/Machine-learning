@@ -182,7 +182,7 @@
 (35 points)\\
 \Large{Assigned: Monday, September 13, 2021} \\
 \Large{Due: Wednesday, September 22, 2021, 11:59 pm US/Eastern}}
-\author{Partner 1: NAME (JHED), Partner 2:  NAME (JHED)}
+\author{Partner 1: Jingguo Liang (jliang35), Partner 2:  Chang Yan (cyan13)}
 \date{}
 
 \begin{document}
@@ -420,7 +420,25 @@ Thus, a total of $4(k-2)+4=4k-4$ parameters should be specified.
 \end{answertext}
 
 \item Assume conditional independences as in the previous question.  Use the chain rule of probability and the graphoid axioms to write down the likelihood for the model such that only a polynomial number of parameters (in $k$) are used.\\
-\begin{answertext}{6cm}{}
+\begin{answertext}{10cm}{}
+
+From $(X_{1} {\perp\!\!\!\perp} X_{3}, \ldots, X_{k} \mid X_{2})$ we have $(X_{1} {\perp\!\!\!\perp} X_{4}, X_{5}, \ldots, X_{k} \mid X_{2}, X_{3})$ \\
+And we know $(X_{2} {\perp\!\!\!\perp} X_{4}, X_{5}, \ldots, X_{k} \mid X_{1}, X_{3})$ \\
+Combining the two relations, we have $(X_{1}, X_{2} {\perp\!\!\!\perp} X_{4}, X_{5}, \ldots, X_{k} \mid X_{3})$ \\
+From there, we know $(X_{1}, X_{2} {\perp\!\!\!\perp} X_{5}, \ldots, X_{k} \mid X_{3}, X_{4})$ \\
+Combing with the assumption that $(X_{3} {\perp\!\!\!\perp} X_{1}, X_{5}, X_6, \ldots, X_{k} \mid X_{2}, X_{4})$ \\
+We have $(X_{1}, X_{2}, X_{3} {\perp\!\!\!\perp} X_{5}, \ldots, X_{k} \mid X_{4})$ \\
+And so on, we can finally have $(X_{1}, X_{2}, \ldots, X_{k-2} {\perp\!\!\!\perp} X_{k} \mid X_{k-1})$ \\
+\\
+\begin{align}
+p(X_{1}, X{2}, \ldots, X{k}) &= p(X_{1}, X_{3}, X_{4}, \dots, X_{k} \mid X_{2}) \notag\\
+&= p(X_{1} \mid X_{2}) p(X_{3}, X_{4}, \ldots, X_{k} \mid X_{2}) p(X_{2}) \notag\\
+&= p(X_{1} \mid X_{2}) p(X_{2}, X_{3}, \ldots, X_{k}) \notag\\
+&= p(X_{1} \mid X_{2}) p(X_{2} \mid X_{3}) p(X_{4}, \ldots, X_{k}) p(X_3) \notag\\
+&\ldots \notag\\
+&= p(X_{1} \mid X_{2}) p(X_{2} \mid X_{3}) \ldots p(X_{k-1} \mid X_{k}) p(X_{k}) \notag
+\end{align}
+As such, it only need a polynomial number of parameters ($2k$) to compute. \\
 
 \end{answertext} 
 \end{enumerate}
