@@ -1,0 +1,397 @@
+\documentclass[11pt]{article}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage{color}
+\usepackage{marvosym}
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage[fleqn]{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{trimclip}
+\usepackage{listings}
+\usepackage{environ}% http://ctan.org/pkg/environ
+\usepackage{wasysym}
+\usepackage{array}
+
+
+\oddsidemargin 0mm
+\evensidemargin 5mm
+\topmargin -20mm
+\textheight 240mm
+\textwidth 160mm
+
+\newcommand{\vwi}{{\bf w}_i}
+\newcommand{\vw}{{\bf w}}
+\newcommand{\vx}{{\bf x}}
+\newcommand{\vy}{{\bf y}}
+\newcommand{\vxi}{{\bf x}_i}
+\newcommand{\yi}{y_i}
+\newcommand{\vxj}{{\bf x}_j}
+\newcommand{\vxn}{{\bf x}_n}
+\newcommand{\yj}{y_j}
+\newcommand{\ai}{\alpha_i}
+\newcommand{\aj}{\alpha_j}
+\newcommand{\X}{{\bf X}}
+\newcommand{\Y}{{\bf Y}}
+\newcommand{\vz}{{\bf z}}
+\newcommand{\msigma}{{\bf \Sigma}}
+\newcommand{\vmu}{{\bf \mu}}
+\newcommand{\vmuk}{{\bf \mu}_k}
+\newcommand{\msigmak}{{\bf \Sigma}_k}
+\newcommand{\vmuj}{{\bf \mu}_j}
+\newcommand{\msigmaj}{{\bf \Sigma}_j}
+\newcommand{\pij}{\pi_j}
+\newcommand{\pik}{\pi_k}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\el}{\mathcal{L}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\vxij}{{\bf x}_{ij}}
+\newcommand{\vt}{{\bf t}}
+\newcommand{\yh}{\hat{y}}
+\newcommand{\code}[1]{{\footnotesize \tt #1}}
+\newcommand{\alphai}{\alpha_i}
+\newcommand{\defeq}{\overset{\text{def}}{=}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+
+\bgroup
+\def\arraystretch{1.5}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{z}[1]{>{\centering\arraybackslash}m{#1}}
+
+%Arguments are 1 - height, 2 - box title
+\newtcolorbox{textanswerbox}[2]{%
+ width=\textwidth,colback=white,colframe=blue!30!black,floatplacement=H,height=#1,title=#2,clip lower=true,before upper={\parindent0em}}
+
+ \newtcolorbox{eqanswerbox}[1]{%
+ width=#1,colback=white,colframe=black,floatplacement=H,height=3em,sharp corners=all,clip lower=true,before upper={\parindent0em}}
+
+ %Arguments are 1 - height, 2 - box title
+ \NewEnviron{answertext}[2]{
+        \noindent
+        \marginbox*{0pt 10pt}{
+        \clipbox{0pt 0pt 0pt 0pt}{
+        \begin{textanswerbox}{#1}{#2}
+        \BODY
+        \end{textanswerbox}
+        }
+        }
+}
+
+%Arguments are 1 - height, 2 - box title, 3 - column definition
+ \NewEnviron{answertable}[3]{
+        \noindent
+        \marginbox*{0pt 10pt}{
+        \clipbox{0pt 0pt 0pt 0pt}{
+        \begin{textanswerbox}{#1}{#2}
+                \vspace{-0.5cm}
+                        \begin{table}[H]
+                        \centering
+                        \begin{tabular}{#3}
+                                \BODY
+                        \end{tabular}
+                        \end{table}
+        \end{textanswerbox}
+        }
+        }
+}
+
+ %Arguments are 1 - height, 2 - box title, 3 - title, 4- equation label, 5 - equation box width
+ \NewEnviron{answerequation}[5]{
+        \noindent
+        \marginbox*{0pt 10pt}{
+        \clipbox{0pt 0pt 0pt 0pt}{
+        \begin{textanswerbox}{#1}{#2}
+                \vspace{-0.5cm}
+                        \begin{table}[H]
+                        \centering
+                \renewcommand{\arraystretch}{0.5}% Tighter
+
+                        \begin{tabular}{#3}
+                                #4 =	&
+                        \clipbox{0pt 0pt 0pt 0pt}{
+
+                        \begin{eqanswerbox}{#5}
+                                $\BODY$
+                        \end{eqanswerbox}
+                        } \\
+                        \end{tabular}
+                        \end{table}
+
+        \end{textanswerbox}
+        }
+        }
+}
+
+ %Arguments are 1 - height, 2 - box title
+ \NewEnviron{answerderivation}[2]{
+        \noindent
+        \marginbox*{0pt 10pt}{
+        \clipbox{0pt 0pt 0pt 0pt}{
+        \begin{textanswerbox}{#1}{#2}
+        \BODY
+        \end{textanswerbox}
+        }
+        }
+}
+
+\newcommand{\Checked}{{\LARGE \XBox}}%
+\newcommand{\Unchecked}{{\LARGE \Square}}%
+\newcommand{\TextRequired}{{\textbf{Place Answer Here}}}%
+\newcommand{\EquationRequired}{\textbf{Type Equation Here}}%
+
+
+\newcommand{\answertextheight}{5cm}
+\newcommand{\answertableheight}{4cm}
+\newcommand{\answerequationheight}{2.5cm}
+\newcommand{\answerderivationheight}{14cm}
+
+\newcounter{QuestionCounter}
+\newcounter{SubQuestionCounter}[QuestionCounter]
+\setcounter{SubQuestionCounter}{1}
+
+\newcommand{\subquestiontitle}{Question \theQuestionCounter.\theSubQuestionCounter~}
+\newcommand{\newquestion}{\stepcounter{QuestionCounter}\setcounter{SubQuestionCounter}{1}\newpage}
+\newcommand{\newsubquestion}{\stepcounter{SubQuestionCounter}}
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\indices}{indices}
+\DeclareMathOperator{\Bernoulli}{Bernoulli}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+
+\lstset{language=[LaTeX]TeX,basicstyle=\ttfamily\bf}
+
+\pagestyle{myheadings}
+\markboth{Homework 2}{Fall 2021 CS 475/675 Machine Learning: Homework 2}
+
+\title{CS 475 Machine Learning: Homework 2 Analytical \\
+(35 points)\\
+\Large{Assigned: Friday, September 24, 2021} \\
+\Large{Due: Friday, October 8, 2021, 11:59 pm US/Eastern}}
+\author{Partner 1: NAME (JHED), Partner 2:  NAME (JHED)}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{headings}
+
+\section*{Instructions }
+We have provided this \LaTeX{} document for turning in this homework. We give you one or more boxes to answer each question.  The question to answer for each box will be noted in the title of the box.  You can change the size of the box if you need more space.\\
+
+{\bf Other than your name, do not type anything outside the boxes. Leave the rest of the document unchanged.}\\
+
+
+\textbf{
+%Do not change any formatting in this document, or we may be unable to
+  %grade your work. This includes, but is not limited to, the height of
+  %textboxes, font sizes, and the spacing of text and tables.  Additionally,
+  Do
+  not add text outside of the answer boxes.  You are allowed to make boxes larger if needed.
+  % Entering your answers are the only
+  %changes allowed.
+  }\\
+
+
+\textbf{We strongly recommend you review your answers in the generated PDF to
+  ensure they appear correct. We will grade what appears in the answer boxes in
+  the submitted PDF, NOT the original latex file.}
+
+% \section*{ Notation}
+% {
+% \centering
+% \smallskip\begin{tabular}{r l}
+% \(\vec{x_i}\) & One input data vector. \(\vec{x_i}\) is \(M\) dimensional.
+% \(\vec{x_i} \in \mathbb{R}^{1 \times M}\).  \\ &
+% We assume $\vec{x_i}$ is augmented with a  $1$ to include a bias term. \\ \\
+% \(\vec{X}\) & 	A matrix of concatenated \(\vec{x_i}\)'s. There are \(N\) input vectors, so \(\vec{X} \in \mathbb{R}^{N \times M}\) \\ \\
+% \(y_i\) & The true label for input vector \(\vec{x_i}\). In regression problems, \(y_i\) is continuous. \\ & In general ,\(y_i\) can be a vector, but for now we assume it's a scalar: \(y_i \in \mathbb{R}^1\). \\ \\
+
+% \(\vec{y}\) & 	A vector of concatenated \(y_i\)'s. There are \(N\) input vectors, so \(\vec{y} \in \mathbb{R}^{N \times 1}\) \\ \\
+
+% \(\vec{w}\) & A weight vector. We are trying to learn the elements of \(\vec{w}\). \\
+% & \(\vec{w}\) is the same number of elements as \(\vec{x_i}\) because we will end up computing \\
+% & the dot product \(\vec{x_i} \cdot \vec{w}\). \\
+% & \(\vec{w} \in \mathbb{R}^{M \times 1}\). We assume the bias term is included in \(\vec{w}\). \\ \\
+
+% \(h(\vec(x))\) & The true regression function that describes the data. \\ \\
+ 
+% i.i.d. & Independently and identically distributed. \\ \\
+
+% Bias-variance  & We can write \(E_D[(f(x, D) - h(x))^2]\) = \\
+% decomposition  & \((E_D[f(x, D) - h(x))^2 + E_D[(f(x, D) - E_D[f(x, D)])^2]\) \\
+%                             & where the first term is the bias squared, and the second term is the variance.\\ \\
+
+%  Notes: & In general, a lowercase letter (not boldface), $a$, indicates a scalar. \\
+%   & A boldface lowercase letter, $\vec{a}$, indicates a vector. \\  &  A boldface uppercase letter, $\vec{A}$, indicates a matrix. \\
+% \end{tabular}
+% }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pagebreak
+%\section{Probability and Linear Algebra: Diagnostic}
+%This section is ungraded and intended for diagnostic purposes only.
+%While answers to these questions are easy to compute with access to a statistical language interpreter, or look up on the internet, we advise you not to do so.
+%These questions are an opportunity to verify that you feel comfortable with the prerequisite topics for this class. If you don't know/remember everything, that doesn't mean you can't still do well, but you would need to put in extra effort reviewing the relevant background.
+%
+%\subsection*{Probability}
+%\begin{enumerate}
+%\item Recall that variance is defined as $\Var(X) = \E[(X - \E[X])^2]$. Prove that $\Var(X) = \E[X^2] - \E[X]^2$.
+%
+%\item Let $X$ be a random variable such that $X = YZ$, where $Y \sim \mathcal{N}(0,\sigma^2)$ and $Z \sim \Bernoulli(p)$. Find the mean and variance of $X$.
+%\end{enumerate}
+%
+%\subsection*{Linear Algebra}
+%\begin{enumerate}
+%\item Show that the vector $w$ is orthogonal to the hyperplane $w^T x + b = 0$.
+%
+%\item Consider the matrix $A$ below:
+%\begin{equation*}
+%A = 
+%\begin{bmatrix}
+%1 & 2 & 5\\
+%2 & 4 & 3\\
+%4 & 5 & 8
+%\end{bmatrix}
+%\end{equation*}
+%\begin{enumerate}
+%\item What is the rank of $A$?
+%\item Compute the determinant of $A$.
+%\end{enumerate}
+%\end{enumerate}
+
+
+% -----------------------------------------------------------
+\pagebreak
+\section{Ridge Regression}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\begin{enumerate}
+
+\item Assume $\vec{X}$ is a dataset of $n$ rows of $k$ feature values each, and $\vec{y}$ is the corresponding vector of outcome values.
+Assume the data is centered, meaning that $\E[Y] = 0$, and for each $X_i \in \vec{X}$, $\E[X_i] = 0$.
+Consider the following modified squared loss for a linear regression model:
+\begin{equation}
+J(\vec{\beta}) = (\vec{y}-\vec{X}\vec{\beta})^T(\vec{y}-\vec{X}\vec{\beta}) + \lambda \norm{\vec{\beta}}_2^2 =
+(\vec{y}-\vec{X}\vec{\beta})^T(\vec{y}-\vec{X}\vec{\beta}) + \lambda \sum_i \beta_i^2.
+\end{equation}
+Note that since $\E[Y] = 0$, the linear regression does not need an intercept parameter.
+
+Assuming that $(\vec{X}^T\vec{X}+\lambda \vec{I})$ ($\vec{I}$ is the identity matrix) is invertible, find the values of $\vec{\beta}$ that minimize this loss.  Please show your work.
+
+\begin{answertext}{10cm}{}
+
+
+  
+\end{answertext} 
+
+\pagebreak
+
+
+\item Show that the ridge regression minimizer in the previous question is the mode of the posterior distribution, under a Gaussian prior on $\vec{\beta}$ given by ${\cal N}(0, \tau \cdot \vec{I})$, and Gaussian likelihood $Y = {\cal N}(\vec{X} \cdot \vec{\beta}, \sigma^2 \vec{I})$.  The mode $\vec{\beta}^*$ of the posterior are the settings of parameters that maximize the posterior distribution (e.g. the maximum a posteriori (MAP) parameter estimates).
+
+\item Find the relationship between the regularization parameter $\lambda$ in the ridge formula, and the variance parameters $\tau$ and $\sigma^2$.
+
+Show your work!
+
+Hints:
+\begin{itemize}
+\item The posterior takes the form of
+$\frac{
+{\cal L}_{[D]}(\vec{\beta}) \cdot p(\vec{\beta})
+}{
+\int {\cal L}_{[D]}(\vec{\beta}) \cdot p(\vec{\beta})
+d \vec{\beta}
+}$.  It often suffices to only think about the numerator, and let the denominator be whatever normalizing function that makes the whole expression integrate to $1$.
+\item In class we used the fact that $\log(.)$ is a concave function to conclude maximizing the likelihood is equivalent to maximizing the log likelihood.  For this problem it might be useful to use the fact that $\exp(.)$ is a convex function.
+\item The multivariate normal distribution on $k$ variables with mean vector $\mu$ and covariance matrix $\Sigma$ has the density
+$(2 \pi)^{-k/2} \det(\vec{\Sigma})^{-1/2}\exp \left\{ - \frac{1}{2} (\vec{x} - \vec{\mu})^T \Sigma^{-1} (\vec{x} - \vec{\mu})
+ \right\}
+$.
+\end{itemize}
+
+\begin{answertext}{10cm}{}
+
+
+  
+\end{answertext} 
+
+\end{enumerate}
+
+% -----------------------------------------------------------
+\pagebreak
+\section{Splitting Data And Combining Predictors}
+
+Assume a linear regression model $Y = X^T \cdot \beta + \epsilon$, where $\epsilon$ is an arbitrary distribution.
+
+Given a dataset $[D]$ of size $n$ draw from the true observed data distribution $p_0(X, Y)$, imagine training two predictors.
+The first predictor, $\hat{f}^{\text{whole}}$ simply minimizes the squared loss on $[D]$.
+The second predictor $\hat{f}^{\text{split}}$ splits $[D]$ into two halves $[D]_1, [D]_2$ each of size $n/2$, trains two separate models:  $\hat{f}^{(1)}$ by minimizing squared loss on $[D]_1$, and $\hat{f}^{(2)}$ by minimizing squared loss on $[D]_2$, and then averages the predictions of these two models: 
+\begin{align*}
+\hat{f}^{\text{split}}(x) = \frac{1}{2} \left( \hat{f}^{(1)}(x) + \hat{f}^{(1)}(x) \right).
+\end{align*}
+
+Consider a fixed input/output pair $x_0,y_0$, and the MSE $\E[(y_0 - \hat{f}^{\text{split}}(x_0))^2]$ and $\E[(y_0 - \hat{f}^{\text{whole}}(x_0))^2]$ of both predictors, with the expectation taken over $p([D])$.
+\begin{enumerate}
+\item Write out the bias/variance decomposition of both the MSE of both predictors, expressing this decomposition in terms of $\E[.]$ and $Var(.)$ of random quantities, e.g. parameters of the models fit using $[D]$ drawn from $p([D])$.  You can call the parameters of $\hat{f}^{\text{whole}}$ by $\beta^{\text{whole}}$, parameters of $\hat{f}^{\text{split}}$ by $\beta^{(1)}$ and $\beta^{(2)}$.
+
+\begin{answertext}{5cm}{}  
+\end{answertext} 
+
+\item Compare the variance of $\hat{f}^{\text{whole}}$ with the variance of $\hat{f}^{\text{split}}$.\\
+\begin{answertext}{5cm}{}
+\end{answertext} 
+
+\pagebreak 
+
+\item What are the advantages and disadvantages of using $\hat{f}^{\text{whole}}$ versus $\hat{f}^{\text{split}}$, if both are unbiased estimators.\\
+\begin{answertext}{5cm}{}
+\end{answertext} 
+\end{enumerate}
+
+\pagebreak
+\section{Naive Bayes and Logistic Regression}
+
+A Naive Bayes classifier uses the conditional probability $p(Y \mid \vec{X})$ to predict the value of $Y$ given $\vec{X}$ (for $Y$ with a finite set of values).
+This conditional probability is obtained from the following model: $p(Y, \vec{X}) = p(Y) \prod_{X_i \in \vec{X}} p(X_i \mid Y)$.
+Thus,
+\begin{align*}
+p(Y \mid \vec{X}) =
+\frac{
+p(Y) \prod_{X_i \in \vec{X}} p(X_i \mid Y)
+}{
+\sum_Y p(Y) \prod_{X_i \in \vec{X}} p(X_i \mid Y)
+}.
+\end{align*}
+
+Assume $Y$ has only two values ($0$ and $1$), and for each $X_i \in \vec{X}$,
+\begin{align*}
+X_i \mid Y=0 &\sim {\cal N}(\mu_{i0}, \sigma_i^2),\\
+X_i \mid Y=1 &\sim {\cal N}(\mu_{i1}, \sigma_i^2).
+\end{align*}
+
+\begin{enumerate}
+\item Show that $p(Y = 1 \mid \vec{X})$ has the same parametric form as a logistic regression model.
+Hint:
+\begin{itemize}
+\item It might be convenient for you to first show that:
+$p(Y = 1 \mid \vec{X}) = \frac{1}{1 + \exp\left\{ \log \left( \frac{ p(Y=0) p(\vec{X} \mid Y=0) }{ p(Y=1) p(\vec{X} \mid Y=1) } \right) \right\}}$.
+\end{itemize}
+
+\begin{answertext}{10cm}{}
+\end{answertext}
+\end{enumerate}
+
+\end{document}
