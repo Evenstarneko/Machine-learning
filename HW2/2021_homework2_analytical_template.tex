@@ -314,6 +314,7 @@ Let $\frac{dJ(\vec{\beta})}{d\vec{\beta}} = 0$
 
 \item Show that the ridge regression minimizer in the previous question is the mode of the posterior distribution, under a Gaussian prior on $\vec{\beta}$ given by ${\cal N}(0, \tau \cdot \vec{I})$, and Gaussian likelihood $Y = {\cal N}(\vec{X} \cdot \vec{\beta}, \sigma^2 \vec{I})$.  The mode $\vec{\beta}^*$ of the posterior are the settings of parameters that maximize the posterior distribution (e.g. the maximum a posteriori (MAP) parameter estimates).
 
+%Question 1.2
 \begin{answertext}{20.7cm}{}
 \begin{align}
 p_{posterior}{(\vec{\beta})} &= \frac{{\cal L}_{[D]}(\vec{\beta}) \cdot p_{prior}(\vec{\beta})}{\int_{\vec{\beta}} {\cal L}_{[D]}(\vec{\beta}) \cdot p_{prior}(\vec{\beta}) } \notag \\ 
@@ -417,17 +418,55 @@ Consider a fixed input/output pair $x_0,y_0$, and the MSE $\E[(y_0 - \hat{f}^{\t
 \begin{enumerate}
 \item Write out the bias/variance decomposition of both the MSE of both predictors, expressing this decomposition in terms of $\E[.]$ and $Var(.)$ of random quantities, e.g. parameters of the models fit using $[D]$ drawn from $p([D])$.  You can call the parameters of $\hat{f}^{\text{whole}}$ by $\beta^{\text{whole}}$, parameters of $\hat{f}^{\text{split}}$ by $\beta^{(1)}$ and $\beta^{(2)}$.
 
-\begin{answertext}{5cm}{}  
+%Question 2.1
+\begin{answertext}{10cm}{}  
+
+\begin{align}
+E[(y_{0} - \hat{f}^{\text{whole}}(x_{0}))^{2}] &= E[y_{0}^{2}] - E[2y_{0}\hat{f}^{\text{whole}}(x_{0})] + E[\hat{f}^{\text{whole}}(x_{0})^{2}] \notag\\
+&= y_{0}^{2} - 2y_{0}E[\hat{f}^{\text{whole}}(x_{0})] + E[\hat{f}^{\text{whole}}(x_{0})^{2}] \notag\\
+&= y_{0}^{2} - 2y_{0}E[\hat{f}^{\text{whole}}(x_{0})] + Var[\hat{f}^{\text{whole}}(x_{0})] + E[\hat{f}^{\text{whole}}(x_{0})]^{2} \notag\\
+&= (y_{0} - E[\hat{f}^{\text{whole}}(x_{0})])^{2} + Var[\hat{f}^{\text{whole}}(x_{0})] \notag\\
+&= E[y_{0} - \hat{f}^{\text{whole}}(x_{0})]^{2} + Var[\hat{f}^{\text{whole}}(x_{0})] \notag\\
+&= E[y_{0} - (x_{0}^{T}\cdot\beta^{\text{whole}} + \epsilon)]^{2} + Var[x_{0}^{T}\cdot\beta^{\text{whole}} + \epsilon] \notag
+\end{align}
+Similarly,
+\begin{align}
+E[(y_{0} - \hat{f}^{\text{split}}(x_{0}))^{2}] &= E[y_{0} - \hat{f}^{\text{split}}(x_{0})]^{2} + Var[\hat{f}^{\text{split}}(x_{0})] \notag\\
+&= E[y_{0} - \frac{1}{2}(\hat{f}^{(1)}(x_{0}) + \hat{f}^{(2)}(x_{0}))]^{2} + Var[\frac{1}{2}(\hat{f}^{(1)}(x_{0}) + \hat{f}^{(2)}(x_{0}))] \notag\\
+&= E[y_{0} - (x_{0}^{T}\cdot\frac{1}{2}(\beta^{(1)} + \beta^{(2)}) + \epsilon)]^{2} + Var[x_{0}^{T}\cdot\frac{1}{2}(\beta^{(1)} + \beta^{(2)}) + \epsilon] \notag
+\end{align}
+
 \end{answertext} 
 
 \item Compare the variance of $\hat{f}^{\text{whole}}$ with the variance of $\hat{f}^{\text{split}}$.\\
-\begin{answertext}{5cm}{}
+
+%Question 2.2
+\begin{answertext}{8cm}{}
+
+\begin{align}
+Var[\hat{f}^{\text{whole}}] &= Var[x_{0}^{T}\cdot\beta^{\text{whole}} + \epsilon] \notag\\
+&= (x_{0}^{T})^{2} \cdot Var[\beta^{\text{whole}}] + Var[\epsilon] \notag
+\end{align}
+\begin{align}
+Var[\hat{f}^{\text{split}}] &= Var[x_{0}^{T}\cdot\frac{1}{2}(\beta^{(1)} + \beta^{(2)}) + \epsilon] \notag\\
+&= \frac{1}{4}(x_{0}^{T})^{2} (Var[\beta^{(1)}] + Var[\beta^{(2)}]) + Var[\epsilon] \notag
+\end{align}
+I am assuming that $Var[\beta^{\text{whole}}]$, $Var[\beta^{(1)}]$, $Var[\beta^{(2)}]$ are the same or similar.
+Then $\hat{f}^{\text{whole}}$ will be greater than $\hat{f}^{\text{split}}$, since 
+$Var[\beta^{\text{whole}}] > \frac{1}{4}(Var[\beta^{(1)}] + Var[\beta^{(2)}])$ \\
+
 \end{answertext} 
 
 \pagebreak 
 
 \item What are the advantages and disadvantages of using $\hat{f}^{\text{whole}}$ versus $\hat{f}^{\text{split}}$, if both are unbiased estimators.\\
+
+%Question 2.3
 \begin{answertext}{5cm}{}
+
+The advantage of using $\hat{f}^{\text{split}}$ compared with $\hat{f}^{\text{whole}}$ is that it has a smaller variance and thus produces more stable result.
+The advantage of using $\hat{f}^{\text{whole}}$ compared with $\hat{f}^{\text{split}}$ is that it only involves the prediction of one model and is thus more simple and less time-comsuming.
+
 \end{answertext} 
 \end{enumerate}
 
