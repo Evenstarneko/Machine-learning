@@ -291,9 +291,21 @@ Note that since $\E[Y] = 0$, the linear regression does not need an intercept pa
 
 Assuming that $(\vec{X}^T\vec{X}+\lambda \vec{I})$ ($\vec{I}$ is the identity matrix) is invertible, find the values of $\vec{\beta}$ that minimize this loss.  Please show your work.
 
+%Question 1.1
 \begin{answertext}{10cm}{}
 
-
+\begin{align}
+\frac{dJ(\vec{\beta})}{d\vec{\beta}} &= \frac{d}{d\vec{\beta}} (\vec{y} - \vec{X}\vec{\beta})^{T} (\vec{y} - \vec{X}\vec{\beta}) + \lambda \sum_{i}{\beta_{i}^{2}} \notag\\
+&= \frac{d}{d\vec{\beta}} (\vec{y}^{T} - \vec{\beta}^{T}\vec{X}^{T}) (\vec{y} - \vec{X}\vec{\beta}) + \lambda \sum_{i}{\beta_{i}^{2}} \notag\\
+&= \frac{d}{d\vec{\beta}} \vec{y}^{T}\vec{y} - 2\vec{y}^{T}\vec{X}\vec{\beta} + \vec{\beta}^{T}\vec{X}^{T}\vec{X}\vec{\beta} + \lambda\vec{\beta}^{T}\vec{\beta} \notag\\
+&= -2\vec{X}^{T}\vec{y} + 2\vec{X}^{T}\vec{X}\vec{\beta} + 2\lambda\vec{\beta} \notag
+\end{align}
+Let $\frac{dJ(\vec{\beta})}{d\vec{\beta}} = 0$ 
+\begin{align}
+-2\vec{X}^{T}\vec{y} + 2\vec{X}^{T}\vec{X}\vec{\beta} + 2\lambda\vec{\beta} &= 0 \notag\\
+2(\vec{X}^{T}\vec{X} + \lambda\vec{I})\vec{\beta} &= 2\vec{X}^{T}\vec{y} \notag\\
+\vec{\beta} &= (\vec{X}^{T}\vec{X} + \lambda\vec{I})^{-1} \vec{X}^{T}\vec{y} \notag
+\end{align}
 
 \end{answertext} 
 
