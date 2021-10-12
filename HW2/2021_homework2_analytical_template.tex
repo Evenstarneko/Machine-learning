@@ -294,13 +294,42 @@ Assuming that $(\vec{X}^T\vec{X}+\lambda \vec{I})$ ($\vec{I}$ is the identity ma
 \begin{answertext}{10cm}{}
 
 
-  
+
 \end{answertext} 
 
 \pagebreak
 
 
 \item Show that the ridge regression minimizer in the previous question is the mode of the posterior distribution, under a Gaussian prior on $\vec{\beta}$ given by ${\cal N}(0, \tau \cdot \vec{I})$, and Gaussian likelihood $Y = {\cal N}(\vec{X} \cdot \vec{\beta}, \sigma^2 \vec{I})$.  The mode $\vec{\beta}^*$ of the posterior are the settings of parameters that maximize the posterior distribution (e.g. the maximum a posteriori (MAP) parameter estimates).
+
+\begin{answertext}{16cm}{}
+\begin{align}
+p_{posterior}{(\vec{\beta})} &= \frac{{\cal L}_{[D]}(\vec{\beta}) \cdot p_{prior}(\vec{\beta})}{\int_{\vec{\beta}} {\cal L}_{[D]}(\vec{\beta}) \cdot p_{prior}(\vec{\beta}) } \notag \\ 
+&=\frac{
+\frac{1}{\sigma I \sqrt{2 \pi}^k } e^{-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2}} \cdot
+\frac{1}{\tau I \sqrt{2 \pi}} e^{-\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}}  
+}{\int_{\vec{\beta}}
+\frac{1}{\sigma I \sqrt{2 \pi}^k } e^{-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2}} \cdot
+\frac{1}{\tau I \sqrt{2 \pi}} e^{-\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}}  
+} \notag \\ 
+&=\frac{
+\frac{1}{\sigma I \sqrt{2 \pi}^k } e^{-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2}} \cdot e^{-\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}}  
+}{\int_{\vec{\beta}}
+\frac{1}{\sigma I \sqrt{2 \pi}^k } e^{-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2}} \cdot e^{-\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}}  
+} \notag \\
+&=\frac{
+\frac{1}{\sigma I \sqrt{2 \pi}^k } e^{-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2} -\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}}  
+}{\int_{\vec{\beta}}
+\frac{1}{\sigma I \sqrt{2 \pi}^k } e^{-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2} -\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}}  
+} \notag
+\end{align}
+We know the denominator of the above function is just a normalization constant, and exp(.) is a monotonic, concave function. So maximizing the above function is equivalent to maximizing:
+$$-\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2} -\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}$$
+And maximizing the above equation is equivalent to minimizing:
+$$\frac{(y - X \cdot \vec{\beta})^{T}(\sigma^2I)^{-1}(y - X \cdot \vec{\beta})}{2} +\frac{||\vec{\beta}||^{2}_{2}}{2 {(\tau)}^2}$$
+take the derivative respect to $\beta$:
+
+\end{answertext} 
 
 \item Find the relationship between the regularization parameter $\lambda$ in the ridge formula, and the variance parameters $\tau$ and $\sigma^2$.
 
