@@ -452,7 +452,7 @@ Var[\hat{f}^{\text{split}}] &= Var[x_{0}^{T}\cdot\frac{1}{2}(\beta^{(1)} + \beta
 &= \frac{1}{4}(x_{0}^{T})^{2} (Var[\beta^{(1)}] + Var[\beta^{(2)}]) + Var[\epsilon] \notag
 \end{align}
 I am assuming that $Var[\beta^{\text{whole}}]$, $Var[\beta^{(1)}]$, $Var[\beta^{(2)}]$ are the same or similar.
-Then $\hat{f}^{\text{whole}}$ will be greater than $\hat{f}^{\text{split}}$, since 
+Then the variance of $\hat{f}^{\text{whole}}$ will be greater than the variance of $\hat{f}^{\text{split}}$, since 
 $Var[\beta^{\text{whole}}] > \frac{1}{4}(Var[\beta^{(1)}] + Var[\beta^{(2)}])$ \\
 
 \end{answertext} 
@@ -465,7 +465,7 @@ $Var[\beta^{\text{whole}}] > \frac{1}{4}(Var[\beta^{(1)}] + Var[\beta^{(2)}])$ \
 \begin{answertext}{5cm}{}
 
 The advantage of using $\hat{f}^{\text{split}}$ compared with $\hat{f}^{\text{whole}}$ is that it has a smaller variance and thus produces more stable result.
-The advantage of using $\hat{f}^{\text{whole}}$ compared with $\hat{f}^{\text{split}}$ is that it only involves the prediction of one model and is thus more simple and less time-comsuming.
+The disadvantage of using $\hat{f}^{\text{split}}$ compared with $\hat{f}^{\text{whole}}$ is that calculating $\hat{f}^{\text{whole}}$ only involves the prediction of one model and is thus more simple and less time-comsuming, while $\hat{f}^{\text{split}}$ needs to train two models, which also means we need doubled space to store parameters. Also, for each splitted model, only looking into part of the data set may not be as representative as looking into the whole, and the model parameters may converges slower as there are less data points each model can look at (also meaning longer training time).
 
 \end{answertext} 
 \end{enumerate}
@@ -516,7 +516,7 @@ p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1) + p(Y=0) \prod_{X_i \in \vec{X}} 
 &=\frac{1}{1+ \frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)}} \notag \\
 &=\frac{1}{1+ e^{log(\frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)})}} \notag
 \end{align}
-Then we try to simplify the thing on exponential:
+Then we try to simplify the expression on the exponential:
 \begin{align}
 &log(\frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)}) \notag\\
 =& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}}log\frac{p(X_i \mid Y=0)}{p(X_i \mid Y=1)} \notag \\
