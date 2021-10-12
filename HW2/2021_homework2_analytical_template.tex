@@ -181,7 +181,7 @@
 (35 points)\\
 \Large{Assigned: Friday, September 24, 2021} \\
 \Large{Due: Friday, October 8, 2021, 11:59 pm US/Eastern}}
-\author{Partner 1: NAME (JHED), Partner 2:  NAME (JHED)}
+\author{Partner 1: Chang Yan (cyan13), Partner 2:  Jingguo Liang (jliang35)}
 \date{}
 
 \begin{document}
@@ -348,13 +348,14 @@ take the derivative with respect to $\beta$:
 \end{align}
 To find the mode $\beta^{*}$ we set it to zero:
 \begin{align}
-- \frac{1}{\sigma^2}\vec{X}^{T}\vec{y} + (\frac{1}{\sigma^2}\vec{X}^{T}\vec{X} + \frac{1}{\tau^2}\vec I)\vec{\beta^{*}} &= 0 \notag\\
-(\frac{1}{\sigma^2}\vec{X}^{T}\vec{X} + \frac{1}{\tau^2}\vec I)\vec{\beta^{*}} &= \frac{1}{\sigma^2}\vec{X}^{T}\vec{y}  \notag
+- \frac{1}{\sigma^2}\vec{X}^{T}\vec{y} + (\frac{1}{\sigma^2}\vec{X}^{T}\vec{X} + \frac{1}{\tau^2}\vec I)\vec{\beta^{*}} &= 0 \notag
 \end{align}
+(Continued on next page)
 \end{answertext} 
-\begin{answertext}{4cm}{}
+\begin{answertext}{5cm}{}
 so we have: 
 \begin{align}
+(\frac{1}{\sigma^2}\vec{X}^{T}\vec{X} + \frac{1}{\tau^2}\vec I)\vec{\beta^{*}} &= \frac{1}{\sigma^2}\vec{X}^{T}\vec{y}  \notag \\
 (\vec{X}^{T}\vec{X} + \frac{\sigma^2}{\tau^2}\vec I)\vec{\beta^{*}} &= \vec{X}^{T}\vec{y} \notag\\
 \vec{\beta^{*}} &= (\vec{X}^{T}\vec{X} + \frac{\sigma^2}{\tau^2}\vec I)^{-1} \vec{X}^{T}\vec{y}\notag
 \end{align}
@@ -459,7 +460,52 @@ Hint:
 $p(Y = 1 \mid \vec{X}) = \frac{1}{1 + \exp\left\{ \log \left( \frac{ p(Y=0) p(\vec{X} \mid Y=0) }{ p(Y=1) p(\vec{X} \mid Y=1) } \right) \right\}}$.
 \end{itemize}
 
-\begin{answertext}{10cm}{}
+\begin{answertext}{15cm}{}
+First using the two values of Y (0,1) to show the hint result:
+\begin{align}
+p(Y=1 \mid \vec{X}) &=
+\frac{
+p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)
+}{
+\sum_Y p(Y) \prod_{X_i \in \vec{X}} p(X_i \mid Y)
+} \notag\\
+&=\frac{
+p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)
+}{
+p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1) + p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)
+} \notag\\
+&=\frac{1}{1+ \frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)}} \notag \\
+&=\frac{1}{1+ e^{log(\frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)})}} \notag
+\end{align}
+Then we try to simplify the thing on exponential:
+\begin{align}
+&log(\frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)}) \notag\\
+=& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}}log\frac{p(X_i \mid Y=0)}{p(X_i \mid Y=1)} \notag \\
+=& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}}log\frac{\frac{1}{\sigma_{i}\sqrt{2 \pi}}e^{-\frac{(X_i - \mu_{i0})^2}{2\sigma_{i}^2}}}{\frac{1}{\sigma_{i}\sqrt{2 \pi}}e^{-\frac{(X_i - \mu_{i1})^2}{2\sigma_{i}^2}}} \notag \\
+=& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}}-\frac{(X_i - \mu_{i0})^2 - (X_i - \mu_{i1})^2}{2\sigma_{i}^2}\notag \\
+=& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}}-\frac{X_i^2 - 2 X_i \mu_{i0} + \mu_{i0}^2 - X_i^2 + 2 X_i \mu_{i1} - \mu_{i1}^2}{2\sigma_{i}^2}\notag 
+\end{align}
+(Continued on next page)
+\end{answertext}
+\begin{answertext}{18cm}{}
+\begin{align}
+=& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}}\frac{ 2 X_i (\mu_{i0} - \mu_{i1}) - \mu_{i0}^2  + \mu_{i1}^2}{2\sigma_{i}^2}\notag \\
+=& log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}} \frac{ - \mu_{i0}^2  + \mu_{i1}^2}{2\sigma_{i}^2}+ \sum_{X_i \in \vec{X}}\frac{ X_i (\mu_{i0} - \mu_{i1})}{\sigma_{i}^2}\notag
+\end{align}
+we know that all of $log\frac{p(Y=0)}{p(Y=1)}$, $ \sum_{X_i \in \vec{X}} \frac{ - \mu_{i0}^2  + \mu_{i1}^2}{2\sigma_{i}^2}$ and $\frac{  (\mu_{i0} - \mu_{i1})}{\sigma_{i}^2}$ are just constants, so we can let:
+$$\beta_0 = log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}} \frac{ - \mu_{i0}^2  + \mu_{i1}^2}{2\sigma_{i}^2}$$
+$$\beta_i = \frac{  (\mu_{i0} - \mu_{i1})}{\sigma_{i}^2}$$
+Thus, the expression (whcih is actually the decision boundary) can be written as:
+$$\beta_0 + \sum_{X_i \in \vec{X}}\beta_i X_i$$
+put the expression back into $p(Y = 1 \mid \vec{X})$ we have:
+\begin{align}
+p(Y = 1 \mid \vec{X}) = &\frac{1}{1+ e^{log(\frac{p(Y=0) \prod_{X_i \in \vec{X}} p(X_i \mid Y=0)}{p(Y=1) \prod_{X_i \in \vec{X}} p(X_i \mid Y=1)})}} \notag\\
+= & \frac{1}{1+ e^{log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}} \frac{ - \mu_{i0}^2  + \mu_{i1}^2}{2\sigma_{i}^2}+ \sum_{X_i \in \vec{X}}\frac{ X_i (\mu_{i0} - \mu_{i1})}{\sigma_{i}^2}}} \notag\\
+= & \frac{1}{1+ e^{\beta_0 + \sum_{X_i \in \vec{X}}\beta_i X_i}} \notag
+\end{align}
+where $\beta_0 = log\frac{p(Y=0)}{p(Y=1)} + \sum_{X_i \in \vec{X}} \frac{ - \mu_{i0}^2  + \mu_{i1}^2}{2\sigma_{i}^2}$ and
+$\beta_i = \frac{  (\mu_{i0} - \mu_{i1})}{\sigma_{i}^2}$ are both constants.\\
+We can see this is exactly in the same parametric form as a logistice regression model.
 \end{answertext}
 \end{enumerate}
 
