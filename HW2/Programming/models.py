@@ -70,29 +70,49 @@ class MCLogistic(MCModel):
     def __init__(self, *, nfeatures, nclasses):
         super().__init__(nfeatures=nfeatures, nclasses=nclasses)
         # TODO: Implement this!
-        # Define the dimensions of W
-        # self.W = Undefined
+        self.W = np.zeros((nfeatures + 1, nclasses - 1))
 
 
     def fit(self, *, X, y, A, tol):
         # TODO: Implement this!
-        raise NotImplementedError()
+        [numExamples, numFeatures] = np.shape(X)
+        X0 = np.vstack(np.ones((X.shape[1], 1)))
+        while(True):
+            predictions = self.predict(X)
+            jacobian = np.zeros((numFeatures + 1, 1))
+            hessian = np.zeros((numFeatures + 1, numFeatures + 1))
+
+            for i in range(numExamples):
+                for j in range(numFeatures + 1):
+                    jacobian[j, 0] += X0[i, j] * (y - predictions[i])
+
+            for i in range(numFeatures + 1):
+                for j in range(numFeatures + 1):
+                    for k in range(numFeatures + 1):
+                        hessian[i, j] += X0[k, i] * X0[k, j] * predictions[k] * (1 - predictions[k])
+
+            Wold = np.copy(self.W)
+            W = Wold - np.matmul(np.linalg.inv(hessian), jacobian)
+
+            if np.linalg.norm(W - Wold, axis = 1) < tol :
+                break
 
 
     def predict(self, X):
-        X = self._fix_test_feats(X)
         # TODO: Implement this!
-        predictions = np.zeros((X.shape[0], 1), dtype=np.int)
-
-        return predictions;
+        X = super()._fix_test_feats(X)
+        X = np.vstack(np.ones((X.shape[1], 1)))
+        predictions = np.linalg.matmul(X, W)
+        for i in predictions:
+            i = 1 / (1 + math.exp(-i))
+        return np.transpose(predictions);
 
 class MCLogisticWithL2(MCModel):
 
     def __init__(self, *, nfeatures, nclasses):
         super().__init__(nfeatures=nfeatures, nclasses=nclasses)
         # TODO: Implement this!
-        # Define the dimensions of W
-        # self.W = Undefined
+        self.W = np.zeros((nfeatures, nclasses - 1))
 
 
     def fit(self, *, X, y, A, tol):
