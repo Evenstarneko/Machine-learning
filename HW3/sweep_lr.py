@@ -8,6 +8,6 @@ import os
 
 if __name__ == '__main__':
     for i in [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1]:
-        command = "python main.py train train --data-dir release-data --log-file ff-logs-lr=" + str(i) + "csv --model-save ff-lr=" + str(i) + ".torch --model simple-ff --learning-rate " + str(i) 
+        command = "python main.py train --data-dir release-data --log-file ff-logs-lr=" + str(i) + "csv --model-save ff-lr=" + str(i) + ".torch --model simple-ff --learning-rate " + str(i) 
         os.system(command)
         
