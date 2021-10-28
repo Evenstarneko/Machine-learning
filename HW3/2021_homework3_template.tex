@@ -395,11 +395,73 @@ Consider the 2-layer neural network shown below. There are three input features 
     \item Derive the update rule for parameters $v_1$ and $v_2$ when running the backpropagation algorithm on the same example $x$, with the squared loss $l$ and a step size $\eta = {1}{2}$. \textit{Hint: you will need to (1) derive the appropriate gradient, (2) evaluate the gradient, (3) update your guess for the parameter $\beta_{\text{new}}$ by subtracting the gradient times the step size from the old guess $\beta_{\text{old}}$.}
 \end{enumerate}
 
+% Problem 1.4
 \begin{answertext}{22cm}{}
 
-
+(i) \\
+$a_{1} = 3$, $h_{1} = 3$, $\hat{y} = 1$ \\
+\\
+(ii) \\
+$\hat{y} = v_{1}x_{1} + v_{2}ReLU(w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3})$ \\
+\\
+(iii) \\
+\begin{align*}
+\frac{\partial{l}}{\partial{w_{1}}} &= (\hat{y} - y) \frac{\partial{\hat{y}}}{\partial{w_{1}}} \\
+&= (\hat{y} - y) \frac{\partial{(v_{1}x_{1} + v_{2}ReLU(a_{1}))}}{\partial{w_{1}}} \\
+&= (\hat{y} - y) \cdot v_{2} \frac{\partial{ReLU(a_{1})}}{\partial{a_{1}}} \cdot \frac{\partial{a_{1}}}{\partial{w_{1}}} \\
+&= (\hat{y} - y) \cdot v_{2} \frac{\partial{ReLU(a_{1})}}{\partial{a_{1}}} \cdot x_{1} \\
+&= (1 - (-1)) \cdot 1 \cdot 1 \cdot (-1) \\
+&= -2
+\end{align*}
+\begin{align*}
+\frac{\partial{l}}{\partial{w_{2}}} &= (\hat{y} - y) \frac{\partial{\hat{y}}}{\partial{w_{2}}} \\
+&= (\hat{y} - y) \frac{\partial{(v_{1}x_{1} + v_{2}ReLU(a_{1}))}}{\partial{w_{2}}} \\
+&= (\hat{y} - y) \cdot v_{2} \frac{\partial{ReLU(a_{1})}}{\partial{a_{1}}} \cdot \frac{\partial{a_{1}}}{\partial{w_{2}}} \\
+&= (\hat{y} - y) \cdot v_{2} \frac{\partial{ReLU(a_{1})}}{\partial{a_{1}}} \cdot x_{2} \\
+&= (1 - (-1)) \cdot 1 \cdot 1 \cdot (-3) \\
+&= -6
+\end{align*}
+\begin{align*}
+\frac{\partial{l}}{\partial{w_{1}}} &= (\hat{y} - y) \frac{\partial{\hat{y}}}{\partial{w_{3}}} \\
+&= (\hat{y} - y) \frac{\partial{(v_{1}x_{1} + v_{2}ReLU(a_{1}))}}{\partial{w_{3}}} \\
+&= (\hat{y} - y) \cdot v_{2} \frac{\partial{ReLU(a_{1})}}{\partial{a_{1}}} \cdot \frac{\partial{a_{1}}}{\partial{w_{3}}} \\
+&= (\hat{y} - y) \cdot v_{2} \frac{\partial{ReLU(a_{1})}}{\partial{a_{1}}} \cdot x_{3} \\
+&= (1 - (-1)) \cdot 1 \cdot 1 \cdot (2) \\
+&= 4
+\end{align*}
   
 \end{answertext} 
+
+\begin{answertext}{22cm}{}
+
+(iv) \\ 
+$w_{1}$ and $w_{2}$ will increase, while $w_{3}$ will decrease. \\
+\\
+(v) \\
+\begin{align*}
+\frac{\partial{l}}{\partial{v_{1}}} &= (\hat{y} - y) \frac{\partial{\hat{y}}}{\partial{v_{1}}} \\
+&= (\hat{y} - y) \cdot x_{1} \\
+&= (1 - (-1)) \cdot (-1) \\
+&= -2
+\end{align*}
+\begin{align*}
+\frac{\partial{l}}{\partial{v_{2}}} &= (\hat{y} - y) \frac{\partial{\hat{y}}}{\partial{v_{2}}} \\
+&= (\hat{y} - y) \cdot h_{1} \\
+&= (1 - (-1)) \cdot 3 \\
+&= 6
+\end{align*}
+\begin{align*}
+v_{1,new} &= v_{1,old} - \eta \frac{\partial{l}}{\partial{v_{1}}} \\
+&= 2 - 12 \times (-2) \\
+&= 26
+\end{align*}
+\begin{align*}
+v_{2,new} &= v_{2,old} - \eta \frac{\partial{l}}{\partial{v_{2}}} \\
+&= 1 - 12 \times 6 \\
+&= -71
+\end{align*}
+
+\end{answertext}
 
 \end{enumerate}
 
