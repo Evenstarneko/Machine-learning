@@ -260,8 +260,38 @@ We have provided this \LaTeX{} document for turning in this homework. We give yo
 
 \end{itemize}
 
-\begin{answertext}{10cm}{}
-  
+% Problem 1.1
+\begin{answertext}{20cm}{}
+
+(a) \\
+In a neural network, the j-th output at the i-th layer is given by $ x_{ij} = g(\beta_{0} + \vec{\beta^{T}_{i - 1}}\vec{x_{i-1}}) $. \\
+In this case, the activation function is $ g(x) = x $. \\
+Thus, $ x_{ij} = \beta_{0} + \vec{\beta^{T}_{i - 1}}\vec{x_{i-1}} $. The output from the previous layer will be exactly the input for the next layer. \\
+We want to show that if the input of a layer is a linear combination of model inputs, then the output of this layer is also a linear combination of model inputs. \\
+Let $ \vec{x_{i-1}} = \vec{\beta_{0,i-1}} + \vec{B_{i-1}}\vec{x_{0}} $, where $ \vec{x_{i-1}} $ is the vector of output from layer i-1,
+$ \vec{\beta_{0,i-1}} $ is the vector of biases, $ \vec{B_{i-1}} $ is the matrix whose rows are the linear combination coefficients for each output of the layer,
+and $ \vec{x_{0}} $ is the model inputs. \\
+Then, for each output $ x_{ij} $ in layer i,
+\begin{align*}
+x_{ij} &= \beta_{0,ij} + \vec{\beta^{T}_{ij}}\vec{x_{i-1}} \\
+&= \beta_{0,ij} + \vec{\beta^{T}_{ij}}(\vec{\beta_{0,i-1}} + \vec{B_{i-1}}\vec{x_{0}}) \\
+&= (\beta_{0,ij} + \vec{\beta^{T}_{ij}}\vec{\beta_{0,i-1}}) + (\vec{\beta^{T}_{ij}}\vec{B_{i-1}})\vec{x_{0}}
+\end{align*}
+Which is a linear combination of $ \vec{x_{0}} $. \\
+The whold neural model is but stacking of such layers. Since the each of model inputs is obviously a linear combination of itself, the model output is also a linear combination of the inputs. \\
+\\
+(b) \\
+Assume that we are talking about the model discussed in part (a). \\
+For an arbitrary type of loss, assume that we now have a setting of weights that minimizes the loss. If we now multiply all the $ \beta_{0} $ and $ \vec{\beta^{T}_{i-1}} $ in layer i-1 by $\lambda$, and divide all the $ \vec{\beta^{T}_{i}} $ in layer i by $\lambda$, the final output of the model will not change because all the layers are linear combinations of the previous layers. Thus, the modified weights also minimize the loss. Thus, loss minimizer setting of weights is not unique. We can prove this quickly: \\
+\\
+If $ \vec{x_{i-1}} = \lambda(\vec{\beta_{0,i-1}} + \vec{B_{i-1}}\vec{x_{0}}) $, $ x_{ij} = \beta_{0} + \frac{1}{\lambda}\vec{\beta^{T}_{i - 1}}\vec{x_{i-1}} $
+\begin{align*}
+x_{ij} &= \beta_{0,ij} + \frac{1}{\lambda}\vec{\beta^{T}_{ij}}\vec{x_{i-1}} \\
+&= \beta_{0,ij} + \frac{1}{\lambda}\vec{\beta^{T}_{ij}}\lambda(\vec{\beta_{0,i-1}} + \vec{B_{i-1}}\vec{x_{0}}) \\
+&= (\beta_{0,ij} + \vec{\beta^{T}_{ij}}\vec{\beta_{0,i-1}}) + (\vec{\beta^{T}_{ij}}\vec{B_{i-1}})\vec{x_{0}}
+\end{align*}
+Which does not change.
+
 \end{answertext} 
 
 \pagebreak
