@@ -311,12 +311,59 @@ is convex in $x$.  You can do this by showing that the second derivative of this
 \item Finally, show that a weighted combination of convex functions is also convex, if all weights are non-negative.
 \end{itemize}
 
-\begin{answertext}{10cm}{}
-
-
+\begin{answertext}{14cm}{}
+We know that the negative log likelihood for a sigmoid function $\sigma(v)$ (which we proved multiple times before) is just:
+\begin{align*}
+h(x) &= - v \log \sigma(x) - (1 - v) \log ( 1 - \sigma(x) ) \\
+&=  - v \log \frac{1}{1 + e^{-x}} - (1 - v) \log ( 1 - \frac{1}{1 + e^{-x}} ) \\
+&= v \log (1 + e^{-x}) - (1 - v) (\log e^{-x} - \log (1 + e^{-x}) ) \\
+&=  v \log (1 + e^{-x}) - (-x) + v(-x) + \log (1 + e^{-x}) - v \log (1 + e^{-x}) \\
+&= x - vx + \log (1 + e^{-x})
+\end{align*} 
+To prove that it is convex, we need to check its second derivatve to be non-negative.Take the first derivative first:
+\begin{align*}
+\frac {dh(x)}{dx} &= 1 - v + \frac{1}{1 + e^{-x}}(-1)e^{-x} \\
+&= 1 - v -  \frac{e^{-x}}{1 + e^{-x}} \\
+&= \frac{1}{1 + e^{-x}} -v
+\end{align*}
+Then we take the second derivative:
+\begin{align*}
+\frac {d^2h(x)}{d^2x} &= - (1+e^{-x})^{-2}(-1)e^{-x} \\
+&= \frac{e^{-x}}{(1+e^{-x})^2}
+\end{align*}
+we know that $e^{-x}$ is always positive, so $1+e^{-x}$ is also positive. Thus, both numerator and denominator are positive, so the second derivatve expression is positive, proving convex.
   
 \end{answertext} 
-
+\begin{answertext}{22cm}{}
+Then, as $x$ is weighed linear combination of inputs, we want to show that $h(x)=h(g(w_1, \ldots, w_k))$ is also convex in each $w_i$. Again, we take first derivative first:
+\begin{align*}
+\frac{\partial h(g(w_1, \ldots, w_k))}{\partial w_i} & = \frac{dh(g(w_1, \ldots, w_k))}{dg(w_1, \ldots, w_k)}\frac{\partial g(w_1, \ldots, w_k)}{\partial w_i}
+\end{align*}
+Then take the second derivative:
+\begin{align*}
+\frac{\partial^2 h(g(w_1, \ldots, w_k))}{\partial^2 w_i}  =& \frac{dh(g(w_1, \ldots, w_k))}{dg(w_1, \ldots, w_k)}\frac{\partial^2 g(w_1, \ldots, w_k)}{\partial^2 w_i} \\
+&+\frac{d^2h(g(w_1, \ldots, w_k))}{d^2g(w_1, \ldots, w_k)}\frac{\partial g(w_1, \ldots, w_k)}{\partial w_i}\frac{\partial g(w_1, \ldots, w_k)}{\partial w_i}\\
+&= \frac{dh(x)}{dx}\frac{\partial^2g(w_1, \ldots, w_k)}{\partial^2w_i}+\frac{d^2h(x)}{d^2x}(\frac{\partial g(w_1, \ldots, w_k)}{\partial w_i})^2\\
+&(\text{where } x = g(w_1, \ldots, w_k))
+\end{align*}
+we know that $g(w_1, \ldots, w_k)$ is a linear function, so its second derivative is zero: $\frac{\partial^2g(w_1, \ldots, w_k)}{\partial^2w_i} = 0$. We have proved before that $\frac{d^2h(g(w_1, \ldots, w_k))}{d^2g(w_1, \ldots, w_k)}=\frac{d^2h(x)}{d^2x}>0$, and due to the square we also have $(\frac{\partial g(w_1, \ldots, w_k)}{\partial w_i})^2 \geq 0$. So we have:
+\begin{align*}
+\frac{\partial^2h(g(w_1, \ldots, w_k))}{\partial^2w_i}  =& \frac{d^2h(x)}{d^2x}(\frac{\partial g(w_1, \ldots, w_k)}{\partial w_i})^2 \geq 0
+\end{align*}
+As the second derivative is non-negative, the function is convex in each of the $w_i$.\\
+Finally, the last layer, which is linear combination of all $h(x)$ with non-negative weights, we can write it as $H = \sum_{j=0}^{n}\beta_jh_j(g(w_1, \ldots, w_k))$ where $\beta_j\geq 0$ \\
+First take the second derivative with respect to $w_i$:
+\begin{align*}
+\frac {\partial^2 H}{\partial^2 w_i} = \sum_{j=0}^{n}\beta_j\frac{\partial^2h_j(g(w_1, \ldots, w_k))}{\partial^2 w_i}
+\end{align*}
+As we have $\beta_j \geq 0$ and $\frac{\partial^2h_j(g(w_1, \ldots, w_k))}{\partial^2 w_i} \geq 0$ as we have proved above, we have $\frac {\partial^2 H}{\partial^2 w_i} \geq 0$ for all $w_i$. Thus, H is convex to all $w_i$ \\
+Secondly take the second derivative with respect to $\beta_j$:
+\begin{align*}
+\frac {\partial^2 H}{\partial^2 \beta_j} =& \frac {\partial }{\partial \beta_j}\frac{\partial^2h_j(g(w_1, \ldots, w_k))}{\partial^2 w_i} \\
+=& 0
+\end{align*}
+As  $\frac {\partial^2 H}{\partial^2 \beta_j} \geq 0$, H is also convex to all $\beta_j$. Thus, we have shown that the likelihood (H) is convex to all weight parameters ($w_i$ and $\beta_j$).
+\end{answertext} 
 \pagebreak
 
 \item Assume there exist a setting of parameters for this model that minimizes the squared loss, such that at least two intermediate nodes have different weights feeding into their activation function.
