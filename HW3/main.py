@@ -107,6 +107,7 @@ def train(args):
         # Forward pass: Get logits for x
         logits = model(x)
         # Compute loss
+        y = y.type(torch.LongTensor)
         loss = F.cross_entropy(logits, y)
         # Zero gradients, perform a backward pass, and update the weights.
         optimizer.zero_grad()
@@ -147,6 +148,7 @@ def approx_train_acc_and_loss(model, train_data, train_labels):
     x = torch.from_numpy(train_data[idxs].astype(np.float32))
     y = torch.from_numpy(train_labels[idxs].astype(np.int))
     logits = model(x)
+    y = y.type(torch.LongTensor)
     loss = F.cross_entropy(logits, y)
     y_pred = torch.max(logits, 1)[1]
     return accuracy(train_labels[idxs], y_pred.numpy()), loss.item()
@@ -156,7 +158,8 @@ def dev_acc_and_loss(model, dev_data, dev_labels):
     x = torch.from_numpy(dev_data.astype(np.float32))
     y = torch.from_numpy(dev_labels.astype(np.int))
     logits = model(x)
-    loss = F.cross_entropy(logits, y)
+    y = y.type(torch.LongTensor)
+    loss = F.cross_entropy(logits, y.long())
     y_pred = torch.max(logits, 1)[1]
     return accuracy(dev_labels, y_pred.numpy()), loss.item()
 
