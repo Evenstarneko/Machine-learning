@@ -181,7 +181,7 @@
 (35 points)\\
 \Large{Assigned: Friday, September 24, 2021} \\
 \Large{Due: Friday, October 8, 2021, 11:59 pm US/Eastern}}
-\author{Partner 1: NAME (JHED), Partner 2:  NAME (JHED)}
+\author{Partner 1: Chang Yan (cyan13), Partner 2: Jingguo Liang  (jliang35)}
 \date{}
 
 \begin{document}
@@ -500,7 +500,8 @@ v_{2,new} &= v_{2,old} - \eta \frac{\partial{l}}{\partial{v_{2}}} \\
 % Question 2.1a
 \begin{answertext}{5cm}{}  
 
-We will use three support vector machines in this problem, corresponding to the three classes that we want to classify into. Each SVM predicts whether or not the point belongs to the class that this SVM corresponds with. Either it is predicted to belong to this class, or that it belongs to the other two classes.
+We will use three support vector machines in this problem, corresponding to the three classes that we want to classify into. Each SVM predicts whether or not the point belongs to the class that this SVM corresponds with. Either it is predicted to belong to this class, or that it belongs to the other two classes.\\
+For each SVM above, we set $y_i = 1$ if the point belongs to the class and 0 otherwise. Then, the problem is to minimize $\vec w$ subject to $y_i(\vec x_i^T\vec w + b) \geq 1$ for all $i = 1,...,n$. The support vectors should satisfy $y_i(\vec x_i^T\vec w + b) - 1 = 0$.
 
 \end{answertext} 
     \item
@@ -512,7 +513,7 @@ We will use three support vector machines in this problem, corresponding to the 
 %Question 2.1c
 \begin{answertext}{5cm}{}
 
-Given a sample $\vec{x}$, we evaluate $y_{i} = \vec{w_{i}}\vec{x} + b_{i}$ for $i = 1, 2, 3$. We find the greatest $y_{i}$ of the three, and the sample will be classified into the class that this SVM corresponds to.
+Given a sample $\vec{x}$, we evaluate $y_{i} = \vec{w_{i}^T}\vec{x} + b_{i}$ for $i = 1, 2, 3$. We find the greatest $y_{i}$ of the three, and the sample will be classified into the class that this SVM corresponds to.
 
 \end{answertext} 
 \end{enumerate}
