@@ -369,10 +369,28 @@ As  $\frac {\partial^2 H}{\partial^2 \beta_j} \geq 0$, H is also convex to all $
 \item Assume there exist a setting of parameters for this model that minimizes the squared loss, such that at least two intermediate nodes have different weights feeding into their activation function.
 Show that there exists more than one setting of parameters that minimizes the squared loss.  (This shows the parameters of this model are not identified).
 
-\begin{answertext}{10cm}{}
-
-
-  
+\begin{answertext}{16cm}{}
+The expression of squared loss is $L=(y-h(x))^2$. If we have two sets of parameters that has the same, minimon loss, they must have the same prediction value $h(x)$. Now assume we have two intermediate nodes with different parameters. The nodes are $h_1(x)$ and $h_2(x)$:
+\begin{align*}
+h_1(x) &= \frac{1}{1 + e^{ - x_1w_1-x_2w_2- \ldots -x_kw_k }} \\
+h_2(x) &= \frac{1}{1 + e^{ - x_1v_1-x_2v_2- \ldots -x_kv_k }} \\
+&\text{where } w \text{ and } v \text{ are different sets of parameters}
+\end{align*}
+let their corresponding weights on the last layer be $\beta_1$ and $\beta_2$, the total contribution of those two nodes to $h(x)$ is:
+\begin{align*}
+\beta_1h_1(x)+\beta_2h_2(x)=\frac{\beta_1}{1 + e^{ - x_1w_1-x_2w_2- \ldots -x_kw_k }} + \frac{\beta_2}{1 + e^{ - x_1v_1-x_2v_2- \ldots -x_kv_k }}
+\end{align*}
+now assume that we swap each value of $w_i$ with $v_i$, so the new $h_1'$ and $h_2'$ are:
+\begin{align*}
+h_1'(x) &= \frac{1}{1 + e^{ - x_1v_1-x_2v_2- \ldots -x_kv_k }}\\
+h_2'(x) &= \frac{1}{1 + e^{ - x_1w_1-x_2w_2- \ldots -x_kw_k }}
+\end{align*}
+If we want the output of $h(x)$ to be same as before, we can simply swap $\beta_1$ and $\beta_2$, making $\beta_1'=\beta_2$, $\beta_2'=\beta_1$
+Now the new contribution of those two nodes to $h(x)$ is:
+\begin{align*}
+\beta_1'h_1'(x)+\beta_2'h_2'(x)=\frac{\beta_2}{1 + e^{ - x_1v_1-x_2v_2- \ldots -x_kv_k }}+\frac{\beta_1}{1 + e^{ - x_1w_1-x_2w_2- \ldots -x_kw_k }} 
+\end{align*}
+This is same as before. So we have two different parameter sets with the same minimized loss. This can be done by simply swap both the first layer weights and the output layer weights of those two intermediate nodes. Thus, there exists more than one setting of parameters that minimizes the squared loss.
 \end{answertext} 
 
 \pagebreak
