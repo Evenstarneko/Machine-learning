@@ -431,14 +431,24 @@ v_{2,new} &= v_{2,old} - \eta \frac{\partial{l}}{\partial{v_{2}}} \\
 \begin{enumerate}[(a)]
     \item 
     Explain how you would formulate an SVM model to solve this problem. (Hint: How many classifiers do you need?)\\
+
+% Question 2.1a
 \begin{answertext}{5cm}{}  
+
+We will use three support vector machines in this problem, corresponding to the three classes that we want to classify into. Each SVM predicts whether or not the point belongs to the class that this SVM corresponds with. Either it is predicted to belong to this class, or that it belongs to the other two classes.
+
 \end{answertext} 
     \item
     Find $w$, $b$, and corresponding support vectors for each classifier. Please draw the plot.  You can take a screenshot or photo and use the \texttt{{\textbackslash}includegraphics\{\}} directive.\\
-%\includegraphics{}
+\includegraphics[scale=0.25]{p2.2.jpg}
     \item
     Given a test sample, explain how to make a decision.\\
+
+%Question 2.1c
 \begin{answertext}{5cm}{}
+
+Given a sample $\vec{x}$, we evaluate $y_{i} = \vec{w_{i}}\vec{x} + b_{i}$ for $i = 1, 2, 3$. We find the greatest $y_{i}$ of the three, and the sample will be classified into the class that this SVM corresponds to.
+
 \end{answertext} 
 \end{enumerate}
 
