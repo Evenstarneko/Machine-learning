@@ -55,7 +55,7 @@ class BestNN(torch.nn.Module):
         self.cov4 = nn.Conv2d(n3_channels, n4_channels, n4_kernel)
         self.p2 = nn.MaxPool2d(pool2)
         self.linear_features = linear_features
-        num = int(n4_channels * pow(((28 - n1_kernel - n2_kernel + 2) / pool1 - n3_kernel - n4_kernel + 2) / pool2, 2 ))
+        num = int(n4_channels * pow(int((int((28 - n1_kernel - n2_kernel + 2) / pool1) - n3_kernel - n4_kernel + 2) / pool2), 2 ))
         self.linear1 = nn.Linear(num, linear_features)
         self.linear2 = nn.Linear(linear_features, 10)
         
