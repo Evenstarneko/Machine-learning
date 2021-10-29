@@ -1,4 +1,4 @@
-learning_rate,train_loss,train_acc,dev_loss,dev_acc
+num_linear-features,train_loss,train_acc,dev_loss,dev_acc
 10,0.628016949,0.806,0.552751482,0.804142857
 30,0.690737009,0.78625,0.607064545,0.790571429
 50,0.416319281,0.8045,0.564578712,0.805142857

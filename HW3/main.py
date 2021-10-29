@@ -31,7 +31,7 @@ def get_args():
     p.add_argument("--learning-rate", type=float, default=0.0001) #orig default = 0.001, #best = 0.0001
 
     # simple-ff hparams
-    p.add_argument("--ff-hunits", type=int, default=100)
+    p.add_argument("--ff-hunits", type=int, default=10)
 
     # simple-cnn hparams
     p.add_argument('--cnn-n1-channels', type=int, default=110)
@@ -48,8 +48,8 @@ def get_args():
     p.add_argument('--best-n3-kernel', type=int, default=3)
     p.add_argument('--best-n4-channels', type=int, default=20)
     p.add_argument('--best-n4-kernel', type=int, default=3)
-    p.add_argument('--best-pool2', type=int, default=3)
-    p.add_argument('--best-linear-features', type=int, default=80)
+    p.add_argument('--best-pool2', type=int, default=2)
+    p.add_argument('--best-linear-features', type=int, default=90)
     return p.parse_args()
 
 def train(args):
