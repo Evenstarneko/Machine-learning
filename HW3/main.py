@@ -26,7 +26,7 @@ def get_args():
 
     # hyperparameters
     p.add_argument("--model", type=str, default="simple-cnn")
-    p.add_argument("--train-steps", type=int, default=1500) #orig default = 500, #best = 5000
+    p.add_argument("--train-steps", type=int, default=5000) #orig default = 500, #best = 5000
     p.add_argument("--batch-size", type=int, default=100) #orig default = 40, #best = 100
     p.add_argument("--learning-rate", type=float, default=0.0001) #orig default = 0.001, #best = 0.0001
 
