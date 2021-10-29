@@ -48,6 +48,32 @@ class BestNN(torch.nn.Module):
     def __init__(self, n1_channels, n1_kernel, n2_channels, n2_kernel, pool1,
                  n3_channels, n3_kernel, n4_channels, n4_kernel, pool2, linear_features):
         super(BestNN, self).__init__()
-
+        self.cov1 = nn.Conv2d(1, n1_channels, n1_kernel)
+        self.cov2 = nn.Conv2d(n1_channels, n2_channels, n2_kernel)
+        self.p1 = nn.MaxPool2d(pool1)
+        self.cov3 = nn.Conv2d(n2_channels, n3_channels, n3_kernel)
+        self.cov4 = nn.Conv2d(n3_channels, n4_channels, n4_kernel)
+        self.p2 = nn.MaxPool2d(pool2)
+        self.linear_features = linear_features
+        num = int(n4_channels * pow(((28 - n1_kernel - n2_kernel + 2) / pool1 - n3_kernel - n4_kernel + 2) / pool2, 2 ))
+        self.linear1 = nn.Linear(num, linear_features)
+        self.linear2 = nn.Linear(linear_features, 10)
+        
     def forward(self, x):
+        x = torch.reshape(x, (x.shape[0], 1, 28, 28))
+        m = nn.ReLU()
+        x = self.cov1(x)
+        x = m(x)
+        x = self.cov2(x)
+        x = m(x)
+        x = self.p1(x)
+        x = self.cov3(x)
+        x = m(x)
+        x = self.cov4(x)
+        x = m(x)
+        x = self.p2(x)
+        x = torch.reshape(x, (x.shape[0], x.shape[1] * x.shape[2] * x.shape[3]))
+        x = self.linear1(x)
+        x = self.linear2(x)
+        x = torch.reshape(x, (x.shape[0], x.shape[1]))
         return x
