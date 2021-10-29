@@ -26,7 +26,7 @@ def get_args():
 
     # hyperparameters
     p.add_argument("--model", type=str, default="simple-cnn")
-    p.add_argument("--train-steps", type=int, default=3000) #orig default = 500, #best = 5000
+    p.add_argument("--train-steps", type=int, default=1500) #orig default = 500, #best = 5000
     p.add_argument("--batch-size", type=int, default=100) #orig default = 40, #best = 100
     p.add_argument("--learning-rate", type=float, default=0.0001) #orig default = 0.001, #best = 0.0001
 
@@ -39,9 +39,9 @@ def get_args():
     p.add_argument('--cnn-n2-kernel', type=int, default=5)
 
     # best hparams
-    p.add_argument('--best-n1-channels', type=int, default=80)
+    p.add_argument('--best-n1-channels', type=int, default=110)
     p.add_argument('--best-n1-kernel', type=int, default=5)
-    p.add_argument('--best-n2-channels', type=int, default=60)
+    p.add_argument('--best-n2-channels', type=int, default=70)
     p.add_argument('--best-n2-kernel', type=int, default=5)
     p.add_argument('--best-pool1', type=int, default=2)
     p.add_argument('--best-n3-channels', type=int, default=40)
