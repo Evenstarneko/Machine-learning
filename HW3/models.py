@@ -19,7 +19,7 @@ class FeedForward(torch.nn.Module):
         Compute the forward pass of our model, which outputs logits.
         """
         m = nn.ReLU()
-        x = self.linear1(x.cuda())
+        x = self.linear1(x)
         x = m(x)
         x = self.linear2(x)
         return x
