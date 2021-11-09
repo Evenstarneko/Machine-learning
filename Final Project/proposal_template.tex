@@ -47,12 +47,12 @@ Choose either a {\bf methods} or {\bf applications} project, and a subarea from 
 \begin{tabular}{c c c c c }
 \toprule
 % TODO replace "\Unchecked" with "\Checked" to choose an Applications project
-\multicolumn{5}{l}{\Unchecked \bf Applications} \\
+\multicolumn{5}{l}{\Checked \bf Applications} \\
 % TODO replace "\Unchecked" with "\Checked" on one of the five options below to choose that type of Applications project
 \Unchecked Genomics data & 
 \Unchecked Healthcare data & 
 \Unchecked Text data &
-\Unchecked Image data &
+\Checked Image data &
 \Unchecked Finance data \\
 \midrule
 % TODO replace "\Unchecked" with "\Checked" to choose an Methods project
@@ -68,20 +68,10 @@ Choose either a {\bf methods} or {\bf applications} project, and a subarea from 
 \end{table}
 
 \section{Introduction}	
-Explain the problem and why it is important. Discuss your motivation for pursuing this
-problem. If necessary, give some background on published work in this related area. Clearly state what the input and output
-is. Be very explicit: “The input to our algorithm is an {English sentence,
-image, etc.}. We then use a {SVM, neural network, linear
-regression, etc.} to predict {COVID case count, text sentiment, etc.}.”
-This is very important since different teams have different inputs/outputs spanning different
-application domains. Being explicit about this makes it easier for readers. 1-2 paragraphs.
+Face detection and recognition has been used nowadays in many areas, ranging from entertainment to security. In this project, we will develop a neural network that can make certain predictions given an image of human face. The input for the network will be face of a human. The single human face should be the dominant element in the image. The output will be predictions made to the person based on the image. Possible predictions include age, gender, and race.
 
 \section{Dataset and Features}
-Describe your dataset(s): how many training/validation/test examples do you have? What pre-processing did you do? What about normalization or data augmentation? What is the
-resolution of your images? How is your time-series data discretized? Include a citation for the dataset(s) you are using.
-You should also talk about the features you used. If you extracted
-features using Fourier transforms, word2vec, PCA, etc. make sure to say so. If you have space, include one or two examples of your data in the report
-(e.g. include an image, a slice of a time-series, etc.). 1-2 paragraphs.
+We currently plan to use UTKFace dataset on the training of the network. A link to the dataset is included in reference part. Each entry of data consists of the following components: the image; four labels: age, gender, race, and date of collection of the image; landmarks on the face. We will not use the date as it is irrelavent to our task. Image are in RGB form with varying sizes. We will annotate the data by giving the position of the square where the face in teh image resides in. We will then crop and transform the image into a fixed size, with the face being the dominant element on the image. We will normalize the brightness of the image such that the impact from lighting in the surrounding environment will be eliminated.
 
 \section{Methods}
 Describe the methods you plan to use: what is your model's hypothesis class? your loss function? your optimization approach? Include enough information to demonstrate your understanding of the methods. You plan to use something not covered in class, explain it in 1-2 sentences, and provide a citation. 1-2 paragraphs.
@@ -126,5 +116,7 @@ T.K.\ Leen (eds.), {\it Advances in Neural Information Processing
 [2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS:
   Exploring Realistic Neural Models with the GEneral NEural SImulation
   System.}  New York: TELOS/Springer--Verlag.
+
+[3] UTKFace dataset https://susanqq.github.io/UTKFace/
 
 \end{document}
