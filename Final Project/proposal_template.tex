@@ -25,8 +25,8 @@
 % TODO replace with your project title
 
 \author{
-  Student 1, Student 2, Student 3, Student 4\\
-  JHED 1, JHED 2, JHED 3, JHED 4
+  Chang Yan, Jingguo Liang\\
+  cyan13, jliang35
   % TODO replace with your names and JHEDs
 }
 
@@ -84,7 +84,7 @@ features using Fourier transforms, word2vec, PCA, etc. make sure to say so. If y
 (e.g. include an image, a slice of a time-series, etc.). 1-2 paragraphs.
 
 \section{Methods}
-Describe the methods you plan to use: what is your model's hypothesis class? your loss function? your optimization approach? Include enough information to demonstrate your understanding of the methods. You plan to use something not covered in class, explain it in 1-2 sentences, and provide a citation. 1-2 paragraphs.
+The hypothesis class would be the deep convolutional networks that we designed or modified from other models, and we also plan to use an ensemble with multiple different network structures to boost the performance. A 5-fold cross validation will be used to evaluate the performance.We would use cross entropy loss as our first try, and we plan to try others like a MSE loss or combination of cross entropy and MSE. Our hypothesis is that it would be better to use MSE to predict age (as age would be a real-number), and cross entropy loss would be better for predicting sex and ethnicity as classes. The simple optimization would be hyperparameter tuning and changing of the nextwork structurs, and we also plan to use ensemble of multiple networks and/or attention models, nested structures, semi-supervised learning, etc. to better optimize it. Moreover, we would try feature engineering: The raw data has 3 channels, RGB, and we plan to add more features like intensity, edge detection, etc. to improve the performance. Also, as the dataset provides key points, we could potentially first register all the image to the same space using the key points, creating transformations of each image to a standard space, and then input the transformed image (which are in the same sapce now) to the networks. This would account for the projective deformation in the images and produce better performance. 
 
 \section{Deliverables}
 These are ordered by how important they are to the project and how thoroughly you have thought them through. You should be confident that your ``must accomplish'' deliverables are achievable; one or two should be completed by the time you turn in your Nov 19 progress report.
@@ -92,22 +92,28 @@ These are ordered by how important they are to the project and how thoroughly yo
 \subsection{Must accomplish}
 
 \begin{enumerate}
-    \item A list of ~3 goals you must accomplish for a successful project
-    \item etc.
+    \item A program with a trained deep convolutional network with optimized structure and best tuned parameters, that can predict the age of the face in the input image 
+    \item The prediction of the program should be distinctly better than simple benchmark run, like a logistic regression.
+    \item The program should use appropriate data preprocessing mothods to improve the performance.
 \end{enumerate}
 
 \subsection{Expect to accomplish}
 
 \begin{enumerate}
-    \item A list of ~3 goals you expect to accomplish as part of the project
-    \item etc.
+    \item The program should be able to predict not only age but also sex and ethnicity of the face.
+    \item The program should use multiple different network structures, ensembles or other methods to further improve the performance.
+    \item The prediction of the program should reach an accuracy that is usable in real-life, like over 90\%,. 
+    \item Adding feature extraction methods before the network (like edge detection) to create more features from the image.
 \end{enumerate}
 
 \subsection{Would like to accomplish}
 
 \begin{enumerate}
-    \item A list of ~3 goals you hope to accomplish if everything goes well
-    \item etc.
+    \item The program should be able to first identify the location of the face in the image, and then predict using the cropped face area. The position of the face should also be an output.
+    \item The program should be able to take in different sizes of image files.
+    \item The program should be able to identify an image with no face, instead of giving random output.
+    \item The program should work with both RGB and grayscale images, and uses the RGB channels to achieve better performance than grayscale.
+    \item The speed of the prediction should be fast enough to be done in real-time.
 \end{enumerate}
 
 \section*{References}
