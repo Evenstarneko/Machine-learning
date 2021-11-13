@@ -460,6 +460,7 @@ Here $\vec{V}$ is all variables in the graph, and ${\cal C}({\cal G})$ is the se
 
 \begin{enumerate}
 \item[(a)] Is it possible to initialize the k-means algorithm in such a way that it fails to terminate successfully?
+
 \item[(b)] Say our input to k-means is a set of $2k$ points with 2-coordinates arranged in line, e.g. with coordinates:
 {\small
 \begin{align*}
@@ -469,7 +470,30 @@ Here $\vec{V}$ is all variables in the graph, and ${\cal C}({\cal G})$ is the se
 Say we initialize $k$-means with 2 clusters, with initial centroids given by $(0,k)$ and $(0,k+1)$.  In many iterations will $k$-means terminate?  What will be the final cluster assignments and centroids?
 \end{enumerate}
 
-\begin{answertext}{15cm}{}
-\end{answertext} 
+\begin{answertext}{18cm}{}
+\begin{enumerate}
+\item[(a)] No, it is not possible. By definition, k-means will always converge. In every iteration of k-means, the sum-of-distances to the center is reduced, and eventually it will stop changing, and the algorithm just terminate. Based on this definition, in each iteration the loss of k-mean will always decrease, or stay the same. The loss will never increase back, so the algorithm will always converge at some point of lower loss.\\
 
+
+\item[(b)] It will terminate after just 2 iterations (the change only happens in the 1st iteration, and in the 2nd iteration nothing changes, so it terminates).\\
+We can work out this step by step.\\ It is obvious that in the first step, (0,0),(0,1),...,(0,k) are closer to centroid (0, k), and (0,k+1),(0,k+2),...,(0,2k) are closer to centroid (0, k+1)
+Thus, as x value is always 0, the new y value of the first centroid calculated from (0,0),(0,1)...(0,k) will be:
+$$y_1 = \frac{0+1+2+...+k}{k+1}=\frac{(0+k)*(k+1)/2}{k+1}=\frac{(0+k)}{2}=\frac{k}{2}$$
+Simiarly, the new value of y value of the second centroid calculated from (0,k+1),(0,k+2)...(0,2k) will be:
+$$y_2 = \frac{(k+1) + (k+2) + ...+(2k)}{k}=\frac{(k+1+2k)*(k)/2}{k}=\frac{(3k+1)}{2}=\frac{3k}{2}+\frac{1}{2}$$
+Now the new centroids are $(0,\frac{k}{2})$ and $(0,\frac{3k}{2}+\frac{1}{2})$.\\
+Then in second iteration, it is obvious that most points will remain where the are, and we only need to check the edge cases (0,k) and (0,k+1). First we calculate the distance of (0,k) to both centroids:
+$$d_1=|k-\frac{k}{2}|=\frac{k}{2}\ \ \ \ \ d_2=|\frac{3k}{2}+\frac{1}{2}-k|=\frac{k}{2}+\frac{1}{2}$$
+We can see clearly that $d_1 < d_2$, so (0,k) is still closer to the first centroid and will remain in cluster 1.\\
+Then we calculate the distance of (0,k+1) to both centroids:
+$$d_1=|k+1-\frac{k}{2}|=\frac{k}{2}+1\ \ \ \ \ d_2=|\frac{3k}{2}+\frac{1}{2}-k-1|=\frac{k}{2}-\frac{1}{2}$$
+We can see clearly that $d_1 > d_2$, so (0,k+1) is still closer to the second centroid and will remain in cluster 2.\\
+\end{enumerate}
+\end{answertext} 
+\begin{answertext}{18cm}{}
+(continued)\\
+Thus, we can see that in iteration 2 nothing changes, so the algorithm will terminate. The number of iteration is 2 and the final cluster assignments and centroids are:\\
+$$\text{Cluster 1: centroid: }\frac{k}{2}\text{ Points: }(0,0),(0,1),...,(0,k)$$
+$$\text{Cluster 2: centroid: }\frac{3k}{2}+\frac{1}{2}\text{ Points: }(0,k+1),(0,k+2),...,(0,2k)$$
+\end{answertext} 
 \end{document}
