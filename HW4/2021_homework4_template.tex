@@ -310,9 +310,96 @@ It looks like the sum has $100^8 = 10^{16}$ terms, so it seems we must evaluate 
 \item[(b)] Draw the MRF associated with this distribution.
 \end{enumerate}
 
-\begin{answertext}{8cm}{}
+\begin{answertext}{24cm}{}
+\begin{enumerate}
+\item[(a)] The summation is:
+\begin{align*}
+S &= \sum^{100}_{x_1 = 1} \dots \sum^{100}_{x_8 = 1} \exp(x_1 x_2 + x_4 x_5 + x_7 x_8) \prod_{i=2,5,7} (x_i + x_3 + x_6)^i\\
+&= \sum^{100}_{x_1 = 1} \dots \sum^{100}_{x_8 = 1} e^{x_1 x_2} e^{x_4 x_5} e^{x_7 x_8} \prod_{i=2,5,7} (x_i + x_3 + x_6)^i\\
+&= \sum^{100}_{x_2 = 1} \dots \sum^{100}_{x_8 = 1} \left(\sum^{100}_{x_1 = 1} e^{x_1 x_2} \right) e^{x_4 x_5} e^{x_7 x_8} \prod_{i=2,5,7} (x_i + x_3 + x_6)^i
+\end{align*}
+Now we can compute the summation $\left(\sum^{100}_{x_1 = 1} e^{x_1 x_2} \right)$ easily as:
+$$\phi^*_{x_2}(x_2) = \sum^{100}_{x_1 = 1} e^{x_1 x_2}$$
+This is an object that is only a function of $x_2$. Thus, we can pre-evaluate it and store it as a mapping function (distribution) of $x_2$. Only need 100 spaces to store this mapping function, and as only two variables are involved, the computation of this mapping function would need to evaluate $e^{x_1 x_2}$ for $100^2=10^4$ times, so the total number of evaluations now is $10^4$\\
+Then we can apply the same thing again to sum $x_4$:
+$$S = \sum^{100}_{x_2 = 1} \sum^{100}_{x_3 = 1}\sum^{100}_{x_5 = 1}\dots\sum^{100}_{x_8 = 1}\phi^*_{x_2}(x_2) \left(\sum^{100}_{x_4 = 1} e^{x_4 x_5} \right) e^{x_7 x_8} \prod_{i=2,5,7} (x_i + x_3 + x_6)^i$$
+Again we compute the summation $\left(\sum^{100}_{x_4 = 1} e^{x_4 x_5}\right)$ easily as a mapping function (distribution) of $x_5$:
+$$\phi^*_{x_5}(x_5) = \sum^{100}_{x_4 = 1} e^{x_4 x_5}$$
+We pre-evaluate this function and store it as a mapping function. Again, it requires 100 spaces and we need to evaluate $e^{x_4 x_5}$ for $100^2=10^4$ times, so the total number of evaluations now is $10^4 + 10^4=2\cdot 10^4$\\
+We continue to apply this trick to sum $x_8$:
+$$S = \sum^{100}_{x_2 = 1} \sum^{100}_{x_3 = 1}\sum^{100}_{x_5 = 1}\dots\sum^{100}_{x_7 = 1}\phi^*_{x_2}(x_2) \phi^*_{x_5}(x_5) \left(\sum^{100}_{x_8 = 1} e^{x_7 x_8}\right)  \prod_{i=2,5,7} (x_i + x_3 + x_6)^i$$
+Compute summation $\left(\sum^{100}_{x_8 = 1} e^{x_7 x_8}\right)$ easily as mapping function (distribution) of $x_7$:
+$$\phi^*_{x_7}(x_7) = \sum^{100}_{x_8 = 1} e^{x_7 x_8}$$
+Again we pre-evaluate this function and store it as a mapping function, which requires 100 spaces and we need to evaluate $e^{x_7 x_8}$ for $100^2=10^4$ times, so the total number of evaluations now is $2\cdot10^4 + 10^4=3\cdot 10^4$\\
+\end{enumerate}
 \end{answertext} 
+\begin{answertext}{24cm}{}
+(Continued)\\
+Now further expand our equation we have:
+$$S = \sum^{100}_{x_2 = 1} \sum^{100}_{x_3 = 1}\sum^{100}_{x_5 = 1}\dots\sum^{100}_{x_7 = 1}\phi^*_{x_2}(x_2) \phi^*_{x_5}(x_5) \phi^*_{x_7}(x_7)  (x_2 + x_3 + x_6)^2 (x_5 + x_3 + x_6)^5 (x_7 + x_3 + x_6)^7$$
+This time we can sum $x_2$ first:
+$$S = \sum^{100}_{x_3 = 1}\sum^{100}_{x_5 = 1}\dots\sum^{100}_{x_7 = 1}\left(\sum^{100}_{x_2 = 1} \phi^*_{x_2}(x_2) (x_2 + x_3 + x_6)^2 \right) \phi^*_{x_5}(x_5) \phi^*_{x_7}(x_7)  \prod_{i=5,7} (x_i + x_3 + x_6)^i$$
+We can compute the summation $\left(\sum^{100}_{x_2 = 1} \phi^*_{x_2}(x_2) (x_2 + x_3 + x_6)^2 \right)$ easily as mapping function (distribution) of $x_3$ and $x_6$:
+$$\phi^{x_2\rightarrow}_{x_3,x_6}(x_3,x_6)= \sum^{100}_{x_2 = 1} \phi^*_{x_2}(x_2) (x_2 + x_3 + x_6)^2 $$
+This is an object that is only a function of $x_3$ and $x_6$. Thus, we can pre-evaluate it and store it as a mapping function (distribution) of $x_3$ and $x_6$. This time we need $10^4$ spaces to store this mapping function, and as only three variables are involved, the computation of this mapping function would need to evaluate $\phi^*_{x_2}(x_2) (x_2 + x_3 + x_6)^2$ for $100^3=10^6$ times, so the total number of evaluations now is $3\cdot 10^4 + 10^6$\\
+We apply the same trick to sum $x_5$:
+$$S = \sum^{100}_{x_3 = 1}\sum^{100}_{x_6 = 1}\sum^{100}_{x_7 = 1}\phi^{x_2\rightarrow}_{x_3,x_6}(x_3,x_6)\left(\sum^{100}_{x_5 = 1} \phi^*_{x_5}(x_5) (x_5 + x_3 + x_6)^5 \right) \phi^*_{x_7}(x_7) (x_7 + x_3 + x_6)^7$$
+Similarly we compute the summation $\left(\sum^{100}_{x_5 = 1} \phi^*_{x_5}(x_5) (x_5 + x_3 + x_6)^5 \right)$ as a mapping function (distribution) of $x_3$ and $x_6$:
+$$\phi^{x_5\rightarrow}_{x_3,x_6}(x_3,x_6)= \sum^{100}_{x_5 = 1} \phi^*_{x_5}(x_5) (x_5 + x_3 + x_6)^5 $$
+Again we pre-evaluate this function and store it as a mapping function, which requires $10^4$ spaces and we need to evaluate $\phi^*_{x_5}(x_5) (x_5 + x_3 + x_6)^5$ for $100^3=10^6$ times, so the total number of evaluations now is $3\cdot 10^4 + 10^6 + 10^6= 2\cdot 10^6 + 3\cdot 10^4$\\
+Next we sum $x_7$
+$$S = \sum^{100}_{x_3 = 1}\sum^{100}_{x_6 = 1}\phi^{x_2\rightarrow}_{x_3,x_6}(x_3,x_6) \phi^{x_5\rightarrow}_{x_3,x_6}(x_3,x_6) \left(\sum^{100}_{x_7 = 1} \phi^*_{x_7}(x_7) (x_7 + x_3 + x_6)^7 \right)$$
+We compute summation $\left(\sum^{100}_{x_7 = 1} \phi^*_{x_7}(x_7) (x_7 + x_3 + x_6)^7 \right)$ easily as mapping function (distribution) of $x_3$ and $x_6$:
+$$\phi^{x_7\rightarrow}_{x_3,x_6}(x_3,x_6)= \sum^{100}_{x_7 = 1} \phi^*_{x_7}(x_7) (x_7 + x_3 + x_6)^7 $$
+next we sum $x_7$
 
+\end{answertext} 
+\begin{answertext}{20cm}{}
+(Continued)
+\begin{enumerate}
+\item[]Once more we pre-evaluate this function and store it as a mapping function, which requires $10^4$ spaces and we need to evaluate $\phi^*_{x_7}(x_7) (x_7 + x_3 + x_6)^7$ for $100^3=10^6$ times, so the total number of evaluations now is $2\cdot 10^6 + 3\cdot 10^4 + 10^6= 3\cdot 10^6 + 3\cdot 10^4$\\
+The final expression we need to evaluate looks like:
+$$S = \sum^{100}_{x_3 = 1}\sum^{100}_{x_6 = 1}\phi^{x_2\rightarrow}_{x_3,x_6}(x_3,x_6) \phi^{x_5\rightarrow}_{x_3,x_6}(x_3,x_6) \phi^{x_7\rightarrow}_{x_3,x_6}(x_3,x_6)$$
+All of $\phi^{x_2\rightarrow}_{x_3,x_6}(x_3,x_6) \ \text{,}\ \phi^{x_5\rightarrow}_{x_3,x_6}(x_3,x_6)\ \text{and} \ \phi^{x_7\rightarrow}_{x_3,x_6}(x_3,x_6)$ are mapping functions that we already computed and stored, so the evaluation of S now is fairly easy. We only need to sum over two variables $x_3$ and $x_6$, so the number of evaluation is $100^2 = 10^4$. The total time of evaluations now is: $3\cdot 10^6 + 3\cdot 10^4 + 10^4 = 3\cdot 10^6 + 4\cdot 10^4$. We can see clearly that:
+$$3\cdot 10^6 + 4\cdot 10^4 < 10^7$$
+So our total number of evaluations is less than $10^7$, and the method described above meets the requirement of this question.\\
+\item[(b)] from part (a) we know from the equation and computation that we have 6 cliques in total: $(x_1, x_2),(x_4, x_5),(x_7, x_8),(x_3, x_6, x_2),(x_3, x_6, x_5),(x_3, x_6, x_7)$. We can draw a MRF that contains all of them:
+\begin{center}
+\begin{tikzpicture}[style=thick,scale=1]
+            \begin{scope}[shape=circle,minimum size=0.1cm]
+            \tikzstyle{every node}=[draw,fill]
+            
+            \node[fill=none,scale=\nodesize] (x_3) at (0,4) {$\mathbf{x_{3}}$};
+            \node[fill=none,scale=\nodesize] (x_6) at (3,4) {$\mathbf{x_6}$};
+
+            \node[fill=none,scale=\nodesize] (x_2) at (-1.5,2) {$\mathbf{x_{2}}$};
+            \node[fill=none,scale=\nodesize] (x_5) at (1.5,2) {$\mathbf{x_5}$};
+            \node[fill=none,scale=\nodesize] (x_7) at (4.5,2) {$\mathbf{x_{7}}$};   
+
+            \node[fill=none,scale=\nodesize] (x_1) at (-1.5,0) {$\mathbf{x_{1}}$};
+            \node[fill=none,scale=\nodesize] (x_4) at (1.5,0) {$\mathbf{x_4}$};
+            \node[fill=none,scale=\nodesize] (x_8) at (4.5,0) {$\mathbf{x_{8}}$}; 
+
+            
+            \draw [-] (x_3) -- (x_6);
+
+            \draw [-] (x_3) -- (x_2);
+            \draw [-] (x_3) -- (x_5);
+            \draw [-] (x_3) -- (x_7);
+
+            \draw [-] (x_6) -- (x_2);
+            \draw [-] (x_6) -- (x_5);
+            \draw [-] (x_6) -- (x_7);
+
+            \draw [-] (x_2) -- (x_1);
+            \draw [-] (x_5) -- (x_4);
+            \draw [-] (x_7) -- (x_8);
+            
+            \end{scope}
+        \end{tikzpicture}
+        \end{center}
+\end{enumerate}
+\end{answertext} 
 \pagebreak
 
 \section*{DAGs, Clique Trees and Message Passing.}
