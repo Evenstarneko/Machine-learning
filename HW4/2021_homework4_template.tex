@@ -291,11 +291,40 @@ Consider the graphical model shown in Figure 1. In this model, $\vx$ is a sequen
 \item[(c)] Assume that each variable $y_i$ can take one of $k$ possible states, and variable $x_i$ can take one of $k'$ possible states, where $k'$ is very large. Describe the computational challenges of modeling $\log p(\vy,\vx)$ vs $\log p(\vy|\vx)$.
 \end{enumerate}
 
-\begin{answertext}{8cm}{}
+\begin{answertext}{15cm}{}
+
+(a) \\
+\begin{align*}
+\log p(\vec{y}, \vec{x}) &= \log \left( \frac{1}{N} \prod_{\vec{Z}\in\mathcal{C}(\mathcal{G})} \psi_{\vec{Z}}(\vec{z}) \right) \\
+&= \log \left( \frac{1}{N} \prod_{i=0}^{n} \psi(x_{i}, y_{i}) \prod_{j = 1,3,5,\ldots,n} \psi(y_{j}, y_{j+1}) \psi(y_{0}, y_{j}) \right) \\
+&= \log \left( \frac{1}{N} \prod_{i=0}^{n} \exp( \theta_{x_{i}}f_{x_{i}}(x_{i}, y_{i}) + \theta_{y_{i}}f_{y_{i}}(x_{i}, y_{i})) \right.\\
+	&\qquad \prod_{j = 1,3,5,\ldots,n} \exp( \theta_{y_{j}}f_{y_{j}}(y_{j}, y_{j+i}) + \theta_{y_{j+i}}f_{y_{j+i}}(y_{j}, y_{j+i})) \\
+	&\qquad \left. \prod_{j = 1,3,5,\ldots,n} \exp( \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) + \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}))  \right) \\
+&= \log \left( \frac{1}{N} \right) \left[ \sum_{i=0}^{n} \left( \theta_{x_{i}}f_{x_{i}}(x_{i}, y_{i}) + \theta_{y_{i}}f_{y_{i}}(x_{i}, y_{i}) \right) \right. \\
+	&\qquad + \sum_{j = 1,3,5,\ldots,n} \left( \theta_{y_{j}}f_{y_{j}}(y_{j}, y_{j+i}) + \theta_{y_{j+i}}f_{y_{j+i}}(y_{j}, y_{j+i}) \right) \\
+	&\qquad \left. + \sum_{j = 1,3,5,\ldots,n} \left( \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) + \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) \right) \right]
+\end{align*}
+
 \end{answertext}
 
 \newpage % for more space
-\begin{answertext}{8cm}{}
+\begin{answertext}{20cm}{}
+
+(b)
+\begin{align*}
+\log p(\vec{y}\mid\vec{x}) &= \frac{\log p(\vec{y}, \vec{x})}{\sum_{y} \log p(\vec{y}, \vec{x})} \\
+& = \log \left( \frac{1}{N} \right) \left[ \sum_{i=0}^{n} \left( \theta_{x_{i}}f_{x_{i}}(x_{i}, y_{i}) + \theta_{y_{i}}f_{y_{i}}(x_{i}, y_{i}) \right) \right. \\
+	&\qquad + \sum_{j = 1,3,5,\ldots,n} \left( \theta_{y_{j}}f_{y_{j}}(y_{j}, y_{j+i}) + \theta_{y_{j+i}}f_{y_{j+i}}(y_{j}, y_{j+i}) \right) \\
+	&\qquad \left. + \sum_{j = 1,3,5,\ldots,n} \left( \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) + \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) \right) \right] \\
+	&\qquad \div \sum_{y} \log \left( \frac{1}{N} \right) \left[ \sum_{i=0}^{n} \left( \theta_{x_{i}}f_{x_{i}}(x_{i}, y_{i}) + \theta_{y_{i}}f_{y_{i}}(x_{i}, y_{i}) \right) \right. \\
+	&\qquad + \sum_{j = 1,3,5,\ldots,n} \left( \theta_{y_{j}}f_{y_{j}}(y_{j}, y_{j+i}) + \theta_{y_{j+i}}f_{y_{j+i}}(y_{j}, y_{j+i}) \right) \\
+	&\qquad \left. + \sum_{j = 1,3,5,\ldots,n} \left( \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) + \theta_{y_{0}}f_{y_{j}}(y_{0}, y_{j}) \right) \right]
+\end{align*}
+
+(c) \\
+For $\log p(\vec{y}, \vec{x})$, we will have to evaluate approximately $2n$ $\psi(Z)$ functions, which is equivalent to $4n$ $f_{i}(Z)$ functions. And thus $4n$ additions are required to evaluate $\log p(\vec{y}, \vec{x})$. \\
+For $\log p(\vec{y}\mid\vec{x})$, we have to evaluate $\log p(\vec{y}, \vec{x})$ for any possible enumeration of $\vec{y}$, which is $k^{n}$ possibilities. For each possible $\vec{y}$, the number of $f_{i}(Z)$ computation and additions is the same as above. Thus, a total of $4nk^{n}$ computation of $f_{i}(Z)$ function is required, as well as $4nk^{n}$ additions. \\
+
 \end{answertext} 
 
 {\bf Question 2.}
