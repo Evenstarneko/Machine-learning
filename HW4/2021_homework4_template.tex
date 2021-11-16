@@ -753,7 +753,6 @@ To check the Running intersection property we can see the following graph: (next
 &= \sum_{A,F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \,\sum_{C}\phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG})\\
 &\qquad\sum_{D}\phi_{\vec{S}_{ADC}}(\vec{S}_{ADC})\sum_{E}\phi_{\vec{S}_{CEG}}(\vec{S}_{CEG})
 \end{align*}
-
 \end{answertext}
 
 \begin{answertext}{23cm}{}
@@ -765,7 +764,7 @@ To check the Running intersection property we can see the following graph: (next
 &= \sum_{F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH})
 \end{align*}
 \begin{align*}
-\phi^{\vec{S}_{ACD}\leftarrow\vec{S}_{ABCG}} &= \sum_{\vec{S}_{ABCG}\backslash\vec{S}_{ACD}} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \,\phi^{\vec{S}_{ABCG}\leftarrow\vec{S}_{ABFG}} \,\phi^{\vec{S}_{CEG}\to\vec{S}_{ABCG}} \\
+\phi^{\vec{S}_{ADC}\leftarrow\vec{S}_{ABCG}} &= \sum_{\vec{S}_{ABCG}\backslash\vec{S}_{ACD}} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \,\phi^{\vec{S}_{ABCG}\leftarrow\vec{S}_{ABFG}} \,\phi^{\vec{S}_{CEG}\to\vec{S}_{ABCG}} \\
 &= \sum_{B,G} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \sum_{F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH}) \\
 &\qquad\sum_{E}\phi_{\vec{S}_{CEG}}(\vec{S}_{CEG})
 \end{align*}
@@ -774,8 +773,161 @@ To check the Running intersection property we can see the following graph: (next
 &= \sum_{A,B} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \sum_{F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH}) \\
 &\qquad\sum_{D}\phi_{\vec{S}_{ADC}}(\vec{S}_{ADC})
 \end{align*}
+\begin{itemize}
+\item[(g)] First we test the leaf. We have two leaves, $\vec{S}_{ADC}$ and $\vec{S}_{CEG}$:
+\begin{align*}
+p(\vec{S}_{ADC}) &=
+\frac{
+\phi^{\vec{S}_{ADC} \gets \vec{S}_{ABCG}} \phi_{\vec{S}_{ADC}}
+}{
+\sum_{\vec{S}_{ADC}}
+\phi^{\vec{S}_{ADC} \gets \vec{S}_{ABCG}} \phi_{\vec{S}_{ADC}}
+}\\
+&=\frac{\sum_{B,G} \phi_{\vec{S}_{ABCG}} \sum_{F} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}
+{\sum_{\vec{S}_{ADC}}\sum_{B,G} \phi_{\vec{S}_{ABCG}} \sum_{F} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}\\
+&=\frac{\sum_{B,G}\sum_{F} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}
+{\sum_{A,D,C}\sum_{B,G} \sum_{F} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}\\
+&=\frac{\sum_{B,G}\sum_{F}\sum_{H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}
+{\sum_{A,D,C}\sum_{B,G} \sum_{F}\sum_{H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}\\
+&=\frac{\sum_{B,G}\sum_{F} \sum_{H} \sum_{E}\phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}
+{\sum_{A,D,C}\sum_{B,G} \sum_{F}\sum_{H}\sum_{E} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}\\
+&=\frac{\sum_{B,E,F,G,H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}
+{\sum_{A,B,C,D,E,F,G,H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ADC}}}\\
+&=\frac{
+\sum_{\vec{V} \setminus \vec{S}_{ADC}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}{
+\sum_{\vec{V}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}
+\end{align*}
+\end{itemize}
 \end{answertext}
 \pagebreak
+\begin{answertext}{23cm}{}
+\begin{align*}
+p(\vec{S}_{CEG}) &=
+\frac{
+\phi^{\vec{S}_{CEG} \gets \vec{S}_{ABCG}} \phi_{\vec{S}_{CEG}}
+}{
+\sum_{\vec{S}_{CEG}}
+\phi^{\vec{S}_{CEG} \gets \vec{S}_{ABCG}} \phi_{\vec{S}_{CEG}}
+}\\
+&=\frac{\sum_{A,B} \phi_{\vec{S}_{ABCG}} \sum_{F} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}
+{\sum_{\vec{S}_{CEG}}\sum_{A,B} \phi_{\vec{S}_{ABCG}} \sum_{F} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}\\
+&=\frac{\sum_{A,B}\sum_{F} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}
+{\sum_{C,E,G}\sum_{A,B} \sum_{F} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}\\
+&=\frac{\sum_{B,G}\sum_{F}\sum_{H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}
+{\sum_{C,E,G}\sum_{A,B} \sum_{F}\sum_{H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}\\
+&=\frac{\sum_{B,G}\sum_{F} \sum_{H} \sum_{D}\phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}
+{\sum_{C,E,G}\sum_{A,B} \sum_{F}\sum_{H}\sum_{D} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}\\
+&=\frac{\sum_{A,B,D,F,H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}
+{\sum_{A,B,C,D,E,F,G,H} \phi_{\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}}\\
+&=\frac{
+\sum_{\vec{V} \setminus \vec{S}_{CEG}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}{
+\sum_{\vec{V}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}
+\end{align*}
+We can see that this is true for both leaves nodes. Then we test non-leaf nodes: $\vec{S}_{ABCG}$ and $\vec{S}_{ABFG}$:\\
+\begin{align*}
+p(\vec{S}_{ABCG}) &=
+\frac{
+\phi^{\vec{S}_{ABCG} \gets \vec{S}_{ABFG}}
+\left( \prod_{k=1}^m \phi^{\vec{S}_k \to \vec{S}_{ABCG}} \right) \phi_{\vec{S}_{ABCG}}
+}{
+\sum_{\vec{S}_{ABCG}} \phi^{\vec{S}_{ABCG} \gets \vec{S}_{ABFG}}
+\left( \prod_{k=1}^m \phi^{\vec{S}_k \to \vec{S}_{ABCG}} \right) \phi_{\vec{S}_{ABCG}}
+}\\
+&=
+\frac{
+\phi^{\vec{S}_{ABCG} \gets \vec{S}_{ABFG}}
+ \phi^{\vec{S}_{ABC} \to \vec{S}_{ABCG}}   \phi^{\vec{S}_{CEG} \to \vec{S}_{ABCG}}\phi_{\vec{S}_{ABCG}}
+}{
+\sum_{\vec{S}_{ABCG}} \phi^{\vec{S}_{ABCG} \gets \vec{S}_{ABFG}}
+ \phi^{\vec{S}_{ABC} \to \vec{S}_{ABCG}}   \phi^{\vec{S}_{CEG} \to \vec{S}_{ABCG}}\phi_{\vec{S}_{ABCG}}
+}\\
+&= \frac{\sum_{F} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}
+{\sum_{A,B,C,G}\sum_{F} \phi_{\vec{S}_{ABFG}} \sum_{H} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}\\
+&= \frac{\sum_{F} \sum_{H} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}
+{\sum_{A,B,C,G}\sum_{F}\sum_{H} \phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}\\
+&= \frac{\sum_{F} \sum_{H}\sum_{D}\phi_{\vec{S}_{ABFG}}  \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}
+{\sum_{A,B,C,G}\sum_{F}\sum_{H} \sum_{D} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}\\
+&= \frac{\sum_{F} \sum_{H}\sum_{D} \sum_{E}\phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}
+{\sum_{A,B,C,G}\sum_{F}\sum_{H}\sum_{D} \sum_{E} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}\\
+&= \frac{\sum_{D,E,F,H} \phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}
+{\sum_{A,B,C,D,E,F,G,H} \phi_{\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABCG}}}\\
+&=
+\frac{
+\sum_{\vec{V} \setminus \vec{S}_{ABCG}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}{
+\sum_{\vec{V}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}
+\end{align*}
+\end{answertext}
+\begin{answertext}{23cm}{}
+\begin{align*}
+p(\vec{S}_{ABFG}) &=
+\frac{
+\phi^{\vec{S}_{ABFG} \gets \vec{S}_{BGH}}
+\left( \prod_{k=1}^m \phi^{\vec{S}_k \to \vec{S}_{ABFG}} \right) \phi_{\vec{S}_{ABFG}}
+}{
+\sum_{\vec{S}_{ABFG}} \phi^{\vec{S}_{ABFG} \gets \vec{S}_{BGH}}
+\left( \prod_{k=1}^m \phi^{\vec{S}_k \to \vec{S}_{ABFG}} \right) \phi_{\vec{S}_{ABFG}}
+}\\
+&=
+\frac{
+\phi^{\vec{S}_{ABFG} \gets \vec{S}_{BGH}}
+ \phi^{\vec{S}_{ABCG} \to \vec{S}_{ABFG}}  \phi_{\vec{S}_{ABFG}}
+}{
+\sum_{\vec{S}_{ABFG}} \phi^{\vec{S}_{ABFG} \gets \vec{S}_{BGH}}
+ \phi^{\vec{S}_{ABCG} \to \vec{S}_{ABFG}}  \phi_{\vec{S}_{ABFG}}
+}\\
+&= \frac{\sum_{H} \phi_{\vec{S}_{BGH}} \sum_{C}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}
+{\sum_{A,B,F,G} \sum_{H} \phi_{\vec{S}_{BGH}} \sum_{C}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}\\
+&= \frac{\sum_{H} \sum_{C}\phi_{\vec{S}_{BGH}} \phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}
+{\sum_{A,B,F,G} \sum_{H}\sum_{C} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}\\
+&= \frac{\sum_{H} \sum_{C}\sum_{D}\phi_{\vec{S}_{BGH}} \phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}
+{\sum_{A,B,F,G} \sum_{H}\sum_{C}\sum_{D} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}\\
+&= \frac{\sum_{H} \sum_{C}\sum_{D}\sum_{E}\phi_{\vec{S}_{BGH}} \phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}
+{\sum_{A,B,F,G} \sum_{H}\sum_{C}\sum_{D}\sum_{E} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}\\
+&= \frac{\sum_{C,D,H,E} \phi_{\vec{S}_{BGH}} \phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}
+{\sum_{A,B,C,D,E,F,G,H} \phi_{\vec{S}_{BGH}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{ABFG}}}\\
+&=
+\frac{
+\sum_{\vec{V} \setminus \vec{S}_{ABFG}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}{
+\sum_{\vec{V}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}
+\end{align*}
+We can see this is true for both non-leaf nodes. Lastly we check the root:
+\begin{align*}
+p(\vec{S}_{BGH}) &=
+\frac{
+\left( \prod_{k=1}^m \phi^{\vec{S}_k \to \vec{S}_{BGH}} \right) \phi_{\vec{S}_{BGH}}
+}{
+\sum_{\vec{S}_{BGH}} \left( \prod_{k=1}^m \phi^{\vec{S}_k \to \vec{S}_{BGH}} \right) \phi_{\vec{S}_{BGH}}
+}\\
+&=\frac{\phi^{\vec{S}_{ABFG} \to \vec{S}_{BGH}}\phi_{\vec{S}_{BGH}}}
+{\sum_{\vec{S}_{BGH}}\phi^{\vec{S}_{ABFG} \to \vec{S}_{BGH}}\phi_{\vec{S}_{BGH}}}\\
+&=\frac{\sum_{A,F} \phi_{\vec{S}_{ABFG}}\sum_{C}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}
+{\sum_{B,G,H}\sum_{A,F} \phi_{\vec{S}_{ABFG}}\sum_{C}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}\\
+&=\frac{\sum_{A,F}\sum_{C} \phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}
+{\sum_{B,G,H}\sum_{A,F}\sum_{C} \phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\sum_{D}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}\\
+&=\frac{\sum_{A,F}\sum_{C}\sum_{D} \phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}
+{\sum_{B,G,H}\sum_{A,F}\sum_{C}\sum_{D} \phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\sum_{E}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}\\
+&=\frac{\sum_{A,F}\sum_{C}\sum_{D}\sum_{E} \phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}
+{\sum_{B,G,H}\sum_{A,F}\sum_{C}\sum_{D} \sum_{E}\phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}\\
+&=\frac{\sum_{A,C,D,E,F}\phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}
+{\sum_{A,B,C,D,E,F,G,H}\phi_{\vec{S}_{ABFG}}\phi_{\vec{S}_{ABCG}}\phi_{\vec{S}_{ADC}}\phi_{\vec{S}_{CEG}}\phi_{\vec{S}_{BGH}}}\\
+&=
+\frac{
+\sum_{\vec{V} \setminus \vec{S}_{BGH}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}{
+\sum_{\vec{V}} \prod_{C \in {\cal C}({\cal G})} \phi_C
+}
+\end{align*}
+We can see this is also true for the root node.
+\end{answertext}
+
 
 % -----------------------------------------------------------
 
