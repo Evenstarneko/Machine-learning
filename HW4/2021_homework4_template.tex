@@ -22,6 +22,8 @@
 \usepackage{environ}% http://ctan.org/pkg/environ
 \usepackage{wasysym}
 \usepackage{array}
+\usepackage{graphicx}
+\graphicspath{ {./} }
 
 \def\ci{\perp\!\!\!\perp}
 
@@ -190,7 +192,7 @@ empty/.style={circle, text centered, minimum height=3em ,minimum width = .5em, i
 (70 points)\\
 \Large{Assigned: Monday, Nov. 1st, 2021} \\
 \Large{Due: Monday, Nov. 15th, 2021, 11:59 pm US/Eastern}}
-\author{Partner 1: NAME (JHED), Partner 2:  NAME (JHED)}
+\author{Partner 1: Chang Yan (cyan13), Partner 2:  Jingguo Liang (jliang35)}
 \date{}
 
 \begin{document}
@@ -323,10 +325,11 @@ Consider the graphical model shown in Figure 1. In this model, $\vx$ is a sequen
 
 (c) \\
 For $\log p(\vec{y}, \vec{x})$, we will have to evaluate approximately $2n$ $\psi(Z)$ functions, which is equivalent to $4n$ $f_{i}(Z)$ functions. And thus $4n$ additions are required to evaluate $\log p(\vec{y}, \vec{x})$. \\
-For $\log p(\vec{y}\mid\vec{x})$, we have to evaluate $\log p(\vec{y}, \vec{x})$ for any possible enumeration of $\vec{y}$, which is $k^{n}$ possibilities. For each possible $\vec{y}$, the number of $f_{i}(Z)$ computation and additions is the same as above. Thus, a total of $4nk^{n}$ computation of $f_{i}(Z)$ function is required, as well as $4nk^{n}$ additions. \\
+For $\log p(\vec{y}\mid\vec{x})$, we have to evaluate $\log p(\vec{y}, \vec{x})$ for any possible enumeration of $\vec{y}$, which is $k^{n}$ possibilities. For each possible $\vec{y}$, the number of $f_{i}(Z)$ computation and additions is the same as above. Thus, a total of $4nk^{n}$ computation of $f_{i}(Z)$ function is required, as well as $4nk^{n}$ additions. We can see that the computational challenge here is much lager than that of $\log p(\vec{y}, \vec{x})$.\\
 
 \end{answertext} 
 
+\pagebreak
 {\bf Question 2.}
 
 \begin{enumerate}
@@ -561,13 +564,182 @@ p(\vec{S}_i) =
 Here $\vec{V}$ is all variables in the graph, and ${\cal C}({\cal G})$ is the set of maximal cliques in the graph.
 
 \begin{answertext}{18cm}{}
-\end{answertext} 
+\begin{itemize}
 
+\item[(a)] Answer (and explain your answer) the following d-separation queries:
+$$A \ci F \mid D $$
+False. $A \rightarrow B \leftarrow F$ is a collider, and D is a descendant of B. Thus, when condition on D, A and F are not independent.
+$$A \ci G \mid B,C$$
+True. As we don't know D, $A \rightarrow D \leftarrow C$ is blocked. As we know B and C, $A \rightarrow B \rightarrow G$ and $B \rightarrow C \rightarrow G$ are blocked. As we don't know F and H, colliders $B \rightarrow F \leftarrow G$ and $B \rightarrow H \leftarrow G$ are also blocked. Thus, all paths from A to G are blocked, so A and G are independent.
+$$G \ci A \mid  B,H,D,E,F$$
+False. As we know D, collider $A \rightarrow D \leftarrow C$ is open. As we don't know C, split $D \leftarrow C \rightarrow E$ is open. Also we don't know E, so collider $C \rightarrow E \leftarrow G$ is open. Thus, path $A \rightarrow D \leftarrow C \rightarrow E \leftarrow G$ is open, and A and G are not independent.
+$$F \ci D \mid A,B$$
+True. As we know A, split $D \leftarrow A \rightarrow B$ is blocked. As we know B, directed $F \rightarrow B \rightarrow C$, $F \rightarrow B \rightarrow G$, and $F \rightarrow B \rightarrow H$ are blocked. Also, we don't know E, so the collider $C \rightarrow E \leftarrow G$ is blocked. Thus, all paths from F to D are blocked, so F and D are independent.
+$$C \ci H \mid B$$
+True. As we don't know E and D, colliders $A \rightarrow D \leftarrow C$ and $C \rightarrow E \leftarrow G$ are blocked. As we know B, split $C \leftarrow B \rightarrow G$ and $C \leftarrow B \rightarrow H$ are blocked, as well as directed $C \leftarrow B \leftarrow F$. Thus, all paths from C to H are blocked, so C and H are independent.
+
+\end{itemize}
+\end{answertext} 
+\begin{answertext}{18cm}{}
+\begin{itemize}
+\item[(b)] The local Markov properties are:
+\begin{align*}
+A &\ci F \\
+C &\ci A, F, G, H \mid B \\
+D &\ci B, E, F, G, H \mid A, C \\
+E &\ci A, B, D, F, H \mid C, G \\
+F &\ci A \\
+G &\ci A, C, D \mid B, F \\
+H &\ci A, C, D, E, F \mid B, G
+\end{align*}
+
+\item[(c)]
+The local Markov property for the new graph is
+\begin{align*}
+A &\ci F, G \\
+C &\ci A, F, G, H \mid B \\
+D &\ci B, E, F, G, H \mid A, C \\
+E &\ci A, B, D, F, H \mid C, G \\
+F &\ci A \\
+G &\ci A \mid F \\
+H &\ci A, C, D, E, F \mid B, G
+\end{align*}
+
+In the old graph when nothing is conditioned, using d-separation we know the triplet $A \rightarrow B \rightarrow G$ is an open path indicating that $A \not\ci G$. However, in the new graph the local Markov property indicates that $A \ci G$ given nothing. Thus, the new graph does not represent the same as the old. \\
+
+\item[(d)] The moralized graph ${\cal G}^a$ is:\\
+\begin{tikzpicture}[>=stealth, node distance=1.2cm]
+    \tikzstyle{format} = [draw, very thick, circle, minimum size=5.0mm,
+	inner sep=0pt]
+
+	\begin{scope}
+		\path[-, very thick]
+			node[format] (A) {$A$}
+			node[format, below right of=A] (B) {$B$}
+			node[format, below left of=B] (C) {$C$}
+			node[format, below left of=C] (D) {$D$}
+			node[format, below right of=C] (E) {$E$}
+			
+			node[format, above right of=B] (F) {$F$}
+			node[format, below right of=B] (G) {$G$}
+			node[format, below right of=G] (H) {$H$}
+
+			(A) edge[blue] (B)
+			(B) edge[blue] (C)
+
+			(C) edge[blue] (D)
+			(C) edge[blue] (E)
+
+			(F) edge[blue] (B)
+			(B) edge[blue] (G)
+			(G) edge[blue] (H)
+			
+			(A) edge[blue] (D)
+			(B) edge[blue,bend right=30] (H)
+			(F) edge[blue] (G)
+			(G) edge[blue] (E)
+
+                (A) edge[blue] (C) 
+                (C) edge[blue] (G)
+                (A) edge[blue] (F)
+		;
+	\end{scope}
+\end{tikzpicture}
+\end{itemize}
+\end{answertext} 
 \newpage
 
-\begin{answertext}{23cm}{}
-\end{answertext} 
+\begin{answertext}{24cm}{}
 
+\begin{itemize}
+
+\item[(e)] First we find all the maximum cliques:\\
+ (A,D,C),(A,B,C),(A,B,F),(B,C,G),(B,G,F)(C,E,G),(B,G,H). \\The MRF factorization would be:
+\begin{align*}
+&p(A,B,C,D,E,F,G,H)\\
+=&\frac{1}{Z}\phi_{A,D,C}(A,D,C)\phi_{A,B,C}(A,B,C)\phi_{A,B,F}(A,B,F)\phi_{B,C,G}(B,C,G)\\&\cdot\phi_{B,G,F}(B,G,F)\phi_{C,E,G}(C,E,G)\phi_{B,G,H}(B,G,H)
+\end{align*}
+\item[(f)] No, this is not chordal, as we have a cycle of size 4 (A-C-G-F-A) which does not have a edge not in the cycle connecting vertices in the cycle. Thus, we need to add a new edge to fix this. I add edge (A-G) to it. Now the graph looks like:
+\begin{tikzpicture}[>=stealth, node distance=1.2cm]
+    \tikzstyle{format} = [draw, very thick, circle, minimum size=5.0mm,
+	inner sep=0pt]
+
+	\begin{scope}
+		\path[-, very thick]
+			node[format] (A) {$A$}
+			node[format, below right of=A] (B) {$B$}
+			node[format, below left of=B] (C) {$C$}
+			node[format, below left of=C] (D) {$D$}
+			node[format, below right of=C] (E) {$E$}
+			
+			node[format, above right of=B] (F) {$F$}
+			node[format, below right of=B] (G) {$G$}
+			node[format, below right of=G] (H) {$H$}
+
+			(A) edge[blue] (B)
+			(B) edge[blue] (C)
+
+			(C) edge[blue] (D)
+			(C) edge[blue] (E)
+
+			(F) edge[blue] (B)
+			(B) edge[blue] (G)
+			(G) edge[blue] (H)
+			
+			(A) edge[blue] (D)
+			(B) edge[blue,bend right=30] (H)
+			(F) edge[blue] (G)
+			(G) edge[blue] (E)
+
+                (A) edge[blue] (C) 
+                (C) edge[blue] (G)
+                (A) edge[blue] (F)
+			(A) edge[blue,bend right=-30] (G)
+		;
+	\end{scope}
+\end{tikzpicture}\\
+Now the maximun cliques becomes:\\
+(A,D,C),(A,B,C,G),(A,B,F,G),(C,E,G),(B,G,H).\\The MRF factorization would be:
+\begin{align*}
+&p(A,B,C,D,E,F,G,H)\\
+=&\frac{1}{Z}\phi_{A,D,C}(A,D,C)\phi_{A,B,C,G}(A,B,C,G)\phi_{A,B,F,G}(A,B,F,G)\\&\cdot\phi_{C,E,G}(C,E,G)\phi_{B,G,H}(B,G,H)
+\end{align*}
+\item[(g)] The clique tree from the graph obtained from ${\cal G}^a$ by adding new edge(s) is:\\
+First, the new vertices in clique tree are: $$V = {(A,D,C),(A,B,C,G),(A,B,F,G),(C,E,G),(B,G,H)}$$
+Create tree with best order of V and draw edges with Running intersection property:
+\begin{center}
+\begin{tikzpicture}[style=thick,scale=1]
+            \begin{scope}[shape=circle,minimum size=0.1cm]
+            \tikzstyle{every node}=[draw,fill]
+            
+            \node[fill=none,scale=1] (x_3) at (0,4) {$\mathbf{A,D,C}$};
+            \node[fill=none,scale=1] (x_6) at (0,0) {$\mathbf{C,E,G}$};
+
+            \node[fill=none,scale=0.8] (x_2) at (3,2) {$\mathbf{A,B,C,G}$};
+            \node[fill=none,scale=0.8] (x_5) at (6,2) {$\mathbf{A,B,F,G}$};
+            \node[fill=none,scale=1] (x_7) at (9,2) {$\mathbf{B,G,H}$};   
+            
+            \draw [-] (x_3) -- (x_2);
+
+            \draw [-] (x_6) -- (x_2);
+            \draw [-] (x_2) -- (x_5);
+            \draw [-] (x_5) -- (x_7);
+            
+            \end{scope}
+        \end{tikzpicture}
+        \end{center}
+\end{itemize}
+To check the Running intersection property we can see the following graph: (next page)
+\end{answertext} 
+\begin{answertext}{23cm}{}
+
+\begin{itemize}
+\item[(g)] (Continued)\\
+\includegraphics[scale=0.23]{tree}
+\item[(h)] We name the nodes as $\vec{S}_{ADC},\vec{S}_{CEG},\vec{S}_{ABCG},\vec{S}_{ABFG}\text{ and }\vec{S}_{BGH}$ according to their original cliques, and choose vertex (B,G,H) ($\vec{S}_{BGH}$) as the Root $R$. The incoming messages are:
+
+\end{itemize} 
+\end{answertext}
 \pagebreak
 
 % -----------------------------------------------------------
