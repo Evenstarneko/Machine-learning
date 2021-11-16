@@ -738,7 +738,17 @@ To check the Running intersection property we can see the following graph: (next
 \includegraphics[scale=0.23]{tree}
 \item[(h)] We name the nodes as $\vec{S}_{ADC},\vec{S}_{CEG},\vec{S}_{ABCG},\vec{S}_{ABFG}\text{ and }\vec{S}_{BGH}$ according to their original cliques, and choose vertex (B,G,H) ($\vec{S}_{BGH}$) as the Root $R$. The incoming messages are:
 
-\end{itemize} 
+\begin{align*}
+\phi^{\vec{S}_{ADC}\to\vec{S}_{ABCG}}&=\sum_{\vec{S}_{ADC}\backslash \vec{S}_{ABCG}}\phi_{A,D,C}(A,D,C) = \sum_{D}\phi_{A,D,C}(A,D,C)\\
+\phi^{\vec{S}_{CEG}\to\vec{S}_{ABCG}}&=\sum_{\vec{S}_{CEG}\backslash \vec{S}_{ABCG}}\phi_{C,E,G}(C,E,G) = \sum_{E}\phi_{C,E,G}(C,E,G)
+\end{align*}
+\end{itemize}
+\begin{align*}
+\phi^{\vec{S}_{ABCG}\to\vec{S}_{ABFG}}&=\sum_{\vec{S}_{ABCG}\backslash \vec{S}_{ABFG}}\phi_{A,B,C,G}(A,B,C,G)\prod_{\vec{S}_i=\vec{S}_{ADC},\vec{S}_{CEG}}\phi^{\vec{S}_i\to\vec{S}_{ABCG}}\\
+&= \sum_{C}\phi_{A,B,C,G}(A,B,C,G)\phi^{\vec{S}_{ADC}\to\vec{S}_{ABCG}}\phi^{\vec{S}_{CEG}\to\vec{S}_{ABCG}}\\
+&= \sum_{C}\phi_{A,B,C,G}(A,B,C,G)\sum_{D}\phi_{A,D,C}(A,D,C)\sum_{E}\phi_{C,E,G}(C,E,G)
+\end{align*}
+
 \end{answertext}
 \pagebreak
 
