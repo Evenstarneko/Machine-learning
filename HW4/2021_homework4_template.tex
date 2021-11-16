@@ -748,7 +748,32 @@ To check the Running intersection property we can see the following graph: (next
 &= \sum_{C}\phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG})\phi^{\vec{S}_{ADC}\to\vec{S}_{ABCG}}\phi^{\vec{S}_{CEG}\to\vec{S}_{ABCG}}\\
 &= \sum_{C}\phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG})\sum_{D}\phi_{\vec{S}_{ADC}}(\vec{S}_{ADC})\sum_{E}\phi_{\vec{S}_{CEG}}(\vec{S}_{CEG})
 \end{align*}
+\begin{align*}
+\phi^{\vec{S}_{ABFG}\to\vec{S}_{BGH}} &= \sum_{\vec{S}_{ABFG}\backslash\vec{S}_{BGH}} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \,\phi^{\vec{S}_{ABCG}\to\vec{S}_{ABFG}} \\
+&= \sum_{A,F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \,\sum_{C}\phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG})\\
+&\qquad\sum_{D}\phi_{\vec{S}_{ADC}}(\vec{S}_{ADC})\sum_{E}\phi_{\vec{S}_{CEG}}(\vec{S}_{CEG})
+\end{align*}
 
+\end{answertext}
+
+\begin{answertext}{23cm}{}
+\begin{align*}
+\phi^{\vec{S}_{ABFG}\leftarrow\vec{S}_{BGH}} &= \sum_{\vec{S}_{BGH}\backslash\vec{S}_{ABFG}} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH}) = \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH})
+\end{align*}
+\begin{align*}
+\phi^{\vec{S}_{ABCG}\leftarrow\vec{S}_{ABFG}} &= \sum_{\vec{S}_{ABFG}\backslash\vec{S}_{ABCG}} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \,\phi^{\vec{S}_{ABFG}\leftarrow\vec{S}_{BGH}} \\
+&= \sum_{F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH})
+\end{align*}
+\begin{align*}
+\phi^{\vec{S}_{ACD}\leftarrow\vec{S}_{ABCG}} &= \sum_{\vec{S}_{ABCG}\backslash\vec{S}_{ACD}} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \,\phi^{\vec{S}_{ABCG}\leftarrow\vec{S}_{ABFG}} \,\phi^{\vec{S}_{CEG}\to\vec{S}_{ABCG}} \\
+&= \sum_{B,G} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \sum_{F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH}) \\
+&\qquad\sum_{E}\phi_{\vec{S}_{CEG}}(\vec{S}_{CEG})
+\end{align*}
+\begin{align*}
+\phi^{\vec{S}_{CEG}\leftarrow\vec{S}_{ABCG}} &= \sum_{\vec{S}_{ABCG}\backslash\vec{S}_{CEG}} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \,\phi^{\vec{S}_{ABCG}\leftarrow\vec{S}_{ABFG}} \,\phi^{\vec{S}_{ACD}\to\vec{S}_{ABCG}} \\
+&= \sum_{A,B} \phi_{\vec{S}_{ABCG}}(\vec{S}_{ABCG}) \sum_{F} \phi_{\vec{S}_{ABFG}}(\vec{S}_{ABFG}) \sum_{H} \phi_{\vec{S}_{BGH}}(\vec{S}_{BGH}) \\
+&\qquad\sum_{D}\phi_{\vec{S}_{ADC}}(\vec{S}_{ADC})
+\end{align*}
 \end{answertext}
 \pagebreak
 
