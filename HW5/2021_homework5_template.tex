@@ -339,7 +339,102 @@ Draw the missing data graph for this model.
  is $p(x_1^{(1)}, x_2^{(1)}, x_3^{(1)}, r_1, r_2, r_3)$ a function of the observed data distribution $p(x_1, x_2, x_3, r_1, r_2, r_3)$?  Why?  (This is a yes/no question with an explanation: if such a function exists, you don't have to give it)
 \end{enumerate}
 
-\begin{answertext}{12cm}{}
+\begin{answertext}{22cm}{}
+\begin{enumerate}
+\item[(a)]The missing data graph is:\\
+\begin{center}
+\begin{tikzpicture}[>=stealth, node distance=1.5cm]
+    \tikzstyle{format} = [draw, very thick, circle, minimum size=7.0mm,
+	inner sep=0pt]
+
+		\path[->, very thick]
+			node[format] (1) {$X_1$}
+			node[format, below right of=1] (2) {$R_4$}
+			node[format, below left of=1] (4) {$R_2$}
+			node[format, below left of=4] (3) {$X_2$}
+			node[format, above left of=3] (5) {$X_2^{(1)}$}
+			node[format, below right of=2] (6) {$X_4$}
+			node[format, above right of=2] (7) {$X_3$}
+			node[format, below right of=7] (8) {$X_4^{(1)}$}
+
+			(1) edge[blue] (2)
+			(1) edge[blue] (4)
+			(1) edge[blue] (5)
+			(7) edge[blue] (2)
+			(7) edge[blue] (8)
+			(5) edge[blue] (3)
+			(4) edge[blue] (3)
+			(2) edge[blue] (6)
+			(8) edge[blue] (6)
+		;
+
+\end{tikzpicture}
+\end{center}
+\item[(b)] This is a missing at random (MAR) problem. MAR means events that lead to missingness occur independently of unobserved data given observed data, and in this DAG we can clearly see $(X_2^{(1)} \ci R_2 \mid X_1)$ ($X_1$ fully observed) and $(X_4^{(1)} \ci R_4 \mid X_3)$ ($X_3$ fully observed). Thus, we fit the definition of MAR.
+
+\item[(c)]
+\begin{align*}
+p(x_1, x_2^{(1)}, x_3, x_4^{(1)}) =& p(x_1, x_3)p(x_2^{(1)} \mid x_1)p(x_4^{(1)} \mid x_3)\\
+=& p(x_1,x_3)p(x_2^{(1)} \mid x_1, r_2=1)p(x_4^{(1)} \mid x_3, r4=1)\\
+=& p(x_1,x_3)p(x_2 \mid x_1, r_2=1)p(x_4 \mid x_3, r4=1)\\
+=& \sum_{x_2,x_4,r_2,r_4}p(x_1, x_2, x_3, x_4, r_2, r_4)\\
+& \cdot \frac{p(x_1, x_2, r_2=1)}{\sum_{x_2}p(x_1, x_2, r_2=1)}\\
+& \cdot \frac{p(x_3, x_4, r_4=1)}{\sum_{x_4}p(x_3, x_4, r_4=1)}\\
+=& \sum_{x_2,x_4,r_2,r_4}p(x_1, x_2, x_3, x_4, r_2, r_4)\\
+& \cdot \frac{\sum_{x_3,x_4,r_4}p(x_1, x_2, x_3, x_4, r_2=1, r_4)}{\sum_{x_2}\sum_{x_3,x_4,r_4}p(x_1, x_2, x_3, x_4, r_2=1, r_4)}\\
+& \cdot \frac{\sum_{x_1,x_2,r_2}p(x_1, x_2, x_3, x_4, r_2, r_4=1)}{\sum_{x_4}\sum_{x_1,x_2,r_2}p(x_1, x_2, x_3, x_4, r_2, r_4=1)}\\
+=& \sum_{x_2,x_4,r_2,r_4}p(x_1, x_2, x_3, x_4, r_2, r_4)\\
+& \cdot \frac{\sum_{x_3,x_4,r_4\text{ if }r_2=1}p(x_1, x_2, x_3, x_4, r_2, r_4)}{\sum_{x_2, x_3,x_4,r_4\text{ if }r_2=1}p(x_1, x_2, x_3, x_4, r_2, r_4)}\\
+& \cdot \frac{\sum_{x_1,x_2,r_2\text{ if }r_4=1}p(x_1, x_2, x_3, x_4, r_2, r_4)}{\sum_{x_1,x_2,x_4,r_2\text{ if }r_4=1}p(x_1, x_2, x_3, x_4, r_2, r_4)}\\
+\end{align*}
+
+\end{enumerate}
+\end{answertext} 
+
+\begin{answertext}{22cm}{}
+\begin{enumerate}
+\item[(d)]The missing data graph is:\\
+\begin{center}
+\begin{tikzpicture}[>=stealth, node distance=1.5cm]
+    \tikzstyle{format} = [draw, very thick, circle, minimum size=7.0mm,
+	inner sep=0pt]
+
+		\path[->, very thick]
+			node[format] (1) {$X_1^{(1)}$}
+			node[format, below right of=1] (2) {$X_3^{(1)}$}
+			node[format, below left of=1] (4) {$X_2^{(1)}$}
+			node[format, below left of=4] (3) {$R_3$}
+			node[format, above left of=3] (5) {$X_2$}
+			node[format, below right of=2] (6) {$X_1$}
+			node[format, below left of=2] (7) {$R_1$}
+			node[format, below right of=7] (8) {$X_3$}
+			node[format, above right of=5] (9) {$R_2$}
+
+			(1) edge[blue] (2)
+			(1) edge[blue] (4)
+			(4) edge[blue] (2)
+			(4) edge[blue] (7)
+			(2) edge[blue] (7)
+			(4) edge[blue] (3)
+			(7) edge[blue] (3)
+			(1) edge[blue] (9)
+			(3) edge[blue] (9)
+			(9) edge[blue] (5)
+			(4) edge[blue] (5)
+			(2) edge[blue] (8)
+			(3) edge[blue] (8)
+			(1) edge[blue,bend left=40] (6)
+			(7) edge[blue] (6)
+		;
+
+\end{tikzpicture}
+\end{center}
+
+\item[(e)]This is a missing not at random (MNAR) model. As none of the X are completely known, we can see that $X_1^{(1)}$ and $R_1$ are not independent because we don't know $X_2^{(1)}$; $X_2^{(1)}$ and $R_2$ are not independent because we don't know $X_1^{(1)}$; $X_3^{(1)}$ and $R_3$ are not independent because we don't know $X_1^{(1)}$ and $X_2^{(1)}$. Clearly, this is missing not at random because the missingness and unobserved data are clearly dependent.
+
+\item[(f)]no, it does not. we know that all missingness and unobserved data are dependent, so there is no way we can bring $R_i=1$ condition into the factorization and replace $X_i^{(1)}$ with $X_i$. Thus, it is not possible write $p(x_1^{(1)}, x_2^{(1)}, x_3^{(1)}, r_1, r_2, r_3)$ as a function of the observed data distribution $p(x_1, x_2, x_3, r_1, r_2, r_3)$.
+
+\end{enumerate}
 \end{answertext} 
 
 \pagebreak
@@ -359,7 +454,98 @@ original data $[D]$, what is the point of projecting to a high dimensional space
 
 \end{enumerate}
 
-\begin{answertext}{12cm}{}
+\begin{answertext}{14cm}{}
+\begin{enumerate}
+\item[(a)] We know that the sample covariance matrix of $[\tilde{D}]$ is proportional to $[\tilde{D}]^T [\tilde{D}]$, so we can first calculate $[\tilde{D}]^T [\tilde{D}]$, and if any element $a_{ij}$ is 0 in $[\tilde{D}]^T [\tilde{D}]$ , the covariance of $i$ and $j$ column in $[\tilde{D}]$ should also be 0.
+\begin{align*}
+[\tilde{D}]^T [\tilde{D}] &= ([D^*] [V]_m)^T[D^*] [V]_m\\
+&= [V]_m^T [D^*]^T [D^*] [V]_m
+\end{align*}
+We know that $\hat{C} = \frac{1}{n-1}[D^*]^T [D^*]$, so we have $[D^*]^T [D^*]=(n-1)\hat{C}$. Plug it in:
+\begin{align*}
+[\tilde{D}]^T [\tilde{D}] &= [V]_m^T [D^*]^T [D^*] [V]_m\\
+&= [V]_m^T (n-1)\hat{C} [V]_m\\
+&= (n-1) [V]_m^T \hat{C} [V]_m\\
+&= (n-1)
+\begin{bmatrix}
+\vec{v}_1^T\\
+\vec{v}_2^T\\
+\vdots\\
+\vec{v}_m^T
+\end{bmatrix}
+\hat{C}
+\begin{bmatrix}
+\vec{v}_1 & \vec{v}_2 & \cdots & \vec{v}_m
+\end{bmatrix}\\
+&= (n-1)
+\begin{bmatrix}
+\vec{v}_1^T\\
+\vec{v}_2^T\\
+\vdots\\
+\vec{v}_m^T
+\end{bmatrix}
+\begin{bmatrix}
+\hat{C}\vec{v}_1 & \hat{C}\vec{v}_2 & \cdots & \hat{C}\vec{v}_m
+\end{bmatrix}
+\end{align*}
+As $\vec{v}_i$ is eigenvector of $\hat{C}$, we have $\hat{C}\vec{v}_i = \lambda_i \vec{v}_i$:
+\end{enumerate}
+\end{answertext}
+
+\begin{answertext}{22cm}{}
+\begin{align*}
+[\tilde{D}]^T [\tilde{D}] &= (n-1)
+\begin{bmatrix}
+\vec{v}_1^T\\
+\vec{v}_2^T\\
+\vdots\\
+\vec{v}_m^T
+\end{bmatrix}
+\begin{bmatrix}
+\hat{C}\vec{v}_1 & \hat{C}\vec{v}_2 & \cdots & \hat{C}\vec{v}_m
+\end{bmatrix}\\
+&=(n-1)
+\begin{bmatrix}
+\vec{v}_1^T\\
+\vec{v}_2^T\\
+\vdots\\
+\vec{v}_m^T
+\end{bmatrix}
+\begin{bmatrix}
+\lambda_1\vec{v}_1 & \lambda_2\vec{v}_2 & \cdots & \lambda_m\vec{v}_m
+\end{bmatrix}\\
+&=(n-1)
+\begin{bmatrix}
+\lambda_1 \vec{v}_1^T \vec{v}_1 & \lambda_2 \vec{v}_1^T \vec{v}_2 & \cdots & \lambda_m \vec{v}_1^T \vec{v}_m\\
+\lambda_1 \vec{v}_2^T \vec{v}_1 & \lambda_2 \vec{v}_2^T \vec{v}_2 & \cdots & \lambda_m \vec{v}_2^T \vec{v}_m\\
+\vdots & \vdots & \ddots & \vdots\\
+\lambda_1 \vec{v}_m^T \vec{v}_1 & \lambda_2 \vec{v}_m^T \vec{v}_2 & \cdots & \lambda_m \vec{v}_m^T \vec{v}_m
+\end{bmatrix}
+\end{align*}
+We know that eigenvectors are all orthogonal to each other, so $\vec{v}_i^T \vec{v}_j=0$ when $i \neq j$. Then to covariance matrix becomes:
+\begin{align*}
+[\tilde{D}]^T [\tilde{D}] &=(n-1)
+\begin{bmatrix}
+\lambda_1 \vec{v}_1^T \vec{v}_1 & \lambda_2 \vec{v}_1^T \vec{v}_2 & \cdots & \lambda_m \vec{v}_1^T \vec{v}_m\\
+\lambda_1 \vec{v}_2^T \vec{v}_1 & \lambda_2 \vec{v}_2^T \vec{v}_2 & \cdots & \lambda_m \vec{v}_2^T \vec{v}_m\\
+\vdots & \vdots & \ddots & \vdots\\
+\lambda_1 \vec{v}_m^T \vec{v}_1 & \lambda_2 \vec{v}_m^T \vec{v}_2 & \cdots & \lambda_m \vec{v}_m^T \vec{v}_m
+\end{bmatrix}\\
+&= (n-1)
+\begin{bmatrix}
+\lambda_1 \vec{v}_1^T \vec{v}_1 & 0 & \cdots & 0\\
+0 & \lambda_2 \vec{v}_2^T \vec{v}_2 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \lambda_m \vec{v}_m^T \vec{v}_m
+\end{bmatrix}
+\end{align*}
+We can see that except for the main diagonal elements which are proportional to the sample covariance between the same column and itself in $[\tilde{D}]$, all other elements are zero. The zeros in covariances matrix of $[\tilde{D}]$ show that any two different columns of $[\tilde{D}]$ has covariance zero. This means that for all different columns in $[V]_m$, the sample covariance between the corresponding columns of $[\tilde{D}]$
+are zero, as there is one-to-one correspondence between columns in $[V]_m$ and $[\tilde{D}]$. 
+\end{answertext}
+\begin{answertext}{14cm}{}
+\begin{enumerate}
+\item[(b)] There are several reasons and benefits for using kernel PCA. First, PCA itself is a linear transformation, and each principal component is a linear combination of the original data point. That means when doing PCA, we are actually assuming linearity in the data, and are trying to use linear transformation to map the data into lower dimensions with largest variance. However, for many datasets, especially the high-dimensional data, it is not possible to find a lower dimensional space using linear transformation that can separate the data well (i.e. find eigenvector with large variance associated with it). In this case, the separation of data is non-linear, and we would need a non-linear transformation to map the data into a better low-dimensional space with larger variance in each axis. This is why we need a kernel here. The kernel trick first use a non-linear transformation to transform the data into a much higher dimensional space, and then finding eigenvector there can give you a larger variance and better separation of data in the resulting low-dimensional space. Second, even if we have transformed the data to a higher dimensional space and reduced it again, the non-linear transformation we added through this process will likely to cause the data to lie on a lower dimensional subspace of it. Thus, we increased the dimension first in order to be able to better decrease it into a lower dimensional space with higher variance and better separation of data.
+\end{enumerate}
 \end{answertext}
 
 \pagebreak
