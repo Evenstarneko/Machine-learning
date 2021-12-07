@@ -1,27 +1,28 @@
 dt = 0.0002;    % Time step
-t = 15;          % Max time
-I = 0.015;        % Stimulus current
+t = 20;          % Max time
+I = 5e-3;        % Stimulus current
 a = 0.05;
-b = -0.6;
+b = 0.1;
 c = -0.08;      % V_reset
-d = -0.075;     % Potassium channel potential
-tau = 1e-4;
+d = -0.75
+fei;     % Potassium channel potential
+tau = 1e-3;
 vt = -0.04;     % Threshold voltage
-t_vec = 0:dt:t;
-v_vec = 0:dt:t+dt;
-v = -0.08;      % V
-v_vec(1) = 0;
-g = -0.075;
-for i = t_vec
-    [dv, dg] = next_step(v,g,I,a,b,d,tau);
-    [vp, gp] = next_step(v+dv*dt/2,g+dg*dt/2,I,a,b,d,tau);
-    v = v + vp*dt;
-    g = g + gp*dt;
-    if (v >= vt)
-        v = c;
-        g = d;
+T = 0:dt:t;
+Vm = 0:dt:t;
+Vm(1) = -0.08;
+g = -0.75;
+for t=1:length(T)-1
+    if (Vm(t) >= vt)
+        Vm(t+1) = c;
+        g = g + d;
+    else
+        vp = I + a - b * Vm(t) + g * (d - Vm(t));
+        gp = -g / tau;
+        Vm(t+1) = Vm(t) + vp*dt;
+        g = g + gp*dt;
     end
-    v_vec(int32(i/dt+2)) = v;
 end
-t_vec = [t_vec, t+dt];
-plot(t_vec, v_vec)
+plot(T,Vm,'b-');
+xlabel('Time(s)');
+ylabel('Voltage (V)');
