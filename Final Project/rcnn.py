@@ -9,8 +9,8 @@ import os
 
 class Rcnn:
     
-    def __init__(self, path, name, pre = True):
-        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
+    def __init__(self, path, name, pre=True):
+        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre, num_classes = 2)
         self.path = os.path.join(path, name)
         self.device = torch.device("cuda:0" if torch.cuda.is_abailable() else "cpu")
         self.model.to(self.device)

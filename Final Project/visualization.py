@@ -35,3 +35,5 @@ def main(args):
     boxes, scores = model.predict(test_image)
     result = draw_bounding_boxes(image, torch.tensor(boxes, dtype=torch.float), colors=["blue"], width=5)
     show(result)
+    
+    # TODO: crop image to 200*200 using bounding box
