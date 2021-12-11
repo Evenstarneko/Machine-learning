@@ -14,9 +14,18 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
-        for fold in os.listdir(path):
-            file_path = os.path.join(path, fold) 
+        for fold in os.listdir(args.path):
+            file_path = os.path.join(args.path, fold) 
+            # TODO: read data files
             for files in os.listdir(file_path):
+                if files == "":
+                    trian_images = []
+                if files == "":
+                    train_boxes = []
+                if files == "":
+                    test_images = []
+                if files == "":
+                    test_boxes = []   
         
         model = Rcnn(args.svpath, "Rcnn_fold_" + str(i))
         model.train(trian_images, train_boxes)
