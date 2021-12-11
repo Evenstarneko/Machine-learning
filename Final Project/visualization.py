@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import torchvision.transforms.functional as F
 from torchvision.utils import draw_bounding_boxes
 from torchvision.io import read_image
+import torch
 
 parser = argparse.ArgumentParser("Visualization")
 parser.add_argument("--path", type=str, required=True)
@@ -27,6 +28,8 @@ def show(imgs):
 def main(args):
     image = read_image(args.path)
     # TODO: create test_image as (1,C,H,W) numpy array
+    test_image = []
+    
     model = Rcnn(args.svpath, "Rcnn_fold_1")
     model.load()
     boxes, scores = model.predict(test_image)
