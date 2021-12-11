@@ -17,9 +17,8 @@ class Rcnn:
         
     def train(self, images, boxes):
         labels = torch.ones((images.shape[0], 1)).to(self.device)
-        images = torch.from_numpy(images).to(self.device)
         boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).to(self.device)
-        images = list(image for image in images)
+        images = list(torch.from_numpy(image).to(self.device) for image in images)
         targets = []
         for i in range(len(images)):
             d = {}
@@ -30,8 +29,7 @@ class Rcnn:
         return output
         
     def predict(self, images):
-        images = torch.from_numpy(images).to(self.device)
-        images = list(image for image in images)
+        images = list(torch.from_numpy(image).to(self.device) for image in images)
         self.model.eval()
         predictions = self.model(images)
         boxes = []
