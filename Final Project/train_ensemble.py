@@ -49,9 +49,6 @@ def main(args):
         test_labels = labels[i]
         for k in range(3):    
             
-            if k == 0:
-                continue
-            
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
 
