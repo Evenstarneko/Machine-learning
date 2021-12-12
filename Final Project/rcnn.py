@@ -14,7 +14,10 @@ from torch import nn
 class Rcnn_5(nn.Module):
     def __init__(self, pre=True):
         super(Rcnn_5, self).__init__()
-        self.input = nn.Conv2d(5, 3, kernel_size=1)
+        self.input = nn.Sequential(
+            nn.Conv2d(5, 3, kernel_size=1),
+            nn.ReLU(inplace=True)
+        )
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         
     def forward(self, x):
