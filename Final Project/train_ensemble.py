@@ -30,7 +30,7 @@ def main(args):
         labels.append(label)
         file = os.path.join(path, "imageCropped.npz")
         npzfile = np.load(file)
-        image = npzfile['a'].astype(float) / 255
+        image = npzfile['a'].astype(float) 
         image = image[sample]
         images.append(image)
     
@@ -55,7 +55,7 @@ def main(args):
             train_labels = train_labels[:,k]
             test_labels = test_labels[:,k]
             
-            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 100)
+            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 50)
             model.train_val(train_images, train_labels, test_images, test_labels)
         
     file1.close()

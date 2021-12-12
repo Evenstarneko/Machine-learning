@@ -98,7 +98,7 @@ class EnsembleWrapper:
                 val_history.append(self.validate_epoch(Xval, Yval))
                 Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
                 self.loss = val_history[-1]
-                if epoch >= 25 and np.sum(val_history[-2:]) > np.sum(val_history[-4:-2]):
+                if epoch >= 25 and np.sum(val_history[-2:]) >= np.sum(val_history[-4:-2]):
                     Logger.log("early stop")
                     Logger.log(f"train history {train_history}")
                     Logger.log(f"validation history {val_history}")
