@@ -21,11 +21,20 @@ def main(args):
         path = os.path.join(args.path, str(i))
         file = os.path.join(path, "cropbox.npz")
         npzfile = np.load(file)
-        boxes.append(npzfile['a'])
+        box = npzfile['a']
+        sample = np.zeros(box.shape[0], dtype = int)
+        sample[0:400] = 1
+        np.random.shuffle(sample)
+        box = box[sample]
+        boxes.append(box)
+        k = 0
         for j in range(npzfile['a'].shape[0]):
-            file = os.path.join(path, str(i) + ".npz")
-            npzfile = np.load(file)
-            images[i].append(npzfile['a'].astype(float) / 255)
+            if sample[j] == 1:
+                file = os.path.join(path, str(j) + ".npz")
+                npzfile = np.load(file)
+                images[i].append(npzfile['a'].astype(float) / 255)
+                k = k + 1
+                print(k)
             
     for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
