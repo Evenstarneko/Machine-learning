@@ -20,10 +20,10 @@ class Rcnn_5(nn.Module):
         )
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         
-    def forward(self, x):
+    def forward(self, x, y):
         x = self.input(x)
-        x = self.model(x)
-        return x
+        return  self.model(x, y)
+        
     
 class Rcnn:
     

@@ -36,7 +36,6 @@ def main(args):
             train_labels = np.empty(0)
             for j in range(5):
                 if i != j:
-                    print(images[j].shape[0])
                     train_images = np.append(train_images, images[j], axis = 0)
                     train_labels = np.append(train_labels, labels[j][:,k], axis = 0)
   
