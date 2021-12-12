@@ -13,8 +13,7 @@ from torch import nn
         
 class Rcnn:
     
-    def __init__(self, path, name, num_epochs, pre=True):
-        self.input = nn.Conv2d(5, 3, kernel_size=1)
+    def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         weight = self.model.backbone.body.conv1.weight.clone()
         self.model.backbone.body.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
@@ -25,7 +24,8 @@ class Rcnn:
             self.model.backbone.body.conv1.weight[:, 4] = (weight[:,0] + weight[:,1] + weight[:,2]) / 3
         
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        ##self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cpu")
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
@@ -35,6 +35,7 @@ class Rcnn:
         self.best_loss = np.infty
         self.start_time = int(time.time())
         self.freq_for_save = 5
+        self.batch = batch
         
     def train_val(self, Xtrain, Ytrain, Xval, Yval):
         """
@@ -68,7 +69,6 @@ class Rcnn:
     
     def train(self, images, boxes):
         self.model.train()
-        self.optmz.zero_grad()
         labels = torch.ones((len(images), 1)).to(self.device)
         boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).to(self.device)
         images = list(torch.from_numpy(image).to(self.device) for image in images)
@@ -78,13 +78,21 @@ class Rcnn:
             d['boxes'] = boxes[i]
             d['labels'] = labels[i]
             targets.append(d)
-        output = self.model(images, targets)
-        for loss in output.values():
-            loss.backward() 
-        self.optmz.step()
-        loss = torch.sum(loss for loss in output.values())
             
-        return float(loss)
+        history = []
+        size = int(len(images) / self.batch)
+        for i in range(self.batch):
+            self.optmz.zero_grad()
+            X = images[i*size: (i+1)*size]
+            Y = targets[i*size: (i+1)*size]
+            output = self.model(X, Y)
+            for loss in output.values():
+                loss.backward() 
+            self.optmz.step()
+            loss = torch.sum(loss for loss in output.values()).detach().cpu().numpy()
+            history.append(loss)
+            
+        return np.sum(np.array(history)) / self.batch
         
     def predict(self, images):
         images = list(torch.from_numpy(image).to(self.device) for image in images)
@@ -107,10 +115,9 @@ class Rcnn:
         """
         This function validates one epoch of the model.
         """
-        self.model.eval()
+        self.model.train()
 
         with torch.no_grad():
-            self.optmz.zero_grad()
             labels = torch.ones((images.shape[0], 1)).to(self.device)
             boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).to(self.device)
             images = list(torch.from_numpy(image).to(self.device) for image in images)
@@ -120,10 +127,18 @@ class Rcnn:
                 d['boxes'] = boxes[i]
                 d['labels'] = labels[i]
                 targets.append(d)
-            output = self.model(images, targets)
-            loss = torch.sum(loss for loss in output.values())
-
-            return float(loss)
+                
+            history = []
+            size = int(len(images) / self.batch)
+            for i in range(self.batch):
+                self.optmz.zero_grad()
+                X = images[i*size: (i+1)*size]
+                Y = targets[i*size: (i+1)*size]
+                output = self.model(X, Y)
+                loss = torch.sum(loss for loss in output.values()).detach().cpu().numpy()
+                history.append(loss)
+        
+        return np.sum(np.array(history)) / self.batch
     
     def save(self):
         if self.best_loss > self.loss:

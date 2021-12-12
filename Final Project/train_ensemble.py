@@ -15,17 +15,24 @@ def main(args):
 
     labels = []
     images = []
-    
+    n_s = 150
     file1 = open("log_ensemble.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
         file = os.path.join(path, "label.npz")
         npzfile = np.load(file)
-        labels.append(npzfile['a'])
+        label = npzfile['a']
+        sample = np.zeros(label.shape[0], dtype = bool)
+        sample[0:n_s] = 1
+        np.random.shuffle(sample)
+        label = label[sample]
+        labels.append(label)
         file = os.path.join(path, "imageCropped.npz")
         npzfile = np.load(file)
-        images.append(npzfile['a'])
+        image = npzfile['a']
+        image = image[sample]
+        images.append(image)
     
     class_num = [12, 2, 5]
     type_name = ["age", "sex", "race"]        
@@ -43,7 +50,7 @@ def main(args):
             test_images = images[i]
             test_labels = labels[i][:,k]
   
-            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 100)
+            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 5)
             model.train_val(train_images, train_labels, test_images, test_labels)
         
     file1.close()

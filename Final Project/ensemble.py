@@ -14,7 +14,7 @@ from logger import Logger
 class Ensemble(nn.Module):
     def __init__(self, num_classes, pre=True):
         super(Ensemble, self).__init__()
-        self.model1 = models.resnet101(pretrained=True)
+        self.model1 = models.resnet18(pretrained=True)
         weight = self.model1.conv1.weight.clone()
         self.model1.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
@@ -35,7 +35,7 @@ class Ensemble(nn.Module):
         self.model2.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1,1), stride=(1,1))
         self.model2.num_classes = num_classes
 
-        self.model3 = models.densenet169(pretrained=True)   
+        self.model3 = models.densenet121(pretrained=True)   
         weight = self.model3.features.conv0.weight.clone()  
         self.model3.features.conv0 = nn.Conv2d(5, 64, kernel_size=7, stride=2,
                                 padding=3, bias=False)
@@ -57,11 +57,12 @@ class Ensemble(nn.Module):
         return x
         
 class EnsembleWrapper:
-    def __init__(self, path, name, num_classes, num_epochs, pre=True):
+    def __init__(self, path, name, num_classes, num_epochs, batch, pre=True):
         self.model = Ensemble(num_classes, pre)
         self.path = os.path.join(path, name)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        self.model.to(self.device)
+        self.device = torch.device("cpu")
+        #self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
         self.cur_epoch = 0
@@ -71,6 +72,7 @@ class EnsembleWrapper:
         self.start_time = int(time.time())
         self.freq_for_save = 5
         self.num_classes = num_classes
+        self.batch = batch
     
     
     def train_val(self, Xtrain, Ytrain, Xval, Yval):
@@ -108,10 +110,10 @@ class EnsembleWrapper:
         This function predicts/inference a single instance
         """
         self.model.eval()
-        X = torch.from_numpy(X).to(self.device)
+        X = torch.from_numpy(X).float().to(self.device)
         with torch.no_grad():
             X.requires_grad = False
-            pred = self.model.forward(X).detach().cpu().to_numpy()
+            pred = self.model.forward(X).detach().cpu().numpy()
             result = np.argmax(pred, axis=1)
             return result
         
@@ -120,35 +122,49 @@ class EnsembleWrapper:
         This function trains one epoch of the model. 
         """
         self.model.train()
-        self.optmz.zero_grad()
-        Xtrain = torch.from_numpy(Xtrain).to(self.device)
-        Ytrain = torch.from_numpy(Ytrain).to(self.device)
-        Xtrain.requires_grad = True
-        pred = self.model(Xtrain)
-        loss = self.criterion(pred, Ytrain)
-        loss.backward()
-        self.optmz.step()
+        history = []
+        size = int(Xtrain.shape[0] / self.batch)
+        for i in range(self.batch):
+            X = Xtrain[i*size: (i+1)*size,:,:,:]
+            Y = Ytrain[i*size: (i+1)*size]
+            self.optmz.zero_grad()
+            X = torch.from_numpy(X).float().to(self.device)
+            Y = torch.from_numpy(Y).long().to(self.device)
+            X.requires_grad = True
+            pred = self.model(X)
+            loss = self.criterion(pred, Y)
+            loss.backward()
+            self.optmz.step()
+            history.append(loss.detach().cpu().numpy())
             
-        return float(loss)
+        return np.sum(np.array(history)) / self.batch
     
     def validate_epoch(self, Xval, Yval):
         """
         This function validates one epoch of the model.
         """
         self.model.eval()
-        Xval = torch.from_numpy(Xval).to(self.device)
-        Yval = torch.from_numpy(Yval).to(self.device)
-        with torch.no_grad():
-            self.optmz.zero_grad()
-            Xval.requires_grad = False
-            pred = self.model(Xval)
-            loss = self.criterion(pred.detach().cpu().to_numpy(), Yval)
-            result = np.argmax(pred, axis=1)
-            diff = result - Yval
-            acc = (diff.shape[0] - np.count_nonzero(diff)) / diff.shape[0]
-            Logger.log(f"val acc {acc:.8f}")
+        history = []
+        acc = 0
+        size = int(Xval.shape[0] / self.batch)
+        for i in range(self.batch):
+            X = Xval[i*size: (i+1)*size,:,:,:]
+            Y = Yval[i*size: (i+1)*size]        
+            X = torch.from_numpy(X).float().to(self.device)
+            Y = torch.from_numpy(Y).long().to(self.device)
+            with torch.no_grad():
+                self.optmz.zero_grad()
+                X.requires_grad = False
+                pred = self.model(X)
+                loss = self.criterion(pred, Y)
+                history.append(loss.detach().cpu().numpy())
+                result = np.argmax(pred, axis=1)
+                diff = result - Y
+                acc += (diff.shape[0] - np.count_nonzero(diff)) / diff.shape[0]
+        acc /= self.batch
+        Logger.log(f"val acc {acc:.8f}")
 
-            return float(loss)
+        return np.sum(np.array(history)) / self.batch
 
         
     def save(self):

@@ -1,2 +1,51 @@
 2021-12-12 01:05:09 will start training
 2021-12-12 03:43:51 will start training
+2021-12-12 04:01:26 will start training
+2021-12-12 04:28:45 will start training
+2021-12-12 04:29:35 will start training
+2021-12-12 04:33:03 will start training
+2021-12-12 04:37:12 will start training
+2021-12-12 04:38:49 will start training
+2021-12-12 04:39:52 will start training
+2021-12-12 04:41:07 will start training
+2021-12-12 04:41:56 will start training
+2021-12-12 04:42:50 will start training
+2021-12-12 04:43:30 will start training
+2021-12-12 04:44:59 will start training
+2021-12-12 04:45:59 will start training
+2021-12-12 04:47:01 will start training
+2021-12-12 04:50:34 will start training
+2021-12-12 04:52:01 will start training
+2021-12-12 04:52:45 will start training
+2021-12-12 04:54:52 will start training
+2021-12-12 04:55:35 will start training
+2021-12-12 05:06:54 will start training
+2021-12-12 05:09:54 will start training
+2021-12-12 05:11:24 will start training
+2021-12-12 05:13:36 will start training
+2021-12-12 05:14:46 will start training
+2021-12-12 05:20:21 will start training
+2021-12-12 05:24:59 will start training
+2021-12-12 05:32:16 will start training
+2021-12-12 05:40:53 will start training
+2021-12-12 05:46:20 train loss 4.03344688
+2021-12-12 05:48:30 will start training
+2021-12-12 05:54:23 train loss 12.07793884
+2021-12-12 05:54:29 val acc 0.00000000
+2021-12-12 05:54:35 val acc 0.77500000
+2021-12-12 05:54:41 val acc 0.32500000
+2021-12-12 05:54:47 val acc 0.00000000
+2021-12-12 05:54:53 val acc 0.00000000
+2021-12-12 05:54:53 0 epoch - val loss 3.43283997
+2021-12-12 05:54:53 saving
+2021-12-12 05:54:53 0 epoch loss 3.43283997 best loss 3.43283997
+2021-12-12 05:57:55 will start training
+2021-12-12 05:59:30 will start training
+2021-12-12 06:03:34 train loss 13.27673950
+2021-12-12 06:03:56 val acc 0.22000000
+2021-12-12 06:03:56 0 epoch - val loss 3.36736221
+2021-12-12 06:03:56 saving
+2021-12-12 06:03:56 0 epoch loss 3.36736221 best loss 3.36736221
+2021-12-12 06:07:56 train loss 1.99522877
+2021-12-12 06:11:58 train loss 1.23813648
+2021-12-12 06:16:01 train loss 0.55720758
