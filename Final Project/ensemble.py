@@ -50,10 +50,8 @@ class Ensemble(nn.Module):
             nn.Linear(num_classes * 3, num_classes),
             nn.Softmax(dim = 1)
         )
-        self.input = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         
     def forward(self, x):
-        x = torch.cat((self.input(x[:,0:3,:,:]),x[:,3:5,:,:]), 1)
         x1 = self.model1(x)
         x2 = self.model2(x)
         x3 = self.model3(x)
@@ -65,8 +63,8 @@ class EnsembleWrapper:
     def __init__(self, path, name, num_classes, num_epochs, batch, pre=True):
         self.model = Ensemble(num_classes, pre)
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        #self.device = torch.device("cpu")
+        #self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cpu")
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)

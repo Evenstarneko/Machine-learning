@@ -30,7 +30,7 @@ def main(args):
         labels.append(label)
         file = os.path.join(path, "imageCropped.npz")
         npzfile = np.load(file)
-        image = npzfile['a'].astype(float) 
+        image = npzfile['a'].astype(float) / 255
         image = image[sample]
         images.append(image)
     
