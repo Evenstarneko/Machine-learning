@@ -4,10 +4,10 @@
 """
 import argparse
 import os
-from rcnn import Rcnn
+from ensemble import EnsembleWrapper
 import numpy as np
 
-parser = argparse.ArgumentParser("RCNN Training Script")
+parser = argparse.ArgumentParser("EnsembleTraining Script")
 parser.add_argument("--path", type=str, required=True)
 parser.add_argument("--svpath", type=str, required=True)
 
@@ -15,7 +15,7 @@ def main(args):
     boxes = []
     images = [[], [], [], [], []]
     
-    file1 = open("log_rcnn.txt","a")
+    file1 = open("log_ensemble.txt","a")
     file1.close()
     
     for i in range(5):
