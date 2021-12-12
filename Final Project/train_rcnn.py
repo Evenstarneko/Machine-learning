@@ -16,8 +16,8 @@ def main(args):
     print(torch.cuda.is_available())
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 400
-    batch = 5
+    n_s = 250
+    batch = 50
     
     file1 = open("log_rcnn.txt","a")
     
@@ -35,7 +35,7 @@ def main(args):
             if sample[j] == 1:
                 file = os.path.join(path, str(j) + ".npz")
                 npzfile = np.load(file)
-                images[i].append(npzfile['a'].astype(float) / 255)
+                images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
     for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")

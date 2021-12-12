@@ -15,13 +15,6 @@ class Rcnn:
     
     def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
-        weight = self.model.backbone.body.conv1.weight.clone()
-        self.model.backbone.body.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
-                               bias=False)
-        with torch.no_grad(): 
-            self.model.backbone.body.conv1.weight[:, :3] = weight
-            self.model.backbone.body.conv1.weight[:, 3] = (weight[:,0] + weight[:,1] + weight[:,2]) / 3
-            self.model.backbone.body.conv1.weight[:, 4] = (weight[:,0] + weight[:,1] + weight[:,2]) / 3
         
         self.path = os.path.join(path, name)
         ##self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -69,9 +62,9 @@ class Rcnn:
     
     def train(self, images, boxes):
         self.model.train()
-        labels = torch.ones((len(images), 1)).to(self.device)
-        boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).to(self.device)
-        images = list(torch.from_numpy(image).to(self.device) for image in images)
+        labels = torch.ones((len(images), 1)).double().to(self.device)
+        boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).double().to(self.device)
+        images = list(torch.from_numpy(image).double().to(self.device) for image in images)
         targets = []
         for i in range(len(images)):
             d = {}
@@ -95,7 +88,7 @@ class Rcnn:
         return np.sum(np.array(history)) / self.batch
         
     def predict(self, images):
-        images = list(torch.from_numpy(image).to(self.device) for image in images)
+        images = list(torch.from_numpy(image).double().to(self.device) for image in images)
         self.model.eval()
         predictions = self.model(images)
         boxes = []
@@ -119,8 +112,8 @@ class Rcnn:
 
         with torch.no_grad():
             labels = torch.ones((images.shape[0], 1)).to(self.device)
-            boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).to(self.device)
-            images = list(torch.from_numpy(image).to(self.device) for image in images)
+            boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).double().to(self.device)
+            images = list(torch.from_numpy(image).double().to(self.device) for image in images)
             targets = []
             for i in range(len(images)):
                 d = {}
