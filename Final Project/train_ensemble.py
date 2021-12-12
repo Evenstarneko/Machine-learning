@@ -15,7 +15,7 @@ def main(args):
 
     labels = []
     images = []
-    n_s = 200
+    n_s = 1000
     file1 = open("log_ensemble.txt","a")
     
     for i in range(5):
@@ -48,9 +48,6 @@ def main(args):
         test_images = images[i]
         test_labels = labels[i]
         for k in range(3):    
-            
-            if k == 0:
-                continue
             
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
