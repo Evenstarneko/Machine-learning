@@ -13,34 +13,44 @@ from logger import Logger
 
 class Ensemble(nn.Module):
     def __init__(self, num_classes, pre=True):
-        self.model1 = models.resnet101(pre=True, num_classes = num_classes)
-        weight = self.model1.cov1.weight.clone()
+        super(Ensemble, self).__init__()
+        self.model1 = models.resnet101(pretrained=True)
+        weight = self.model1.conv1.weight.clone()
         self.model1.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
-        self.model1.conv1.weight[:, :3] = weight
-        self.model1.conv1.weight[:, 3] = (self.model1.conv1.weight[:,0] 
-                                          + self.model1.conv1.weight[:,1] + self.model1.conv1.weight[:,2]) / 3
-        self.model1.conv1.weight[:, 4] = (self.model1.conv1.weight[:,0] 
-                                          + self.model1.conv1.weight[:,1] + self.model1.conv1.weight[:,2]) / 3
+        with torch.no_grad(): 
+            self.model1.conv1.weight[:, :3] = weight
+            self.model1.conv1.weight[:, 3] = (self.model1.conv1.weight[:,0] 
+                                              + self.model1.conv1.weight[:,1] + self.model1.conv1.weight[:,2]) / 3
+            self.model1.conv1.weight[:, 4] = (self.model1.conv1.weight[:,0] 
+                                              + self.model1.conv1.weight[:,1] + self.model1.conv1.weight[:,2]) / 3
+        num_ftrs = self.model1.fc.in_features
+        self.model1.fc = nn.Linear(num_ftrs, num_classes)
         
-        self.model2 = models.squeezenet1_1(pre=True, num_classes = num_classes) 
+        self.model2 = models.squeezenet1_1(pretrained=True) 
         weight = self.model2.features[0].weight.clone()
         self.model2.features[0] = nn.Conv2d(5, 64, kernel_size=3, stride=2)
-        self.model2.features[0].weight[:, :3] = weight
-        self.model2.features[0].weight[:, 3] = (self.model2.features[0].weight[:,0] 
-                                          + self.model2.features[0].weight[:,1] + self.model2.features[0].weight[:,2]) / 3
-        self.model2.features[0].weight[:, 4] = (self.model2.features[0].weight[:,0] 
-                                          + self.model2.features[0].weight[:,1] + self.model2.features[0].weight[:,2]) / 3  
+        with torch.no_grad(): 
+            self.model2.features[0].weight[:, :3] = weight
+            self.model2.features[0].weight[:, 3] = (self.model2.features[0].weight[:,0] 
+                                                    + self.model2.features[0].weight[:,1] + self.model2.features[0].weight[:,2]) / 3
+            self.model2.features[0].weight[:, 4] = (self.model2.features[0].weight[:,0] 
+                                                    + self.model2.features[0].weight[:,1] + self.model2.features[0].weight[:,2]) / 3  
+        self.model2.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1,1), stride=(1,1))
+        self.model2.num_classes = num_classes
 
-        self.model3 = models.densenet169(pre=True, num_classes = num_classes)   
+        self.model3 = models.densenet169(pretrained=True)   
         weight = self.model3.features['conv0'].weight.clone()  
         self.model3.features['conv0'] = nn.Conv2d(5, 64, kernel_size=7, stride=2,
                                 padding=3, bias=False)
-        self.model3.features['conv0'].weight[:, :3] = weight
-        self.model3.features['conv0'].weight[:, 3] = (self.model3.features['conv0'].weight[:,0] 
-                                          + self.model3.features['conv0'].weight[:,1] + self.model3.features['conv0'].weight[:,2]) / 3
-        self.model3.features['conv0'].weight[:, 4] = (self.model3.features['conv0'].weight[:,0] 
-                                          + self.model3.features['conv0'].weight[:,1] + self.model3.features['conv0'].weight[:,2]) / 3
+        with torch.no_grad(): 
+            self.model3.features['conv0'].weight[:, :3] = weight
+            self.model3.features['conv0'].weight[:, 3] = (self.model3.features['conv0'].weight[:,0] 
+                                                          + self.model3.features['conv0'].weight[:,1] + self.model3.features['conv0'].weight[:,2]) / 3
+            self.model3.features['conv0'].weight[:, 4] = (self.model3.features['conv0'].weight[:,0] 
+                                                          + self.model3.features['conv0'].weight[:,1] + self.model3.features['conv0'].weight[:,2]) / 3
+        num_ftrs =  self.model3.classifier.in_features
+        self.model3.classifier = nn.Linear(num_ftrs, num_classes)
         
         self.output = nn.Linear(num_classes * 3, num_classes)
         

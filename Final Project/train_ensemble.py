@@ -6,7 +6,6 @@ import argparse
 import os
 from ensemble import EnsembleWrapper
 import numpy as np
-import torch
 
 parser = argparse.ArgumentParser("EnsembleTraining Script")
 parser.add_argument("--path", type=str, required=True)
@@ -37,8 +36,8 @@ def main(args):
             train_labels = np.empty(0)
             for j in range(5):
                 if i != j:
-                    train_images = np.append(train_images, images[j])
-                    train_labels = np.append(train_labels, labels[j][:,k])
+                    train_images = np.append(train_images, images[j], axis = 0)
+                    train_labels = np.append(train_labels, labels[j][:,k], axis = 0)
   
             test_images = images[i]
             test_labels = labels[i][:,k]
