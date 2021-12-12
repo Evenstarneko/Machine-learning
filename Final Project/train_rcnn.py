@@ -15,7 +15,7 @@ def main(args):
     boxes = []
     images = [[], [], [], [], []]
     n_s = 100
-    batch = 10
+    batch = 25
     
     file1 = open("log_rcnn.txt","a")
     
