@@ -32,10 +32,11 @@ def main(args):
         for i in range(5):
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
-            train_images = np.empty((0, 224, 224, 5))
+            train_images = np.empty((0, 5, 224, 224))
             train_labels = np.empty(0)
             for j in range(5):
                 if i != j:
+                    print(images[j].shape[0])
                     train_images = np.append(train_images, images[j], axis = 0)
                     train_labels = np.append(train_labels, labels[j][:,k], axis = 0)
   
