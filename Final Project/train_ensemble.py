@@ -6,6 +6,7 @@ import argparse
 import os
 from ensemble import EnsembleWrapper
 import numpy as np
+import torch
 
 parser = argparse.ArgumentParser("EnsembleTraining Script")
 parser.add_argument("--path", type=str, required=True)

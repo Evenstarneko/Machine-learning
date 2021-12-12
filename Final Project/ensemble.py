@@ -56,7 +56,7 @@ class EnsembleWrapper:
     def __init__(self, path, name, num_classes, num_epochs, pre=True):
         self.model = Ensemble(num_classes, pre)
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:0" if torch.cuda.is_abailable() else "cpu")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
