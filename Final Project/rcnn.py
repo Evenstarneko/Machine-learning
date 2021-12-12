@@ -20,8 +20,8 @@ class Rcnn:
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.model.float()
-        self.criterion = nn.CrossEntropyLoss()
-        self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
+        params = [p for p in self.model.parameters() if p.requires_grad]
+        self.optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
         self.cur_epoch = 0
         self.epochs = num_epochs
         self.loss = np.infty
@@ -62,7 +62,7 @@ class Rcnn:
     
     def train(self, images, boxes):
         self.model.train()
-        labels = torch.ones((len(images), 1)).float().to(self.device)
+        labels = torch.ones((len(images), 1), dtype = torch.int64).to(self.device)
         boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).float().to(self.device)
         images = list(torch.from_numpy(image).float().to(self.device) for image in images)
         targets = []
@@ -75,15 +75,14 @@ class Rcnn:
         history = []
         size = int(len(images) / self.batch)
         for i in range(self.batch):
-            self.optmz.zero_grad()
+            self.optimizer.zero_grad()
             X = images[i*size: (i+1)*size]
             Y = targets[i*size: (i+1)*size]
             output = self.model(X, Y)
-            for loss in output.values():
-                loss.backward() 
-            self.optmz.step()
-            loss = torch.sum(loss for loss in output.values()).detach().cpu().numpy()
-            history.append(loss)
+            losses = sum(loss for loss in output.values())
+            losses.backward()
+            self.optimizer.step()
+            history.append(float(losses))
             
         return np.sum(np.array(history)) / self.batch
         
@@ -111,7 +110,7 @@ class Rcnn:
         self.model.train()
 
         with torch.no_grad():
-            labels = torch.ones((images.shape[0], 1)).to(self.device)
+            labels = torch.ones((len(images), 1), dtype = torch.int64).to(self.device)
             boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).float().to(self.device)
             images = list(torch.from_numpy(image).float().to(self.device) for image in images)
             targets = []
@@ -124,12 +123,12 @@ class Rcnn:
             history = []
             size = int(len(images) / self.batch)
             for i in range(self.batch):
-                self.optmz.zero_grad()
+                self.optimizer.zero_grad()
                 X = images[i*size: (i+1)*size]
                 Y = targets[i*size: (i+1)*size]
                 output = self.model(X, Y)
-                loss = torch.sum(loss for loss in output.values()).detach().cpu().numpy()
-                history.append(loss)
+                losses = sum(loss for loss in output.values())
+                history.append(float(losses))
         
         return np.sum(np.array(history)) / self.batch
     
