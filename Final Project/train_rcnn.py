@@ -40,7 +40,7 @@ def main(args):
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_fold_" + str(i), 100)
+        model = Rcnn(args.svpath, "Rcnn_fold_" + str(i) + ".pt", 100)
         model.train_val(train_images, train_boxes, test_images, test_boxes)
         print("*** Predict: Fold "+ str(i) + " ***")
         file1.write("*** Predict: Fold "+ str(i) + " ***\n")

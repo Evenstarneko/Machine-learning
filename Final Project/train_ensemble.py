@@ -42,7 +42,7 @@ def main(args):
             test_images = images[i]
             test_labels = labels[i][:,k]
   
-            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i), class_num[k], 100)
+            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 100)
             model.train_val(train_images, train_labels, test_images, test_labels)
         
     file1.close()
