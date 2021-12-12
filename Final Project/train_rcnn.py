@@ -13,7 +13,6 @@ parser.add_argument("--path", type=str, required=True)
 parser.add_argument("--svpath", type=str, required=True)
 
 def main(args):
-    print(torch.cuda.is_available())
     boxes = []
     images = [[], [], [], [], []]
     n_s = 250
