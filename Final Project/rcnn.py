@@ -15,6 +15,17 @@ class Rcnn:
     
     def __init__(self, path, name, num_epochs, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
+        weight = self.model.backbone.body.conv1.weight.clone()
+        self.model.backbone.body.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
+                               bias=False)
+        with torch.no_grad(): 
+            self.model.backbone.body.conv1.weight[:, :3] = weight
+            self.model.backbone.body.conv1.weight[:, 3] = (self.model.backbone.body.conv1.weight[:,0] 
+                                                           + self.model.backbone.body.conv1.weight[:,1] 
+                                                           + self.model.backbone.body.conv1.weight[:,2]) / 3
+            self.model.backbone.body.conv1.weight[:, 4] = (self.model.backbone.body.conv1.weight[:,0] 
+                                                           + self.model.backbone.body.conv1.weight[:,1] 
+                                                           + self.model.backbone.body.conv1.weight[:,2]) / 3
         self.path = os.path.join(path, name)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
