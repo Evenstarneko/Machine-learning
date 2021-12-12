@@ -60,7 +60,7 @@ class Rcnn:
     def train(self, images, boxes):
         self.model.train()
         self.optmz.zero_grad()
-        labels = torch.ones((images.shape[0], 1)).to(self.device)
+        labels = torch.ones((len(images), 1)).to(self.device)
         boxes = torch.from_numpy(boxes.reshape((boxes.shape[0], 1, 4))).to(self.device)
         images = list(torch.from_numpy(image).to(self.device) for image in images)
         targets = []

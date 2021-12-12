@@ -6,12 +6,14 @@ import argparse
 import os
 from rcnn import Rcnn
 import numpy as np
+import torch
 
 parser = argparse.ArgumentParser("RCNN Training Script")
 parser.add_argument("--path", type=str, required=True)
 parser.add_argument("--svpath", type=str, required=True)
 
 def main(args):
+    print(torch.cuda.is_available())
     boxes = []
     images = [[], [], [], [], []]
     n_s = 400
@@ -23,7 +25,7 @@ def main(args):
         file = os.path.join(path, "cropbox.npz")
         npzfile = np.load(file)
         box = npzfile['a']
-        sample = np.zeros(box.shape[0], dtype = int)
+        sample = np.zeros(box.shape[0], dtype = bool)
         sample[0:n_s] = 1
         np.random.shuffle(sample)
         box = box[sample]
@@ -42,7 +44,7 @@ def main(args):
         for j in range(5):
             if i != j:
                 train_images.extend(images[j])
-                train_boxes = np.append(train_boxes, boxes[j])
+                train_boxes = np.append(train_boxes, boxes[j], axis = 0)
   
         test_images = images[i]
         test_boxes = boxes[i]
