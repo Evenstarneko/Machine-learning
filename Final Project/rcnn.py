@@ -39,11 +39,11 @@ class Rcnn:
         for epoch in range(self.cur_epoch, self.epochs):
             self.cur_epoch = epoch
             train_history.append(self.train(Xtrain, Ytrain))
-            Logger.log(f"train loss {train_history[-1]}")
+            Logger.log(f"train loss {train_history[-1]:.8f}")
             
             if not epoch % (self.freq_for_save):
                 val_history.append(self.val(Xval, Yval))
-                Logger.log(f"{epoch} epoch - val loss {val_history[-1]}")
+                Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
                 self.loss = val_history[-1]
                 if epoch >= 100 and np.sum(val_history[-7:]) > np.sum(val_history[-14:-7]):
                     Logger.log("early stop")
@@ -55,7 +55,7 @@ class Rcnn:
             if not (epoch % (self.freq_for_save)) or self.best_loss > self.loss:
                 Logger.log("saving")
                 self.save()
-                Logger.log(f"{self.cur_epoch} epoch loss {self.loss} best loss {self.best_loss}")
+                Logger.log(f"{self.cur_epoch} epoch loss {self.loss:.8f} best loss {self.best_loss:.8f}")
     
     def train(self, images, boxes):
         self.model.train()
@@ -116,7 +116,9 @@ class Rcnn:
             return float(loss)
     
     def save(self):
-        torch.save(self.model.state_dict(), self.path)
+        if self.best_loss > self.loss:
+            self.best_loss = self.loss
+            torch.save(self.model.state_dict(), self.path)
         
     def load(self):
         self.model.load_state_dict(torch.load(self.path))

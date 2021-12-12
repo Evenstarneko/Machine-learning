@@ -16,7 +16,6 @@ def main(args):
     images = [[], [], [], [], []]
     
     file1 = open("log_rcnn.txt","a")
-    file1.close()
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
@@ -26,23 +25,23 @@ def main(args):
         for j in range(npzfile['a'].shape[0]):
             file = os.path.join(path, str(i) + ".npz")
             npzfile = np.load(file)
-            images[i].append(npzfile['a'])
+            images[i].append(npzfile['a'].astype(float) / 255)
             
     for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
-        trian_images = []
+        train_images = []
         train_boxes = np.empty((0, 4))
         for j in range(5):
             if i != j:
-                trian_images.extend(images[j])
+                train_images.extend(images[j])
                 train_boxes = np.append(train_boxes, boxes[j])
   
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_fold_" + str(i))
-        model.train_val(trian_images, train_boxes, test_images, test_boxes)
+        model = Rcnn(args.svpath, "Rcnn_fold_" + str(i), 100)
+        model.train_val(train_images, train_boxes, test_images, test_boxes)
         print("*** Predict: Fold "+ str(i) + " ***")
         file1.write("*** Predict: Fold "+ str(i) + " ***\n")
         boxes, scores = model.predict(test_images)
