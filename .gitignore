@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 HW3/release-data/train.feats.npy
 *.npz
+*.onnx

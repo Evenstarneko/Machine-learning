@@ -10,26 +10,20 @@ import torch.optim as optim
 import numpy as np
 from logger import Logger
 from torch import nn
-
-class Rcnn_5(nn.Module):
-    def __init__(self, pre=True):
-        super(Rcnn_5, self).__init__()
-        self.input = nn.Sequential(
-            nn.Conv2d(5, 3, kernel_size=1),
-            nn.ReLU(inplace=True)
-        )
-        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         
-    def forward(self, x, y):
-        x = self.input(x)
-        return  self.model(x, y)
-        
-    
 class Rcnn:
     
     def __init__(self, path, name, num_epochs, pre=True):
         self.input = nn.Conv2d(5, 3, kernel_size=1)
-        self.model = Rcnn_5(pre)
+        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
+        weight = self.model.backbone.body.conv1.weight.clone()
+        self.model.backbone.body.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
+                               bias=False)
+        with torch.no_grad(): 
+            self.model.backbone.body.conv1.weight[:, :3] = weight
+            self.model.backbone.body.conv1.weight[:, 3] = (weight[:,0] + weight[:,1] + weight[:,2]) / 3
+            self.model.backbone.body.conv1.weight[:, 4] = (weight[:,0] + weight[:,1] + weight[:,2]) / 3
+        
         self.path = os.path.join(path, name)
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
