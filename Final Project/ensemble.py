@@ -46,7 +46,10 @@ class Ensemble(nn.Module):
         num_ftrs =  self.model3.classifier.in_features
         self.model3.classifier = nn.Linear(num_ftrs, num_classes)
         
-        self.output = nn.Linear(num_classes * 3, num_classes)
+        self.output = nn.Sequential(
+            nn.Linear(num_classes * 3, num_classes),
+            nn.Softmax(dim = 1)
+        )
         
     def forward(self, x):
         x1 = self.model1(x)
@@ -60,9 +63,9 @@ class EnsembleWrapper:
     def __init__(self, path, name, num_classes, num_epochs, batch, pre=True):
         self.model = Ensemble(num_classes, pre)
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        #self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.device = torch.device("cpu")
-        #self.model.to(self.device)
+        self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
         self.cur_epoch = 0
@@ -87,7 +90,7 @@ class EnsembleWrapper:
         for epoch in range(self.cur_epoch, self.epochs):
             self.cur_epoch = epoch
             train_history.append(self.train_epoch(Xtrain, Ytrain))
-            Logger.log(f"train loss {train_history[-1]:.8f}")
+            Logger.log(f"{epoch} epoch - train loss {train_history[-1]:.8f}")
             
             if not epoch % (self.freq_for_save):
                 val_history.append(self.validate_epoch(Xval, Yval))
@@ -158,8 +161,8 @@ class EnsembleWrapper:
                 pred = self.model(X)
                 loss = self.criterion(pred, Y)
                 history.append(loss.detach().cpu().numpy())
-                result = np.argmax(pred, axis=1)
-                diff = result - Y
+                result = np.argmax(pred.detach().cpu().numpy(), axis=1)
+                diff = result - Y.detach().cpu().numpy()
                 acc += (diff.shape[0] - np.count_nonzero(diff)) / diff.shape[0]
         acc /= self.batch
         Logger.log(f"val acc {acc:.8f}")

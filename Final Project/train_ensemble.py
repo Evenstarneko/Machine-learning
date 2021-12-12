@@ -15,7 +15,7 @@ def main(args):
 
     labels = []
     images = []
-    n_s = 150
+    n_s = 180
     file1 = open("log_ensemble.txt","a")
     
     for i in range(5):
