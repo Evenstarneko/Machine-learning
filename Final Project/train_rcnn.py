@@ -30,7 +30,7 @@ def main(args):
     for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
-        train_images = []
+        train_images = [] 
         train_boxes = np.empty((0, 4))
         for j in range(5):
             if i != j:
@@ -59,4 +59,4 @@ def main(args):
     file1.close()
 
 if __name__ == "__main__":
-    main()
+    main(parser.parse_args())

@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 HW3/release-data/train.feats.npy
+*.npz
