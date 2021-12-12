@@ -14,7 +14,7 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 100
+    n_s = 50
     batch = 25
     
     file1 = open("log_rcnn.txt","a")
