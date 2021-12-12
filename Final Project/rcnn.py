@@ -16,8 +16,8 @@ class Rcnn:
     def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         self.path = os.path.join(path, name)
-        ##self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        self.device = torch.device("cpu")
+        self.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+        #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.model.float()
         self.criterion = nn.CrossEntropyLoss()
@@ -48,7 +48,7 @@ class Rcnn:
                 val_history.append(self.val(Xval, Yval))
                 Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
                 self.loss = val_history[-1]
-                if epoch >= 100 and np.sum(val_history[-7:]) > np.sum(val_history[-14:-7]):
+                if epoch >= 25 and np.sum(val_history[-2:]) > np.sum(val_history[-4:-2]):
                     Logger.log("early stop")
                     Logger.log(f"train history {train_history}")
                     Logger.log(f"validation history {val_history}")

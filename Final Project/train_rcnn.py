@@ -6,7 +6,6 @@ import argparse
 import os
 from rcnn import Rcnn
 import numpy as np
-import torch
 
 parser = argparse.ArgumentParser("RCNN Training Script")
 parser.add_argument("--path", type=str, required=True)
@@ -15,7 +14,7 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 250
+    n_s = 1000
     batch = 50
     
     file1 = open("log_rcnn.txt","a")

@@ -50,8 +50,10 @@ class Ensemble(nn.Module):
             nn.Linear(num_classes * 3, num_classes),
             nn.Softmax(dim = 1)
         )
+        self.input = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         
     def forward(self, x):
+        x = torch.cat((self.input(x[:,0:3,:,:]),x[:,3:5,:,:]), 1)
         x1 = self.model1(x)
         x2 = self.model2(x)
         x3 = self.model3(x)
@@ -96,7 +98,7 @@ class EnsembleWrapper:
                 val_history.append(self.validate_epoch(Xval, Yval))
                 Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
                 self.loss = val_history[-1]
-                if epoch >= 100 and np.sum(val_history[-7:]) > np.sum(val_history[-14:-7]):
+                if epoch >= 25 and np.sum(val_history[-2:]) > np.sum(val_history[-4:-2]):
                     Logger.log("early stop")
                     Logger.log(f"train history {train_history}")
                     Logger.log(f"validation history {val_history}")

@@ -15,7 +15,7 @@ def main(args):
 
     labels = []
     images = []
-    n_s = 180
+    n_s = 200
     file1 = open("log_ensemble.txt","a")
     
     for i in range(5):
@@ -30,26 +30,34 @@ def main(args):
         labels.append(label)
         file = os.path.join(path, "imageCropped.npz")
         npzfile = np.load(file)
-        image = npzfile['a']
+        image = npzfile['a'].astype(float) / 255
         image = image[sample]
         images.append(image)
     
     class_num = [12, 2, 5]
     type_name = ["age", "sex", "race"]        
-    for k in range(3):
-        for i in range(5):
+    for i in range(5):
+        
+        train_images = np.empty((0, 5, 224, 224))
+        train_labels = np.empty((0, 3))
+        for j in range(5):
+            if i != j:
+                 train_images = np.append(train_images, images[j], axis = 0)
+                 train_labels = np.append(train_labels, labels[j], axis = 0)
+  
+        test_images = images[i]
+        test_labels = labels[i]
+        for k in range(3):    
+            
+            if k == 0:
+                continue
+            
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
-            train_images = np.empty((0, 5, 224, 224))
-            train_labels = np.empty(0)
-            for j in range(5):
-                if i != j:
-                    train_images = np.append(train_images, images[j], axis = 0)
-                    train_labels = np.append(train_labels, labels[j][:,k], axis = 0)
-  
-            test_images = images[i]
-            test_labels = labels[i][:,k]
-  
+
+            train_labels = train_labels[:,k]
+            test_labels = test_labels[:,k]
+            
             model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 5)
             model.train_val(train_images, train_labels, test_images, test_labels)
         
