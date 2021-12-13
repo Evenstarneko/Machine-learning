@@ -47,7 +47,6 @@ class Ensemble(nn.Module):
         self.model3.classifier = nn.Linear(num_ftrs, num_classes)
         
         self.output = nn.Sequential(
-            nn.Linear(num_classes, num_classes),
             nn.Softmax(dim = 1)
         )
         
