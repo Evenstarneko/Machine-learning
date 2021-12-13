@@ -67,7 +67,7 @@ class EnsembleWrapper:
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
-        self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
+        self.optmz = optim.Adam(self.model.parameters(), lr=5e-3)
         self.cur_epoch = 0
         self.epochs = num_epochs
         self.loss = np.infty

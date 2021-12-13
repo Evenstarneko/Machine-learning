@@ -15,7 +15,7 @@ def main(args):
 
     labels = []
     images = []
-    n_s = 1000
+    n_s = 500
     file1 = open("log_ensemble_re.txt","a")
     
     for i in range(5):
@@ -58,7 +58,7 @@ def main(args):
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
             
-            model = EnsembleWrapper(args.svpath, "Ensemble_full_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 50)
+            model = EnsembleWrapper(args.svpath, "Ensemble_full_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 40, 25)
             model.train_val(train_images, train_labels[:,k], test_images, test_labels[:,k])
         
     file1.close()
