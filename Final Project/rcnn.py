@@ -93,14 +93,18 @@ class Rcnn:
         boxes = []
         scores = []
         for case in predictions:
-            best_i = 0
+            best_i = -1
             best_scores = torch.zeros(1)
             for i in range(case['scores'].shape[0]):
-                if case['scores'][i] > best_scores:
+                if case['labels'][i] == 1 and case['scores'][i] > best_scores:
                     best_scores = case['scores'][i]
                     best_i = i
-            boxes.append(case['boxes'][best_i].detach().cpu().numpy())
-            scores.append(best_scores.detach().cpu().numpy())
+            if best_i != -1:
+                boxes.append(case['boxes'][best_i].detach().cpu().numpy())
+                scores.append(best_scores.detach().cpu().numpy())
+            else:
+                boxes.append(None)
+                scores.append(None)
         return boxes, scores
     
     def val(self, images, boxes):

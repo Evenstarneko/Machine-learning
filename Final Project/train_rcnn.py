@@ -36,6 +36,8 @@ def main(args):
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
     for i in range(5):
+        if i == 0:
+            continue
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 
@@ -50,25 +52,27 @@ def main(args):
   
         model = Rcnn(args.svpath, "Rcnn_fold_" + str(i) + ".pt", 50, batch)
         model.train_val(train_images, train_boxes, test_images, test_boxes)
-        print("*** Predict: Fold "+ str(i) + " ***")
-        file1.write("*** Predict: Fold "+ str(i) + " ***\n")
-        pred_boxes = []
-        scores = []
-        size = int(len(test_images) / batch)
-        for i in range(batch):
-            b, s = model.predict(test_images[i*size: (i+1)*size])
-            pred_boxes.append(b)
-            scores.append(s)
-        
-        scores = np.sum(np.array(scores))
-        avg_scores = scores / test_boxes.shape[0]
-        print("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***")
-        file1.write("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***\n")
-        mse = np.square(np.array(pred_boxes) - test_boxes)
-        mse = np.sum(mse)
-        avg_mse = mse / test_boxes.shape[0] / 4
-        print("*** Fold "+ str(i) + " MSE : " + str(avg_mse) + " ***")
-        file1.write("*** Fold "+ str(i) + " MSE : " + str(avg_mse) + " ***\n")
+# =============================================================================
+#         print("*** Predict: Fold "+ str(i) + " ***")
+#         file1.write("*** Predict: Fold "+ str(i) + " ***\n")
+#         pred_boxes = []
+#         scores = []
+#         size = int(len(test_images) / batch)
+#         for k in range(batch):
+#             b, s = model.predict(test_images[i*size: (i+1)*size])
+#             pred_boxes.append(b)
+#             scores.append(s)
+#         
+#         scores = np.sum(np.array(scores))
+#         avg_scores = scores / test_boxes.shape[0]
+#         print("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***")
+#         file1.write("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***\n")
+#         mse = np.square(np.array(pred_boxes) - test_boxes)
+#         mse = np.sum(mse)
+#         avg_mse = mse / test_boxes.shape[0] / 4
+#         print("*** Fold "+ str(i) + " MSE : " + str(avg_mse) + " ***")
+#         file1.write("*** Fold "+ str(i) + " MSE : " + str(avg_mse) + " ***\n")
+# =============================================================================
         
     file1.close()
 
