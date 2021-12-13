@@ -52,7 +52,7 @@ def main(args):
         test_labels = labels[i]
         for k in range(3):
             
-            if k == 0 or k == 2:
+            if k == 0 or k == 1:
                 continue
         
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
