@@ -16,9 +16,7 @@ class Rcnn:
     
     def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
-        for param in self.model.parameters():
-            param.requires_grad = False
-        num_classes = 91 
+        num_classes = 2
         in_features = self.model.roi_heads.box_predictor.cls_score.in_features
         self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         self.path = os.path.join(path, name)
