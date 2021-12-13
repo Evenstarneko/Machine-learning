@@ -18,7 +18,7 @@ class Rcnn:
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         for param in self.model.parameters():
             param.requires_grad = False
-        num_classes = 91  
+        num_classes = 2  
         in_features = self.model.roi_heads.box_predictor.cls_score.in_features
         self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         self.path = os.path.join(path, name)
@@ -27,7 +27,7 @@ class Rcnn:
         self.model.to(self.device)
         self.model.float()
         params = [p for p in self.model.parameters() if p.requires_grad]
-        self.optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
+        self.optimizer = optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
         self.cur_epoch = 0
         self.epochs = num_epochs
         self.loss = np.infty
@@ -105,10 +105,7 @@ class Rcnn:
                 if case['scores'][i] > best_scores:
                     best_scores = case['scores'][i]
                     best_i = i
-            if len(case['boxes']) == 0:
-                boxes.append(np.zeros(4))
-            else:
-                boxes.append(case['boxes'][best_i].detach().cpu().numpy())
+            boxes.append(case['boxes'][best_i].detach().cpu().numpy())
             scores.append(best_scores.detach().cpu().numpy())
         return boxes, scores
     

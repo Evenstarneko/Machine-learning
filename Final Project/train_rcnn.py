@@ -14,8 +14,8 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 10
-    batch = 10
+    n_s = 1000
+    batch = 100
     
     file1 = open("log_feature_rcnn.txt","a")
     
@@ -49,7 +49,7 @@ def main(args):
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_feature_fold_" + str(i) + ".pt", 50, batch)
+        model = Rcnn(args.svpath, "Rcnn_feature_fold_" + str(i) + ".pt", 51, batch)
         model.train_val(train_images, train_boxes, test_images, test_boxes)
         continue
         
