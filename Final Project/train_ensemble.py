@@ -37,7 +37,7 @@ def main(args):
     class_num = [12, 2, 5]
     type_name = ["age", "sex", "race"]        
     for i in range(5):
-        
+
         if i == 0 or i == 1 or i == 2:
             continue
         
