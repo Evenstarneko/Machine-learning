@@ -48,7 +48,7 @@ def main(args):
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_feature_fold_" + str(i) + ".pt", 51, batch)
+        model = Rcnn(args.svpath, "Rcnn_full_feature_fold_" + str(i) + ".pt", 51, batch)
         model.train_val(train_images, train_boxes, test_images, test_boxes)
         
     file1.close()
