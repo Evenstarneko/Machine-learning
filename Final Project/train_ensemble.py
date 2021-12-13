@@ -16,7 +16,7 @@ def main(args):
     labels = []
     images = []
     n_s = 1000
-    file1 = open("log_ensemble.txt","a")
+    file1 = open("log_ensemble_re.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
@@ -37,6 +37,9 @@ def main(args):
     class_num = [12, 2, 5]
     type_name = ["age", "sex", "race"]        
     for i in range(5):
+        
+        if i == 0 or i == 1 or i == 2:
+            continue
         
         train_images = np.empty((0, 5, 224, 224))
         train_labels = np.empty((0, 3))

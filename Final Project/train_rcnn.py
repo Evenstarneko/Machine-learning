@@ -50,6 +50,8 @@ def main(args):
   
         model = Rcnn(args.svpath, "Rcnn_fold_" + str(i) + ".pt", 50, batch)
         model.train_val(train_images, train_boxes, test_images, test_boxes)
+        continue
+        
         print("*** Predict: Fold "+ str(i) + " ***")
         file1.write("*** Predict: Fold "+ str(i) + " ***\n")
         pred_boxes = []
