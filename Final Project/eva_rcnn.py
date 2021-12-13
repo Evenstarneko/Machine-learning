@@ -35,7 +35,7 @@ def main(args):
                 npzfile = np.load(file)
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
-    for i in range(5):
+    for i in reversed(range(5)):
 
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
@@ -54,19 +54,19 @@ def main(args):
         
         print("*** Predict: Fold "+ str(i) + " ***")
         file1.write("*** Predict: Fold "+ str(i) + " ***\n")
-        pred_boxes = np.empty((0, 4))
-        scores = np.empty(0)
+        pred_boxes = []
+        scores = []
         size = int(len(test_images) / batch)
         for k in range(batch):
             b, s = model.predict(test_images[k*size: (k+1)*size])
-            pred_boxes = np.append(pred_boxes, b, axis = 0) 
-            scores = np.append(scores, s) 
+            pred_boxes.extend(b)
+            scores.extend(s) 
         
-        scores = np.sum(scores)
+        scores = np.sum(np.array(scores))
         avg_scores = scores / test_boxes.shape[0]
         print("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***")
         file1.write("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***\n")
-        mse = np.square(pred_boxes - test_boxes)
+        mse = np.square(np.array(pred_boxes) - test_boxes)
         mse = np.sum(mse)
         avg_mse = np.sqrt(mse / test_boxes.shape[0] / 4)
         print("*** Fold "+ str(i) + " RMSE : " + str(avg_mse) + " ***")
