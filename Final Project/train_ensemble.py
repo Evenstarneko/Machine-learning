@@ -47,16 +47,16 @@ def main(args):
   
         test_images = images[i]
         test_labels = labels[i]
-        for k in range(3):    
+        for k in range(3):    d
             
+            if i == 0 && k == 0:
+                continue
+        
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
-
-            train_labels = train_labels[:,k]
-            test_labels = test_labels[:,k]
             
             model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 50)
-            model.train_val(train_images, train_labels, test_images, test_labels)
+            model.train_val(train_images, train_labels[:,k], test_images, test_labels[:,k])
         
     file1.close()
 
