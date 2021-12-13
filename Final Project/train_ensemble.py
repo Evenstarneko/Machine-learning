@@ -16,7 +16,7 @@ def main(args):
     labels = []
     images = []
     n_s = 1000
-    file1 = open("log_ensemble_re.txt","a")
+    file1 = open("log_ensemble.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
@@ -38,7 +38,7 @@ def main(args):
     type_name = ["age", "sex", "race"]        
     for i in range(5):
 
-        if i == 0 or i == 1 or i == 2:
+        if i == 0 or i == 3 or i == 4:
             continue
         
         train_images = np.empty((0, 5, 224, 224))
@@ -47,13 +47,10 @@ def main(args):
             if i != j:
                  train_images = np.append(train_images, images[j], axis = 0)
                  train_labels = np.append(train_labels, labels[j], axis = 0)
-  
+  d
         test_images = images[i]
         test_labels = labels[i]
         for k in range(3):
-            
-            if i == 0 and k == 0:
-                continue
         
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
