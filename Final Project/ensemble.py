@@ -92,6 +92,9 @@ class EnsembleWrapper:
             train_history.append(self.train_epoch(Xtrain, Ytrain))
             Logger.log(f"{epoch} epoch - train loss {train_history[-1]:.8f}")
             
+            if epoch >= 3 and train_history[-1] == train_history[-2] and train_history[-3] == train_history[-2] :
+                break
+            
             if not epoch % (self.freq_for_save):
                 val_history.append(self.validate_epoch(Xval, Yval))
                 Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
