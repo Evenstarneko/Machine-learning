@@ -14,7 +14,7 @@ from logger import Logger
 class Ensemble(nn.Module):
     def __init__(self, num_classes, pre=True):
         super(Ensemble, self).__init__()
-        self.model1 = models.resnet18(pretrained=True)
+        self.model1 = models.resnet18(pretrained=pre)
         weight = self.model1.conv1.weight.clone()
         self.model1.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
@@ -25,7 +25,7 @@ class Ensemble(nn.Module):
         num_ftrs = self.model1.fc.in_features
         self.model1.fc = nn.Linear(num_ftrs, num_classes)
         
-        self.model2 = models.squeezenet1_1(pretrained=True) 
+        self.model2 = models.squeezenet1_1(pretrained=pre) 
         weight = self.model2.features[0].weight.clone()
         self.model2.features[0] = nn.Conv2d(5, 64, kernel_size=3, stride=2)
         with torch.no_grad(): 
@@ -35,7 +35,7 @@ class Ensemble(nn.Module):
         self.model2.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1,1), stride=(1,1))
         self.model2.num_classes = num_classes
 
-        self.model3 = models.densenet121(pretrained=True)   
+        self.model3 = models.densenet121(pretrained=pre)   
         weight = self.model3.features.conv0.weight.clone()  
         self.model3.features.conv0 = nn.Conv2d(5, 64, kernel_size=7, stride=2,
                                 padding=3, bias=False)
@@ -67,7 +67,7 @@ class EnsembleWrapper:
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
-        self.optmz = optim.Adam(self.model.parameters(), lr=5e-4)
+        self.optmz = optim.Adam(self.model.parameters(), lr=1e-3)
         self.cur_epoch = 0
         self.epochs = num_epochs
         self.loss = np.infty
