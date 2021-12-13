@@ -49,7 +49,7 @@ def main(args):
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_feature_fold_" + str(i) + ".pt", 50, batch)
+        model = Rcnn(args.svpath, "Rcnn_fold_" + str(i) + ".pt", 50, batch)
         model.load()
         
         print("*** Predict: Fold "+ str(i) + " ***")
