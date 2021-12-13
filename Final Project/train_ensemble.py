@@ -47,7 +47,7 @@ def main(args):
             if i != j:
                  train_images = np.append(train_images, images[j], axis = 0)
                  train_labels = np.append(train_labels, labels[j], axis = 0)
-  d
+
         test_images = images[i]
         test_labels = labels[i]
         for k in range(3):
