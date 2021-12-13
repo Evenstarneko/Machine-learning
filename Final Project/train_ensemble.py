@@ -16,7 +16,7 @@ def main(args):
     labels = []
     images = []
     n_s = 1000
-    file1 = open("log_ensemble_re.txt","a")
+    file1 = open("log_ensemble.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
