@@ -15,8 +15,6 @@ class Ensemble(nn.Module):
     def __init__(self, num_classes, pre=True):
         super(Ensemble, self).__init__()
         self.model1 = models.resnet18(pretrained=True)
-        for param in self.model1.parameters():
-            param.requires_grad = False
         weight = self.model1.conv1.weight.clone()
         self.model1.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
@@ -28,8 +26,6 @@ class Ensemble(nn.Module):
         self.model1.fc = nn.Linear(num_ftrs, num_classes)
         
         self.model2 = models.squeezenet1_1(pretrained=True) 
-        for param in self.model2.parameters():
-            param.requires_grad = False
         weight = self.model2.features[0].weight.clone()
         self.model2.features[0] = nn.Conv2d(5, 64, kernel_size=3, stride=2)
         with torch.no_grad(): 
@@ -40,8 +36,6 @@ class Ensemble(nn.Module):
         self.model2.num_classes = num_classes
 
         self.model3 = models.densenet121(pretrained=True)   
-        for param in self.model3.parameters():
-            param.requires_grad = False
         weight = self.model3.features.conv0.weight.clone()  
         self.model3.features.conv0 = nn.Conv2d(5, 64, kernel_size=7, stride=2,
                                 padding=3, bias=False)
@@ -97,10 +91,6 @@ class EnsembleWrapper:
             self.cur_epoch = epoch
             train_history.append(self.train_epoch(Xtrain, Ytrain))
             Logger.log(f"{epoch} epoch - train loss {train_history[-1]:.8f}")
-            
-            if epoch == 5:
-                for param in self.model.parameters():
-                    param.requires_grad = True
             
             if not epoch % (self.freq_for_save):
                 val_history.append(self.validate_epoch(Xval, Yval))
