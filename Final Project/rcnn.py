@@ -10,18 +10,24 @@ import torch.optim as optim
 import numpy as np
 from logger import Logger
 from torch import nn
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
         
 class Rcnn:
     
     def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
+        for param in self.model.parameters():
+            param.requires_grad = False
+        num_classes = 2  
+        in_features = self.model.roi_heads.box_predictor.cls_score.in_features
+        self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         self.path = os.path.join(path, name)
         self.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.model.float()
         params = [p for p in self.model.parameters() if p.requires_grad]
-        self.optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
+        self.optimizer = optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
         self.cur_epoch = 0
         self.epochs = num_epochs
         self.loss = np.infty

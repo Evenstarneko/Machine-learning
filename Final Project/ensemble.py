@@ -14,7 +14,7 @@ from logger import Logger
 class Ensemble(nn.Module):
     def __init__(self, num_classes, pre=True):
         super(Ensemble, self).__init__()
-        self.model1 = models.resnet18(pretrained=True)
+        self.model1 = models.resnet18(pretrained=pre)
         weight = self.model1.conv1.weight.clone()
         self.model1.conv1 = nn.Conv2d(5, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
@@ -25,7 +25,7 @@ class Ensemble(nn.Module):
         num_ftrs = self.model1.fc.in_features
         self.model1.fc = nn.Linear(num_ftrs, num_classes)
         
-        self.model2 = models.squeezenet1_1(pretrained=True) 
+        self.model2 = models.squeezenet1_1(pretrained=pre) 
         weight = self.model2.features[0].weight.clone()
         self.model2.features[0] = nn.Conv2d(5, 64, kernel_size=3, stride=2)
         with torch.no_grad(): 
@@ -35,7 +35,7 @@ class Ensemble(nn.Module):
         self.model2.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1,1), stride=(1,1))
         self.model2.num_classes = num_classes
 
-        self.model3 = models.densenet121(pretrained=True)   
+        self.model3 = models.densenet121(pretrained=pre)   
         weight = self.model3.features.conv0.weight.clone()  
         self.model3.features.conv0 = nn.Conv2d(5, 64, kernel_size=7, stride=2,
                                 padding=3, bias=False)
@@ -50,10 +50,8 @@ class Ensemble(nn.Module):
             nn.Linear(num_classes * 3, num_classes),
             nn.Softmax(dim = 1)
         )
-        self.input = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         
     def forward(self, x):
-        x = torch.cat((self.input(x[:,0:3,:,:]),x[:,3:5,:,:]), 1)
         x1 = self.model1(x)
         x2 = self.model2(x)
         x3 = self.model3(x)
@@ -94,11 +92,14 @@ class EnsembleWrapper:
             train_history.append(self.train_epoch(Xtrain, Ytrain))
             Logger.log(f"{epoch} epoch - train loss {train_history[-1]:.8f}")
             
+            if epoch >= 3 and train_history[-1] == train_history[-2] and train_history[-3] == train_history[-2] :
+                break
+            
             if not epoch % (self.freq_for_save):
                 val_history.append(self.validate_epoch(Xval, Yval))
                 Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
                 self.loss = val_history[-1]
-                if epoch >= 25 and np.sum(val_history[-2:]) > np.sum(val_history[-4:-2]):
+                if epoch >= 25 and np.sum(val_history[-2:]) >= np.sum(val_history[-4:-2]):
                     Logger.log("early stop")
                     Logger.log(f"train history {train_history}")
                     Logger.log(f"validation history {val_history}")

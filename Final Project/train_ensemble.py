@@ -37,6 +37,9 @@ def main(args):
     class_num = [12, 2, 5]
     type_name = ["age", "sex", "race"]        
     for i in range(5):
+
+        if i == 0:
+            continue
         
         train_images = np.empty((0, 5, 224, 224))
         train_labels = np.empty((0, 3))
@@ -44,19 +47,19 @@ def main(args):
             if i != j:
                  train_images = np.append(train_images, images[j], axis = 0)
                  train_labels = np.append(train_labels, labels[j], axis = 0)
-  
+
         test_images = images[i]
         test_labels = labels[i]
-        for k in range(3):    
+        for k in range(3):
             
+            if k == 0 or k == 1:
+                continue
+        
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
-
-            train_labels = train_labels[:,k]
-            test_labels = test_labels[:,k]
             
-            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 5)
-            model.train_val(train_images, train_labels, test_images, test_labels)
+            model = EnsembleWrapper(args.svpath, "Ensemble_full_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 51, False)
+            model.train_val(train_images, train_labels[:,k], test_images, test_labels[:,k])
         
     file1.close()
 
