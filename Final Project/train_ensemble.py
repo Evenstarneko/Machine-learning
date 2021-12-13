@@ -16,7 +16,7 @@ def main(args):
     labels = []
     images = []
     n_s = 1000
-    file1 = open("log_ensemble.txt","a")
+    file1 = open("log_ensemble_re.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
@@ -38,7 +38,7 @@ def main(args):
     type_name = ["age", "sex", "race"]        
     for i in range(5):
 
-        if i == 0 or i == 3 or i == 4:
+        if i == 0:
             continue
         
         train_images = np.empty((0, 5, 224, 224))
@@ -51,11 +51,14 @@ def main(args):
         test_images = images[i]
         test_labels = labels[i]
         for k in range(3):
+            
+            if k == 0 or k == 1:
+                continue
         
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
             
-            model = EnsembleWrapper(args.svpath, "Ensemble_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 50)
+            model = EnsembleWrapper(args.svpath, "Ensemble_full_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 50)
             model.train_val(train_images, train_labels[:,k], test_images, test_labels[:,k])
         
     file1.close()

@@ -14,7 +14,7 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 25
+    n_s = 100
     batch = 25
     
     file1 = open("eva_rcnn.txt","a")
@@ -54,21 +54,19 @@ def main(args):
         
         print("*** Predict: Fold "+ str(i) + " ***")
         file1.write("*** Predict: Fold "+ str(i) + " ***\n")
-        pred_boxes = []
-        scores = []
+        pred_boxes = np.empty((0, 4))
+        scores = np.empty(0)
         size = int(len(test_images) / batch)
         for k in range(batch):
             b, s = model.predict(test_images[k*size: (k+1)*size])
-            print(b)
-            exit()
-            pred_boxes.append(b)
-            scores.append(s)
+            pred_boxes = np.append(pred_boxes, b, axis = 0) 
+            scores = np.append(scores, s) 
         
-        scores = np.sum(np.array(scores))
+        scores = np.sum(scores)
         avg_scores = scores / test_boxes.shape[0]
         print("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***")
         file1.write("*** Fold "+ str(i) + " score : " + str(avg_scores) + " ***\n")
-        mse = np.square(np.array(pred_boxes) - test_boxes)
+        mse = np.square(pred_boxes - test_boxes)
         mse = np.sum(mse)
         avg_mse = np.sqrt(mse / test_boxes.shape[0] / 4)
         print("*** Fold "+ str(i) + " RMSE : " + str(avg_mse) + " ***")
