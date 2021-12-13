@@ -47,7 +47,7 @@ def main(args):
   
         test_images = images[i]
         test_labels = labels[i]
-        for k in range(3)
+        for k in range(3):
             
             if i == 0 && k == 0:
                 continue
