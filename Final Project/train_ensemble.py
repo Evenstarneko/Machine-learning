@@ -58,7 +58,7 @@ def main(args):
             print("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***")
             file1.write("*** Train: "+ type_name[k] +" Fold "+ str(i) + " ***\n")
             
-            model = EnsembleWrapper(args.svpath, "Ensemble_full_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 50, False)
+            model = EnsembleWrapper(args.svpath, "Ensemble_full_"+ type_name[k] +"_fold_" + str(i) + ".pt", class_num[k], 50, 51, False)
             model.train_val(train_images, train_labels[:,k], test_images, test_labels[:,k])
         
     file1.close()
