@@ -69,7 +69,7 @@ class EnsembleWrapper:
     def __init__(self, path, name, num_classes, num_epochs, batch, pre=True):
         self.model = Ensemble(num_classes, pre)
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
@@ -97,10 +97,6 @@ class EnsembleWrapper:
             self.cur_epoch = epoch
             train_history.append(self.train_epoch(Xtrain, Ytrain))
             Logger.log(f"{epoch} epoch - train loss {train_history[-1]:.8f}")
-            
-            if epoch == 5:
-                for param in self.model.parameters():
-                    param.requires_grad = True
             
             if not epoch % (self.freq_for_save):
                 val_history.append(self.validate_epoch(Xval, Yval))
