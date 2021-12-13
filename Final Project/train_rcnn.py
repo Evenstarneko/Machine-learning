@@ -14,7 +14,7 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 200
+    n_s = 250
     batch = 100
     
     file1 = open("log_feature_rcnn.txt","a")
@@ -36,7 +36,7 @@ def main(args):
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
     for i in reversed(range(5)):
-  
+
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 
