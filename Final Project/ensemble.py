@@ -98,6 +98,10 @@ class EnsembleWrapper:
             train_history.append(self.train_epoch(Xtrain, Ytrain))
             Logger.log(f"{epoch} epoch - train loss {train_history[-1]:.8f}")
             
+            if epoch == 5:
+                for param in self.model.parameters():
+                    param.requires_grad = True
+            
             if not epoch % (self.freq_for_save):
                 val_history.append(self.validate_epoch(Xval, Yval))
                 Logger.log(f"{epoch} epoch - val loss {val_history[-1]:.8f}")
