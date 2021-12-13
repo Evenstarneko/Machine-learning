@@ -47,7 +47,7 @@ class Ensemble(nn.Module):
         self.model3.classifier = nn.Linear(num_ftrs, num_classes)
         
         self.output = nn.Sequential(
-            nn.Linear(num_classes * 3, num_classes),
+            nn.Linear(num_classes, num_classes),
             nn.Softmax(dim = 1)
         )
         
@@ -55,7 +55,7 @@ class Ensemble(nn.Module):
         x1 = self.model1(x)
         x2 = self.model2(x)
         x3 = self.model3(x)
-        x = torch.cat((torch.cat((x1,x2),1),x3),1)
+        x = x1 + x2 + x3
         x = self.output(x)
         return x
         
