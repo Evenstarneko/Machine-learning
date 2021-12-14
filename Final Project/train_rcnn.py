@@ -17,7 +17,7 @@ def main(args):
     n_s = 100
     batch = 50
     
-    file1 = open("log_feature_rcnn.txt","a")
+    file1 = open("log_full_feature_rcnn.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
