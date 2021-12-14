@@ -36,7 +36,6 @@ def main(args):
     shape = image.shape
     
     imageT = F.resize(imageT, [shape[1], shape[2]])
-    # TODO: create test_image as (1,C,H,W) numpy array
     test_image = image[0:3].astype(float) / 255
     model = Rcnn(args.svpath, "Rcnn_full_feature_fold_4.pt", 50, 1)
     model.load()
