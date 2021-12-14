@@ -35,7 +35,7 @@ def main(args):
                 npzfile = np.load(file)
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
-    for i in reversed(range(5)):
+    for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 
@@ -48,7 +48,7 @@ def main(args):
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_full_feature_fold_" + str(i) + ".pt", 50, batch)
+        model = Rcnn(args.svpath, "Rcnn_full_feature_half_fold_" + str(i) + ".pt", 50, batch)
         model.load()
         
         print("*** Predict: Fold "+ str(i) + " ***")
