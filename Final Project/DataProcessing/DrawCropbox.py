@@ -7,3 +7,7 @@ def drawCropbox(img, pts1, pts2):
     cv.imshow('img', img)
     cv.waitKey(0)
 
+def drawCropbox2(img, pts):
+    img = cv.rectangle(img, tuple(pts[0]), tuple(pts[1]), (0, 0, 255), thickness = 2)
+    cv.imshow('img', img)
+    cv.waitKey(0)
