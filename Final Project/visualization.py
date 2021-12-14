@@ -40,7 +40,7 @@ def main(args):
     test_image = []
     test_image.append(image[0:3])
     
-    model = Rcnn(args.svpath, "Rcnn_full_feature_fold_0.pt", 50, 1)
+    model = Rcnn(args.svpath, "Rcnn_full_feature_fold_4.pt", 50, 1)
     model.load()
     boxes, scores = model.predict(test_image)
     print(boxes)
