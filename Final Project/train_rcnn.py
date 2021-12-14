@@ -17,7 +17,7 @@ def main(args):
     n_s = 100
     batch = 50
     
-    file1 = open("log_feature_rcnn_re.txt","a")
+    file1 = open("log_feature_rcnn.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
@@ -29,13 +29,14 @@ def main(args):
         np.random.shuffle(sample)
         box = box[sample]
         boxes.append(box)
-        for j in range(npzfile['a'].shape[0]):
+        lenth = npzfile['a'].shape[0]
+        for j in range(lenth):
             if sample[j] == 1:
                 file = os.path.join(path, str(j) + ".npz")
                 npzfile = np.load(file)
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
-    for i in reversed(range(5)):
+    for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 

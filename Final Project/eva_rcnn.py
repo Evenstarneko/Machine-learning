@@ -35,7 +35,7 @@ def main(args):
                 npzfile = np.load(file)
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
-    for i in reversed(range(5)):
+    for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 
@@ -70,6 +70,8 @@ def main(args):
         avg_mse = np.sqrt(mse / test_boxes.shape[0] / 4)
         print("*** Fold "+ str(i) + " RMSE : " + str(avg_mse) + " ***")
         file1.write("*** Fold "+ str(i) + " RMSE : " + str(avg_mse) + " ***\n")
+        
+        break
         
     file1.close()
 
