@@ -16,7 +16,7 @@ class Rcnn:
     
     def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
-        num_classes = 2
+        num_classes = 91
         in_features = self.model.roi_heads.box_predictor.cls_score.in_features
         self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         self.path = os.path.join(path, name)
@@ -94,13 +94,14 @@ class Rcnn:
         images = list(torch.from_numpy(image).float().to(self.device) for image in images)
         self.model.eval()
         predictions = self.model(images)
+        print(predictions)
         boxes = []
         scores = []
         for case in predictions:
             best_i = -1
             best_scores = torch.zeros(1)
             for i in range(case['scores'].shape[0]):
-                if case['labels'][i] == 1 and case['scores'][i] > best_scores:
+                if case['labels'][i] == 1 and case['scores'][i] >= best_scores:
                     best_scores = case['scores'][i]
                     best_i = i
             if best_i != -1:
