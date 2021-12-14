@@ -14,10 +14,10 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 100
-    batch = 50
+    n_s = 50
+    batch = 25
     
-    file1 = open("log_full_feature_rcnn.txt","a")
+    file1 = open("log_full_feature_half_rcnn.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
@@ -36,7 +36,7 @@ def main(args):
                 npzfile = np.load(file)
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
-    for i in reversed(range(5)):
+    for i in range(5):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 
@@ -49,7 +49,7 @@ def main(args):
         test_images = images[i]
         test_boxes = boxes[i]
   
-        model = Rcnn(args.svpath, "Rcnn_full_feature_fold_" + str(i) + ".pt", 51, batch)
+        model = Rcnn(args.svpath, "Rcnn_full_feature_half_fold_" + str(i) + ".pt", 51, batch)
         model.train_val(train_images, train_boxes, test_images, test_boxes)
         
     file1.close()
