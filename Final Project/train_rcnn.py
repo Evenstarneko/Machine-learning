@@ -36,7 +36,7 @@ def main(args):
                 npzfile = np.load(file)
                 images[i].append(npzfile['a'].astype(float)[0:3,:,:] / 255)
 
-    for i in range(5):
+    for i in reversed(range(5)):
         print("*** Train: Fold "+ str(i) + " ***")
         file1.write("*** Train: Fold "+ str(i) + " ***\n")
         train_images = [] 
