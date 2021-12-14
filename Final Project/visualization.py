@@ -29,8 +29,8 @@ def show(imgs):
         axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
 
 def main(args):
-    image = cv.imread("./Test/3.jpg")
-    imageT = read_image("./Test/3.jpg")
+    image = cv.imread("./Test/6.jpg")
+    imageT = read_image("./Test/6.jpg")
     image = PreprocessImage.preprocess(image)
     shape = image.shape
     print(shape)
@@ -39,7 +39,7 @@ def main(args):
     test_image = []
     test_image.append(image[0:3])
     
-    model = Rcnn(args.svpath, "Rcnn_full_feature_fold_4.pt", 50, 1)
+    model = Rcnn(args.svpath, "Rcnn_full_feature_fold_0.pt", 50, 1)
     model.load()
     boxes, scores = model.predict(test_image)
     print(boxes)
