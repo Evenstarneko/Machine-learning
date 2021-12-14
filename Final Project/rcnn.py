@@ -20,7 +20,7 @@ class Rcnn:
         in_features = self.model.roi_heads.box_predictor.cls_score.in_features
         self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.model.float()
