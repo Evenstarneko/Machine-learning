@@ -29,8 +29,8 @@ def show(imgs):
         axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
 
 def main(args):
-    image = cv.imread(args.path)
-    imageT = read_image(args.path)
+    image = cv.imread("./Test/8.jpg")
+    imageT = read_image("./Test/8.jpg")
     image = PreprocessImage.preprocess(image)
     shape = image.shape
     imageT = F.resize(imageT, [shape[1], shape[2]])
@@ -38,33 +38,32 @@ def main(args):
     test_image = []
     test_image.append(image[0:3])
     
-    # model = Rcnn(args.svpath, "Rcnn_fold_0.pt", 50, 1)
-    # model.load()
-    # boxes, scores = model.predict(test_image)
-    # print(boxes)
-    # if (boxes[0] is not None):
-    #     result = draw_bounding_boxes(imageT, torch.tensor([boxes[0]], dtype=torch.float), colors=["blue"], width=5)
-    #     show(result)
-    #     imageCropped = image[:, int(boxes[0][0]):int(boxes[0][2]), int(boxes[0][1]):int(boxes[0][3])]
-    #     imageCropped = np.moveaxis(imageCropped, 0, -1)
-    #     imageCropped = cv.resize(imageCropped, (224, 224))
-    #     imageCropped = np.moveaxis(imageCropped, -1, 0)
+    model = Rcnn(args.svpath, "Rcnn_fold_3.pt", 50, 1)
+    model.load()
+    boxes, scores = model.predict(test_image)
+    print(boxes)
+    if (boxes[0] is not None):
+        result = draw_bounding_boxes(imageT, torch.tensor([boxes[0]], dtype=torch.float), colors=["blue"], width=5)
+        show(result)
+        imageCropped = image[:, int(boxes[0][0]):int(boxes[0][2]), int(boxes[0][1]):int(boxes[0][3])]
+        imageCropped = np.moveaxis(imageCropped, 0, -1)
+        imageCropped = cv.resize(imageCropped, (224, 224))
+        imageCropped = np.moveaxis(imageCropped, -1, 0)
         
-    imageCropped = cv.imread('./Test/cropped3.jpg')
-    imageCropped = PreprocessImage.preprocess2(imageCropped).reshape((1, 5, 224, 224))
-    print(imageCropped.shape)
-    model = EnsembleWrapper(args.svpath, "Ensemble_age_fold_0.pt", 12, 50, 1)
-    model.load()
-    age = model.predict(imageCropped)
-    print(age)
-    model = EnsembleWrapper(args.svpath, "Ensemble_full_sex_fold_4.pt", 2, 50, 1)
-    model.load()
-    sex = model.predict(imageCropped)
-    print(sex)
-    model = EnsembleWrapper(args.svpath, "Ensemble_full_race_fold_4.pt", 5, 50, 1)
-    model.load()
-    race = model.predict(imageCropped)
-    print(race)
+    # imageCropped = cv.imread('./Test/cropped3.jpg')
+    # imageCropped = PreprocessImage.preprocess2(imageCropped).reshape((1, 5, 224, 224))
+    # model = EnsembleWrapper(args.svpath, "Ensemble_age_fold_0.pt", 12, 50, 1)
+    # model.load()
+    # age = model.predict(imageCropped)
+    # print(age)
+    # model = EnsembleWrapper(args.svpath, "Ensemble_full_sex_fold_4.pt", 2, 50, 1)
+    # model.load()
+    # sex = model.predict(imageCropped)
+    # print(sex)
+    # model = EnsembleWrapper(args.svpath, "Ensemble_full_race_fold_4.pt", 5, 50, 1)
+    # model.load()
+    # race = model.predict(imageCropped)
+    # print(race)
 
 
 
