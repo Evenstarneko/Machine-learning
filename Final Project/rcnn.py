@@ -15,7 +15,7 @@ class Rcnn:
     def __init__(self, path, name, num_epochs, batch, pre=True):
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pre)
         self.path = os.path.join(path, name)
-        self.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         #self.device = torch.device("cpu")
         self.model.to(self.device)
         self.model.float()
