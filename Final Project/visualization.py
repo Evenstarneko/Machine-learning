@@ -30,8 +30,8 @@ def show(imgs):
     plt.savefig("image.jpg")
 
 def main(args):
-    image = cv.imread("./Test/6.jpg")
-    imageT = read_image("./Test/6.jpg")
+    image = cv.imread("./Test/9.jpg")
+    imageT = read_image("./Test/9.jpg")
     image = PreprocessImage.preprocess(image)
     shape = image.shape
     
@@ -45,21 +45,20 @@ def main(args):
         result = draw_bounding_boxes(imageT, torch.tensor([boxes[0]], dtype=torch.float), colors=["blue"], width=5)
         show(result)
         
-    # imageCropped = cv.imread('./Test/cropped3.jpg')
-    # imageCropped = PreprocessImage.preprocess2(imageCropped).reshape((1, 5, 224, 224))
-    # model = EnsembleWrapper(args.svpath, "Ensemble_age_fold_0.pt", 12, 50, 1)
-    # model.load()
-    # age = model.predict(imageCropped)
-    # print(age)
-    # model = EnsembleWrapper(args.svpath, "Ensemble_full_sex_fold_4.pt", 2, 50, 1)
-    # model.load()
-    # sex = model.predict(imageCropped)
-    # print(sex)
-    # model = EnsembleWrapper(args.svpath, "Ensemble_full_race_fold_4.pt", 5, 50, 1)
-    # model.load()
-    # race = model.predict(imageCropped)
-    # print(race)
-
+    imageCropped = cv.imread('./Test/cropped3.jpg')
+    imageCropped = PreprocessImage.preprocess2(imageCropped).reshape((1, 5, 224, 224))
+    model = EnsembleWrapper(args.svpath, "Ensemble_age_fold_0.pt", 12, 50, 1)
+    model.load()
+    age = model.predict(imageCropped)
+    print(age)
+    model = EnsembleWrapper(args.svpath, "Ensemble_full_sex_fold_4.pt", 2, 50, 1)
+    model.load()
+    sex = model.predict(imageCropped)
+    print(sex)
+    model = EnsembleWrapper(args.svpath, "Ensemble_full_race_fold_4.pt", 5, 50, 1)
+    model.load()
+    race = model.predict(imageCropped)
+    print(race)
 
 
 if __name__ == "__main__":
