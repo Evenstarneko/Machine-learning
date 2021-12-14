@@ -99,7 +99,7 @@ class Rcnn:
         scores = []
         for case in predictions:
             best_i = -1
-            best_scores = torch.zeros(1)
+            best_scores = torch.zeros(1).to(self.device)
             for i in range(case['scores'].shape[0]):
                 if case['labels'][i] == 1 and case['scores'][i] >= best_scores:
                     best_scores = case['scores'][i]
