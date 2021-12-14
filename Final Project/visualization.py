@@ -38,7 +38,7 @@ def main(args):
     test_image = []
     test_image.append(image[0:3])
     
-    model = Rcnn(args.svpath, "Rcnn_fold_3.pt", 50, 1)
+    model = Rcnn(args.svpath, "Rcnn_feature_fold_3.pt", 50, 1)
     model.load()
     boxes, scores = model.predict(test_image)
     if (boxes[0] is not None):
@@ -50,15 +50,15 @@ def main(args):
         imageCropped = np.moveaxis(imageCropped, -1, 0)
         
 
-        model = EnsembleWrapper(args.svpath, "Ensemble_age_fold_1.pt", 12, 50, 1)
-        model.load()
-        age = model.predict([imageCropped])
-        model = EnsembleWrapper(args.svpath, "Ensemble_sex_fold_1.pt", 12, 50, 1)
-        model.load()
-        sex = model.predict([imageCropped])
-        model = EnsembleWrapper(args.svpath, "Ensemble_race_fold_1.pt", 12, 50, 1)
-        model.load()
-        race = model.predict([imageCropped])
+        # model = EnsembleWrapper(args.svpath, "Ensemble_age_fold_1.pt", 12, 50, 1)
+        # model.load()
+        # age = model.predict([imageCropped])
+        # model = EnsembleWrapper(args.svpath, "Ensemble_sex_fold_1.pt", 12, 50, 1)
+        # model.load()
+        # sex = model.predict([imageCropped])
+        # model = EnsembleWrapper(args.svpath, "Ensemble_race_fold_1.pt", 12, 50, 1)
+        # model.load()
+        # race = model.predict([imageCropped])
 
 
 
