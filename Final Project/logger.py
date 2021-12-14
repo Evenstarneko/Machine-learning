@@ -19,6 +19,6 @@ class Logger:
     @staticmethod
     def log(msg):
         print("{} {}".format(strftime("%Y-%m-%d %H:%M:%S", localtime()), msg))
-        file1 = open("log_feature_re.txt","a")
+        file1 = open("log_feature.txt","a")
         file1.write("{} {}\n".format(strftime("%Y-%m-%d %H:%M:%S", localtime()), msg))
         file1.close()
