@@ -14,10 +14,10 @@ parser.add_argument("--svpath", type=str, required=True)
 def main(args):
     boxes = []
     images = [[], [], [], [], []]
-    n_s = 200
-    batch = 100
+    n_s = 100
+    batch = 50
     
-    file1 = open("log_feature_rcnn_re.txt","a")
+    file1 = open("log_feature_rcnn.txt","a")
     
     for i in range(5):
         path = os.path.join(args.path, str(i))
