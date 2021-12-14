@@ -22,3 +22,19 @@ class PreprocessImage(object):
         result = np.moveaxis(result, -1, 0)
         result[[0,2]] = result[[2,0]]
         return result.astype(np.uint8)
+    
+    @classmethod
+    def preprocess2(cls, img):
+        img = cv.resize(img, ((224, 224)))
+        intensity = (0.11 * img[:,:,0] + 0.59 * img[:,:,1] + 0.30 * img[:,:,2])
+        intensity = intensity.reshape((224, 224, 1))
+        edge = cv.Canny(img, 100, 100, apertureSize = 3)
+        # cv.imshow('img', edge)
+        # cv.waitKey(0)
+        edge = edge
+        edge = edge.reshape((224, 224, 1))
+        result = np.append(img, intensity, axis = -1)
+        result = np.append(result, edge, axis = -1)
+        result = np.moveaxis(result, -1, 0)
+        result[[0,2]] = result[[2,0]]
+        return result.astype(np.uint8)

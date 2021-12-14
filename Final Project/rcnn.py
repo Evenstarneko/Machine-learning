@@ -96,13 +96,14 @@ class Rcnn:
         images = list(torch.from_numpy(image).float().to(self.device) for image in images)
         self.model.eval()
         predictions = self.model(images)
+        print(predictions)
         boxes = []
         scores = []
         for case in predictions:
             best_i = -1
             best_scores = torch.zeros(1)
             for i in range(case['scores'].shape[0]):
-                if case['labels'][i] == 1 and case['scores'][i] > best_scores:
+                if case['labels'][i] == 1 and case['scores'][i] >= best_scores:
                     best_scores = case['scores'][i]
                     best_i = i
             if best_i != -1:
