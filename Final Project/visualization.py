@@ -34,16 +34,13 @@ def main(args):
     imageT = read_image("./Test/6.jpg")
     image = PreprocessImage.preprocess(image)
     shape = image.shape
-    print(shape)
+    
     imageT = F.resize(imageT, [shape[1], shape[2]])
     # TODO: create test_image as (1,C,H,W) numpy array
-    test_image = []
-    test_image.append(image[0:3])
-    
+    test_image = image[0:3].astype(float) / 255
     model = Rcnn(args.svpath, "Rcnn_full_feature_fold_4.pt", 50, 1)
     model.load()
-    boxes, scores = model.predict(test_image)
-    print(boxes)
+    boxes, scores = model.predict([test_image])
     if (boxes[0] is not None):
         result = draw_bounding_boxes(imageT, torch.tensor([boxes[0]], dtype=torch.float), colors=["blue"], width=5)
         show(result)
